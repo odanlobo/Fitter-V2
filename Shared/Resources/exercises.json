@@ -1,0 +1,462 @@
+[
+  {
+    "templateId": "chest_1",
+    "name": "Supino Reto",
+    "muscleGroup": "chest",
+    "legSubgroup": null,
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "chest_1"
+  },
+  {
+    "templateId": "chest_2",
+    "name": "Supino Reto",
+    "muscleGroup": "chest",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Neutra",
+    "imageName": "chest_2"
+  },
+  {
+    "templateId": "chest_3",
+    "name": "Supino Inclinado",
+    "muscleGroup": "chest",
+    "legSubgroup": null,
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "chest_3"
+  },
+  {
+    "templateId": "chest_4",
+    "name": "Supino Inclinado",
+    "muscleGroup": "chest",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Neutra",
+    "imageName": "chest_4"
+  },
+  {
+    "templateId": "chest_5",
+    "name": "Supino Declinado",
+    "muscleGroup": "chest",
+    "legSubgroup": null,
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "chest_5"
+  },
+  {
+    "templateId": "chest_6",
+    "name": "Supino Declinado",
+    "muscleGroup": "chest",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Neutra",
+    "imageName": "chest_6"
+  },
+  {
+    "templateId": "back_1",
+    "name": "Puxada Aberta",
+    "muscleGroup": "back",
+    "legSubgroup": null,
+    "equipment": "Polia",
+    "gripVariation": "Pronada",
+    "imageName": "back_1"
+  },
+  {
+    "templateId": "back_2",
+    "name": "Puxada Fechada",
+    "muscleGroup": "back",
+    "legSubgroup": null,
+    "equipment": "Polia",
+    "gripVariation": "Supinada",
+    "imageName": "back_2"
+  },
+  {
+    "templateId": "back_3",
+    "name": "Remada Curvada",
+    "muscleGroup": "back",
+    "legSubgroup": null,
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "back_3"
+  },
+  {
+    "templateId": "back_4",
+    "name": "Remada Unilateral",
+    "muscleGroup": "back",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Neutra",
+    "imageName": "back_4"
+  },
+  {
+    "templateId": "back_5",
+    "name": "Levantamento Terra",
+    "muscleGroup": "back",
+    "legSubgroup": null,
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "back_5"
+  },
+  {
+    "templateId": "back_6",
+    "name": "Remada na Máquina",
+    "muscleGroup": "back",
+    "legSubgroup": null,
+    "equipment": "Machine",
+    "gripVariation": null,
+    "imageName": "back_6"
+  },
+  {
+    "templateId": "shoulders_1",
+    "name": "Desenvolvimento de Ombros",
+    "muscleGroup": "shoulders",
+    "legSubgroup": null,
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "shoulders_1"
+  },
+  {
+    "templateId": "shoulders_2",
+    "name": "Desenvolvimento de Ombros",
+    "muscleGroup": "shoulders",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Neutra",
+    "imageName": "shoulders_2"
+  },
+  {
+    "templateId": "shoulders_3",
+    "name": "Elevação Lateral",
+    "muscleGroup": "shoulders",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Neutra",
+    "imageName": "shoulders_3"
+  },
+  {
+    "templateId": "shoulders_4",
+    "name": "Elevação Frontal",
+    "muscleGroup": "shoulders",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Pronada",
+    "imageName": "shoulders_4"
+  },
+  {
+    "templateId": "shoulders_5",
+    "name": "Desenvolvimento Arnold",
+    "muscleGroup": "shoulders",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Neutra",
+    "imageName": "shoulders_5"
+  },
+  {
+    "templateId": "shoulders_6",
+    "name": "Encolhimento",
+    "muscleGroup": "shoulders",
+    "legSubgroup": null,
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "shoulders_6"
+  },
+  {
+    "templateId": "biceps_1",
+    "name": "Rosca Direta",
+    "muscleGroup": "biceps",
+    "legSubgroup": null,
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "biceps_1"
+  },
+  {
+    "templateId": "biceps_2",
+    "name": "Rosca Alternada",
+    "muscleGroup": "biceps",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Neutra",
+    "imageName": "biceps_2"
+  },
+  {
+    "templateId": "biceps_3",
+    "name": "Rosca Martelo",
+    "muscleGroup": "biceps",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Neutra",
+    "imageName": "biceps_3"
+  },
+  {
+    "templateId": "biceps_4",
+    "name": "Rosca Concentrada",
+    "muscleGroup": "biceps",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Neutra",
+    "imageName": "biceps_4"
+  },
+  {
+    "templateId": "biceps_5",
+    "name": "Rosca 21",
+    "muscleGroup": "biceps",
+    "legSubgroup": null,
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "biceps_5"
+  },
+  {
+    "templateId": "biceps_6",
+    "name": "Rosca Martelo na Polia",
+    "muscleGroup": "biceps",
+    "legSubgroup": null,
+    "equipment": "Polia",
+    "gripVariation": null,
+    "imageName": "biceps_6"
+  },
+  {
+    "templateId": "triceps_1",
+    "name": "Tríceps na Polia",
+    "muscleGroup": "triceps",
+    "legSubgroup": null,
+    "equipment": "Polia",
+    "gripVariation": "Pronada",
+    "imageName": "triceps_1"
+  },
+  {
+    "templateId": "triceps_2",
+    "name": "Tríceps na Polia",
+    "muscleGroup": "triceps",
+    "legSubgroup": null,
+    "equipment": "Polia",
+    "gripVariation": "Supinada",
+    "imageName": "triceps_2"
+  },
+  {
+    "templateId": "triceps_3",
+    "name": "Tríceps Testa",
+    "muscleGroup": "triceps",
+    "legSubgroup": null,
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "triceps_3"
+  },
+  {
+    "templateId": "triceps_4",
+    "name": "Tríceps Francês",
+    "muscleGroup": "triceps",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Neutra",
+    "imageName": "triceps_4"
+  },
+  {
+    "templateId": "triceps_5",
+    "name": "Tríceps Coice",
+    "muscleGroup": "triceps",
+    "legSubgroup": null,
+    "equipment": "Halter",
+    "gripVariation": "Neutra",
+    "imageName": "triceps_5"
+  },
+  {
+    "templateId": "triceps_6",
+    "name": "Mergulho na Paralela",
+    "muscleGroup": "triceps",
+    "legSubgroup": null,
+    "equipment": "Paralelas",
+    "gripVariation": null,
+    "imageName": "triceps_6"
+  },
+  {
+    "templateId": "legs_1",
+    "name": "Agachamento Livre",
+    "muscleGroup": "legs",
+    "legSubgroup": "Quadríceps",
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "legs_1"
+  },
+  {
+    "templateId": "legs_2",
+    "name": "Leg Press",
+    "muscleGroup": "legs",
+    "legSubgroup": "Quadríceps",
+    "equipment": "Machine",
+    "gripVariation": null,
+    "imageName": "legs_2"
+  },
+  {
+    "templateId": "legs_3",
+    "name": "Extensão de Pernas",
+    "muscleGroup": "legs",
+    "legSubgroup": "Quadríceps",
+    "equipment": "Machine",
+    "gripVariation": null,
+    "imageName": "legs_3"
+  },
+  {
+    "templateId": "legs_4",
+    "name": "Afundo",
+    "muscleGroup": "legs",
+    "legSubgroup": "Quadríceps",
+    "equipment": "Bodyweight",
+    "gripVariation": null,
+    "imageName": "legs_4"
+  },
+  {
+    "templateId": "legs_5",
+    "name": "Mesa Flexora",
+    "muscleGroup": "legs",
+    "legSubgroup": "Posterior de Coxa",
+    "equipment": "Machine",
+    "gripVariation": null,
+    "imageName": "legs_5"
+  },
+  {
+    "templateId": "legs_6",
+    "name": "Stiff",
+    "muscleGroup": "legs",
+    "legSubgroup": "Posterior de Coxa",
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "legs_6"
+  },
+  {
+    "templateId": "legs_7",
+    "name": "Levantamento Terra Romeno",
+    "muscleGroup": "legs",
+    "legSubgroup": "Posterior de Coxa",
+    "equipment": "Barra",
+    "gripVariation": "Pronada",
+    "imageName": "legs_7"
+  },
+  {
+    "templateId": "legs_8",
+    "name": "Good Morning",
+    "muscleGroup": "legs",
+    "legSubgroup": "Posterior de Coxa",
+    "equipment": "Bodyweight",
+    "gripVariation": null,
+    "imageName": "legs_8"
+  },
+  {
+    "templateId": "legs_9",
+    "name": "Elevação de Quadril",
+    "muscleGroup": "legs",
+    "legSubgroup": "Glúteos",
+    "equipment": "Bodyweight",
+    "gripVariation": null,
+    "imageName": "legs_9"
+  },
+  {
+    "templateId": "legs_10",
+    "name": "Agachamento Sumô",
+    "muscleGroup": "legs",
+    "legSubgroup": "Glúteos",
+    "equipment": "Barra",
+    "gripVariation": "Neutra",
+    "imageName": "legs_10"
+  },
+  {
+    "templateId": "legs_11",
+    "name": "Abdução de Quadril",
+    "muscleGroup": "legs",
+    "legSubgroup": "Glúteos",
+    "equipment": "Machine",
+    "gripVariation": null,
+    "imageName": "legs_11"
+  },
+  {
+    "templateId": "legs_12",
+    "name": "Elevação de Quadril Unilateral",
+    "muscleGroup": "legs",
+    "legSubgroup": "Glúteos",
+    "equipment": "Bodyweight",
+    "gripVariation": null,
+    "imageName": "legs_12"
+  },
+  {
+    "templateId": "legs_13",
+    "name": "Elevação de Panturrilha em Pé",
+    "muscleGroup": "legs",
+    "legSubgroup": "Panturrilha",
+    "equipment": "Bodyweight",
+    "gripVariation": null,
+    "imageName": "legs_13"
+  },
+  {
+    "templateId": "legs_14",
+    "name": "Elevação de Panturrilha Sentado",
+    "muscleGroup": "legs",
+    "legSubgroup": "Panturrilha",
+    "equipment": "Machine",
+    "gripVariation": null,
+    "imageName": "legs_14"
+  },
+  {
+    "templateId": "legs_15",
+    "name": "Panturrilha no Leg Press",
+    "muscleGroup": "legs",
+    "legSubgroup": "Panturrilha",
+    "equipment": "Machine",
+    "gripVariation": null,
+    "imageName": "legs_15"
+  },
+  {
+    "templateId": "core_1",
+    "name": "Abdominal Supra",
+    "muscleGroup": "core",
+    "legSubgroup": null,
+    "equipment": "Bodyweight",
+    "gripVariation": null,
+    "imageName": "core_1"
+  },
+  {
+    "templateId": "core_2",
+    "name": "Abdominal Infra",
+    "muscleGroup": "core",
+    "legSubgroup": null,
+    "equipment": "Bodyweight",
+    "gripVariation": null,
+    "imageName": "core_2"
+  },
+  {
+    "templateId": "core_3",
+    "name": "Prancha",
+    "muscleGroup": "core",
+    "legSubgroup": null,
+    "equipment": "Bodyweight",
+    "gripVariation": null,
+    "imageName": "core_3"
+  },
+  {
+    "templateId": "core_4",
+    "name": "Abdominal Oblíquo",
+    "muscleGroup": "core",
+    "legSubgroup": null,
+    "equipment": "Bodyweight",
+    "gripVariation": null,
+    "imageName": "core_4"
+  },
+  {
+    "templateId": "core_5",
+    "name": "Elevação de Pernas na Barra",
+    "muscleGroup": "core",
+    "legSubgroup": null,
+    "equipment": "Bodyweight",
+    "gripVariation": null,
+    "imageName": "core_5"
+  },
+  {
+    "templateId": "core_6",
+    "name": "Abdominal na Máquina",
+    "muscleGroup": "core",
+    "legSubgroup": null,
+    "equipment": "Machine",
+    "gripVariation": null,
+    "imageName": "core_6"
+  }
+]
+
