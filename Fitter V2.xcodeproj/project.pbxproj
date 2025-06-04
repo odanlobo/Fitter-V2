@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		17E1CBF32DCD2D790099FDAA /* Fitter V2 Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 17E1CBF22DCD2D790099FDAA /* Fitter V2 Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		17E1CD3E2DCD65570099FDAA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 17E1CD3D2DCD65570099FDAA /* FirebaseAuth */; };
+		17E1CD402DCD65570099FDAA /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 17E1CD3F2DCD65570099FDAA /* FirebaseCore */; };
+		17E1CD422DCD65570099FDAA /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 17E1CD412DCD65570099FDAA /* FirebaseFirestore */; };
+		17E1CD4C2DCD6BAC0099FDAA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 17E1CD4B2DCD6BAC0099FDAA /* GoogleSignIn */; };
+		17E1CD4E2DCD6BAC0099FDAA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 17E1CD4D2DCD6BAC0099FDAA /* GoogleSignInSwift */; };
+		17E1CD6B2DD2A5A50099FDAA /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 17E1CD6A2DD2A5A50099FDAA /* FacebookCore */; };
+		17E1CD6D2DD2A5A50099FDAA /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 17E1CD6C2DD2A5A50099FDAA /* FacebookLogin */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,14 +47,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		17E1CBE72DCD2D770099FDAA /* Fitter V2 */ = {
+		17E1CDE52DD3BE0E0099FDAA /* Fitter V2 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Fitter V2";
 			sourceTree = "<group>";
 		};
-		17E1CBF62DCD2D790099FDAA /* Fitter V2 Watch App */ = {
+		17E1CDFC2DD3BE290099FDAA /* Fitter V2 Watch App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Fitter V2 Watch App";
+			sourceTree = "<group>";
+		};
+		17E3546C2DF0DB1000A820F4 /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -57,6 +69,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17E1CD4E2DCD6BAC0099FDAA /* GoogleSignInSwift in Frameworks */,
+				17E1CD6B2DD2A5A50099FDAA /* FacebookCore in Frameworks */,
+				17E1CD402DCD65570099FDAA /* FirebaseCore in Frameworks */,
+				17E1CD4C2DCD6BAC0099FDAA /* GoogleSignIn in Frameworks */,
+				17E1CD3E2DCD65570099FDAA /* FirebaseAuth in Frameworks */,
+				17E1CD6D2DD2A5A50099FDAA /* FacebookLogin in Frameworks */,
+				17E1CD422DCD65570099FDAA /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,8 +92,9 @@
 		17E1CBDC2DCD2D770099FDAA = {
 			isa = PBXGroup;
 			children = (
-				17E1CBE72DCD2D770099FDAA /* Fitter V2 */,
-				17E1CBF62DCD2D790099FDAA /* Fitter V2 Watch App */,
+				17E3546C2DF0DB1000A820F4 /* Shared */,
+				17E1CDE52DD3BE0E0099FDAA /* Fitter V2 */,
+				17E1CDFC2DD3BE290099FDAA /* Fitter V2 Watch App */,
 				17E1CBE62DCD2D770099FDAA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -106,10 +126,18 @@
 				17E1CBF52DCD2D790099FDAA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				17E1CBE72DCD2D770099FDAA /* Fitter V2 */,
+				17E1CDE52DD3BE0E0099FDAA /* Fitter V2 */,
+				17E3546C2DF0DB1000A820F4 /* Shared */,
 			);
 			name = "Fitter V2";
 			packageProductDependencies = (
+				17E1CD3D2DCD65570099FDAA /* FirebaseAuth */,
+				17E1CD3F2DCD65570099FDAA /* FirebaseCore */,
+				17E1CD412DCD65570099FDAA /* FirebaseFirestore */,
+				17E1CD4B2DCD6BAC0099FDAA /* GoogleSignIn */,
+				17E1CD4D2DCD6BAC0099FDAA /* GoogleSignInSwift */,
+				17E1CD6A2DD2A5A50099FDAA /* FacebookCore */,
+				17E1CD6C2DD2A5A50099FDAA /* FacebookLogin */,
 			);
 			productName = "Fitter V2";
 			productReference = 17E1CBE52DCD2D770099FDAA /* Fitter V2.app */;
@@ -128,7 +156,8 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				17E1CBF62DCD2D790099FDAA /* Fitter V2 Watch App */,
+				17E1CDFC2DD3BE290099FDAA /* Fitter V2 Watch App */,
+				17E3546C2DF0DB1000A820F4 /* Shared */,
 			);
 			name = "Fitter V2 Watch App";
 			packageProductDependencies = (
@@ -164,6 +193,11 @@
 			);
 			mainGroup = 17E1CBDC2DCD2D770099FDAA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				17E1CD3C2DCD65570099FDAA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				17E1CD4A2DCD6BAC0099FDAA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				17E1CD692DD2A5A50099FDAA /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 17E1CBE62DCD2D770099FDAA /* Products */;
 			projectDirPath = "";
@@ -339,14 +373,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Fitter V2 Watch App/Fitter V2 Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A6L4JWA5RW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Fitter-V2-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Fitter V2";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Este aplicativo precisa acessar seus dados de saúde para monitorar treinos";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Este aplicativo precisa gravar dados de movimento e frequência cardíaca no Health";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "odanlobo.github.io.Fitter-V2";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -359,7 +398,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 11.4;
+				WATCHOS_DEPLOYMENT_TARGET = 10;
 			};
 			name = Debug;
 		};
@@ -368,14 +407,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Fitter V2 Watch App/Fitter V2 Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A6L4JWA5RW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Fitter-V2-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Fitter V2";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Este aplicativo precisa acessar seus dados de saúde para monitorar treinos";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Este aplicativo precisa gravar dados de movimento e frequência cardíaca no Health";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "odanlobo.github.io.Fitter-V2";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -389,7 +433,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 11.4;
+				WATCHOS_DEPLOYMENT_TARGET = 10;
 			};
 			name = Release;
 		};
@@ -398,18 +442,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Fitter V2/Fitter V2.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A6L4JWA5RW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Fitter-V2-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Fitter V2";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Este aplicativo precisa acessar seus dados clínicos para análise";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Este aplicativo precisa acessar seus dados de saúde para processar informações de treino";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Este aplicativo precisa gravar dados de treino no Health";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -418,6 +468,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "odanlobo.github.io.Fitter-V2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -429,18 +483,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Fitter V2/Fitter V2.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A6L4JWA5RW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Fitter-V2-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Fitter V2";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Este aplicativo precisa acessar seus dados clínicos para análise";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Este aplicativo precisa acessar seus dados de saúde para processar informações de treino";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Este aplicativo precisa gravar dados de treino no Health";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -449,6 +509,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "odanlobo.github.io.Fitter-V2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -487,6 +551,71 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		17E1CD3C2DCD65570099FDAA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.12.0;
+			};
+		};
+		17E1CD4A2DCD6BAC0099FDAA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+		17E1CD692DD2A5A50099FDAA /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		17E1CD3D2DCD65570099FDAA /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17E1CD3C2DCD65570099FDAA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		17E1CD3F2DCD65570099FDAA /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17E1CD3C2DCD65570099FDAA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		17E1CD412DCD65570099FDAA /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17E1CD3C2DCD65570099FDAA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		17E1CD4B2DCD6BAC0099FDAA /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17E1CD4A2DCD6BAC0099FDAA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		17E1CD4D2DCD6BAC0099FDAA /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17E1CD4A2DCD6BAC0099FDAA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		17E1CD6A2DD2A5A50099FDAA /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17E1CD692DD2A5A50099FDAA /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
+		17E1CD6C2DD2A5A50099FDAA /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17E1CD692DD2A5A50099FDAA /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 17E1CBDD2DCD2D770099FDAA /* Project object */;
 }
