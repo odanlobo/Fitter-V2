@@ -8,191 +8,101 @@
 // WorkoutView.swift
 
 import SwiftUI
-import SwiftData
+import CoreData
 
 struct WorkoutView: View {
     @EnvironmentObject var authViewModel: LoginViewModel
-    @Environment(\.modelContext) private var modelContext
-    @State private var viewModel: WorkoutViewModel? = nil
+    @StateObject private var viewModel = WorkoutViewModel()
     @State private var showCreateWorkout = false
-    @State private var selectedPlan: WorkoutPlan?
+    @State private var selectedPlan: CDWorkoutPlan?
     @State private var showError = false
     @State private var errorMessage = ""
-    @State private var editMode: EditMode = .inactive // ou .active se quiser já com handles visíveis
     
     var body: some View {
         NavigationStack {
             ZStack {
                 Color.black.ignoresSafeArea()
-                
-                if let viewModel = viewModel {
-                    if viewModel.isLoading {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                            .scaleEffect(1.5)
+                VStack(spacing: 20) {
+                    // Header
+                    HStack {
+                        Text("Treinos")
+                            .font(.system(size: 36, weight: .bold, design: .default).italic())
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    .padding(.top)
+
+                    if viewModel.plans.isEmpty {
+                        // Card de mensagem
+                        HStack {
+                            Text("Quando você criar seus treinos\neles irão aparecer aqui")
+                                .foregroundColor(Color.gray.opacity(0.7))
+                                .font(.system(size: 20, weight: .regular, design: .default))
+                                .multilineTextAlignment(.center)
+                                .padding(.vertical, 68)
+                                .frame(maxWidth: .infinity)
+                        }
+                        .background(Color.gray.opacity(0.22))
+                        .cornerRadius(20)
+                        .padding(.horizontal, 16)
                     } else {
-                        VStack(spacing: 20) {
-                            // Header
-                            HStack {
-                                Text("Treinos")
-                                    .font(.system(size: 42, weight: .bold, design: .default).italic())
-                                    .foregroundColor(.white)
-                                Spacer()
-                                Button(action: {
-                                    showCreateWorkout = true 
-                                }) {
-                                    Image(systemName: "plus.circle.fill")
-                                        .font(.system(size: 32))
-                                        .foregroundColor(.white)
-                                        .padding(8)
-                                }
-                            }
-                            .padding(.horizontal)
-                            
-                            if viewModel.plans.isEmpty {
-                                EmptyWorkoutView(onCreateTap: {
-                                    showCreateWorkout = true 
-                                })
-                                .onAppear {
-                                    print("📋 Lista vazia - Usuario: \(String(describing: authViewModel.currentUser?.id))")
-                                }
-                            } else {
-                                WorkoutsPlansList(
-                                    plans: viewModel.plans,
-                                    onMove: viewModel.move,
-                                    onSelect: { selectedPlan = $0 },
-                                    onCreate: { showCreateWorkout = true },
-                                    onDelete: { plan in
-                                        selectedPlan = nil
-                                        print("🎯 Delete solicitado para: \(plan.title)")
-                                        Task { @MainActor in
-                                            do {
-                                                try await viewModel.deletePlanById(plan.id)
-                                                print("✅ Delete concluído com sucesso")
-                                            } catch {
-                                                print("❌ Erro na UI ao deletar: \(error)")
-                                                errorMessage = error.localizedDescription
-                                                showError = true
-                                            }
-                                        }
-                                    },
-                                    onRefresh: {
-                                        Task {
-                                            do {
-                                                try await viewModel.loadPlansForCurrentUser()
-                                                print("🔄 Lista atualizada via pull to refresh")
-                                            } catch {
-                                                errorMessage = error.localizedDescription
-                                                showError = true
-                                            }
-                                        }
-                                    },
-                                    editMode: $editMode
-                                )
-                                .onAppear {
-                                    print("📋 Exibindo \(viewModel.plans.count) planos")
-                                }
-                            }
+                        ForEach(viewModel.plans) { plan in
+                            WorkoutPlanCard(
+                                plan: plan,
+                                onTap: { selectedPlan = plan },
+                                onDelete: { /* handled by swipe/context menu */ }
+                            )
+                            .padding(.horizontal, 8)
                         }
                     }
-                } else {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        .scaleEffect(1.5)
-                        .onAppear {
-                            if viewModel == nil {
-                                print("🔄 Inicializando WorkoutViewModel...")
-                                let vm = WorkoutViewModel(modelContext: modelContext)
-                                vm.updateUser(authViewModel.currentUser)
-                                print("👤 Usuario atual: \(String(describing: authViewModel.currentUser?.id))")
-                                Task { 
-                                    do {
-                                        try await vm.loadPlansForCurrentUser()
-                                        print("✅ Dados carregados, assignando ViewModel")
-                                        // Só atribui o ViewModel DEPOIS de carregar os dados
-                                        await MainActor.run {
-                                            viewModel = vm
-                                        }
-                                    } catch {
-                                        print("❌ Erro ao carregar planos: \(error)")
-                                    }
-                                }
-                            }
-                        }
+
+                    // Botão CRIAR TREINO
+                    CreateButton(action: { showCreateWorkout = true })
+                        .padding(.horizontal, 16)
+
+                    // Botão FAZER UPLOAD
+                    UploadButton {
+                        print("Fazer upload")
+                    }
+                    .padding(.horizontal, 16)
+                    .frame(maxWidth: .infinity)
+                    .padding(.bottom, 8)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
             .navigationBarHidden(true)
             .navigationDestination(isPresented: $showCreateWorkout) {
-                if let viewModel = viewModel {
-                    CreateWorkoutView(viewModel: viewModel)
-                }
-            }
-            .navigationDestination(item: $selectedPlan) { plan in
-                DetailWorkoutView(plan: plan)
+                CreateWorkoutView(viewModel: viewModel)
             }
             .alert("Erro", isPresented: $showError) {
                 Button("OK") { }
             } message: {
                 Text(errorMessage)
             }
-            .onChange(of: authViewModel.currentUser) { newUser in
-                viewModel?.updateUser(newUser)
-                Task {
-                    do {
-                        try await viewModel?.loadPlansForCurrentUser()
-                    } catch {
-                        errorMessage = error.localizedDescription
-                        showError = true
-                    }
-                }
-            }
-            .onChange(of: showCreateWorkout) { isShowing in
-                // Quando volta da tela de criação (showCreateWorkout muda para false)
-                if !isShowing {
-                    Task {
-                        do {
-                            try await viewModel?.loadPlansForCurrentUser()
-                            print("🔄 Lista atualizada automaticamente após criação")
-                        } catch {
-                            errorMessage = error.localizedDescription
-                            showError = true
-                        }
-                    }
-                }
+            .onAppear {
+                print("🎯 WorkoutView.onAppear - Usuário recebido: \(String(describing: authViewModel.currentUser?.safeName))")
+                viewModel.updateUser(authViewModel.currentUser)
             }
         }
     }
 }
 
-// MARK: - Subviews
-private struct EmptyWorkoutView: View {
-    let onCreateTap: () -> Void
-    
-    var body: some View {
-        VStack(spacing: 32) {
-            Image(systemName: "dumbbell.fill")
-                .font(.system(size: 50))
-                .foregroundColor(.gray)
-            Text("Quando você for criando seus treinos, eles irão aparecer aqui.")
-                .foregroundColor(.gray)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
+struct WorkoutView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            AnyView(
+                WorkoutView()
+                    .environment(\.managedObjectContext, PreviewCoreDataStack.shared.viewContext)
+                    .environmentObject(LoginViewModel.preview)
+                    .previewDisplayName("Com dados mockados")
+            )
+            AnyView(
+                WorkoutView()
+                    .environment(\.managedObjectContext, PreviewCoreDataStack.shared.viewContext)
+                    .environmentObject(LoginViewModel.emptyPreview)
+                    .previewDisplayName("Sem dados")
+            )
         }
-        .padding(.vertical, 40)
-        .padding(.horizontal, 24)
-        .background(Color.gray.opacity(0.15))
-        .cornerRadius(16)
-        .padding(.horizontal)
-        
-        CreateButton(action: onCreateTap)
-        
-        Spacer()
     }
 }
-
-#Preview("Mock isolado") {
-    WorkoutView()
-        .withMockData()
-        .environmentObject(LoginViewModel.preview)
-}
-

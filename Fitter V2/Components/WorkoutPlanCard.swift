@@ -4,117 +4,93 @@
 //
 //  Created by Daniel Lobo on 15/05/25.
 //
+//  Refatorado seguindo o padrão dos novos cards reordenáveis do app Fitter.
+//  - Visual moderno, drag handle sempre visível
+//  - Callbacks para tap e delete
+//  - Sem lógica de negócio, apenas UI
+//  - Comentários e documentação em português
 
 import SwiftUI
+import CoreData
 
+/// Card visual para exibir um plano de treino, pronto para listas reordenáveis.
+/// - Exibe título, grupos musculares e drag handle.
+/// - Permite swipe para exclusão e tap para detalhes.
 struct WorkoutPlanCard: View {
-    @State private var offset: CGFloat = 0
-    
-    let plan: WorkoutPlan
+    /// Plano de treino a ser exibido
+    let plan: CDWorkoutPlan
+    /// Callback ao tocar no card
     var onTap: (() -> Void)? = nil
+    /// Callback ao solicitar exclusão
     var onDelete: (() -> Void)? = nil
-    var longPress: (() -> Void)? = nil
-    
-    // Computa a opacidade do handle a partir do offset
-    private var handleOpacity: Double {
-        let progress = min(abs(offset) / 70, 1)   // 0 à 1
-        return 1 - progress                       // 1 → 0
-    }
 
-    // Acesso defensivo ao título
-    var safeTitle: String {
-        // Se o objeto foi deletado, retorna string vazia
-        (try? plan.title) ?? ""
-    }
+    @GestureState private var dragOffset: CGFloat = 0
 
-    // Acesso defensivo aos grupos musculares
+    /// Grupos musculares do plano, formatados para exibição
     var safeMuscleGroups: String {
         let order: [MuscleGroup] = [.chest, .back, .legs, .biceps, .triceps, .shoulders, .core]
-        guard let exercises = try? plan.exercises, !exercises.isEmpty else { return "" }
-        let groups = Set(exercises.compactMap { $0.template?.muscleGroup })
+        let exercises = plan.exercisesArray
+        guard !exercises.isEmpty else { return "" }
+        let groups: Set<MuscleGroup> = Set(exercises.compactMap { exercise in
+            guard let muscleGroupString = exercise.template?.muscleGroup else { return nil }
+            return MuscleGroup(rawValue: muscleGroupString)
+        })
         return order.filter { groups.contains($0) }.map { $0.displayName }.joined(separator: " + ")
+    }
+
+    /// Opacidade do drag handle durante o arrasto
+    var linesOpacity: Double {
+        let progress = min(max(abs(dragOffset) / 80, 0), 1)
+        return 1.0 - progress
     }
 
     var body: some View {
         ZStack {
-            // MARK: – Fundo com botão de lixeira
-            HStack(spacing: 8) {
-                Spacer()
-
-                Button(action: {
-                    onDelete?()
-                }) {
-                    Image(systemName: "trash")
-                        .font(.system(size: 20))
-                        .fontWeight(.heavy)
-                        .foregroundColor(.red)
-                        .frame(width: 44, height: 44)
-                }
-                .background(Color.black)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 70)
-            .padding(.horizontal)
-
-            // MARK: – Card principal
             HStack(spacing: 12) {
-                // Nome e grupos musculares
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(safeTitle)
+                    // Exibe o título do plano (padrão displayTitle)
+                    Text(plan.displayTitle)
                         .font(.system(size: 26, weight: .bold, design: .default))
                         .foregroundColor(.white)
-                    Text(safeMuscleGroups)
-                        .font(.system(size: 14, weight: .semibold, design: .default).italic())
-                        .foregroundColor(.gray)
+                    if !safeMuscleGroups.isEmpty {
+                        Text(safeMuscleGroups)
+                            .font(.system(size: 14, weight: .semibold, design: .default).italic())
+                            .foregroundColor(.gray)
+                    }
                 }
-
                 Spacer()
-
-                // Handle com opacidade animada
-                Image(systemName: "line.horizontal.3")
-                    .font(.system(size: 20))
-                    .fontWeight(.heavy)
+                // Drag handle sempre visível
+                Image(systemName: "line.3.horizontal")
+                    .font(.system(size: 26, weight: .bold))
                     .foregroundColor(.white)
-                    .opacity(handleOpacity)
+                    .opacity(linesOpacity)
+                    .animation(.easeInOut(duration: 0.18), value: linesOpacity)
             }
             .padding(.horizontal)
             .frame(maxWidth: .infinity)
             .frame(height: 86)
             .background(Color.black)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.white.opacity(0.18), lineWidth: 1)
             )
-            .offset(x: offset)
-            .gesture(
-                DragGesture()
-                    .onChanged { value in
-                        if value.translation.width < 0 {
-                            offset = max(value.translation.width, -70)
-                        } else if offset < 0 {
-                            offset = min(0, offset + value.translation.width)
-                        }
-                    }
-                    .onEnded { value in
-                        withAnimation(.spring()) {
-                            offset = value.translation.width < -35 ? -70 : 0
-                        }
-                    }
-            )
-            .gesture(
-                LongPressGesture(minimumDuration: 0.3)
-                    .onEnded { _ in
-                        longPress?() // Notifica o pai
-                    }
-            )
-            .onTapGesture {
-                if offset < 0 {
-                    withAnimation(.spring()) { offset = 0 }
-                } else {
-                    onTap?()
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            onTap?()
+        }
+        .gesture(
+            DragGesture()
+                .updating($dragOffset) { value, state, _ in
+                    state = value.translation.width
                 }
+        )
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button(role: .destructive) {
+                onDelete?()
+            } label: {
+                Label("Excluir", systemImage: "trash")
             }
         }
     }
@@ -122,21 +98,30 @@ struct WorkoutPlanCard: View {
 
 // MARK: - Previews
 #Preview {
-    let template = ExerciseTemplate(
-        templateId: "test_1",
-        name: "Supino Reto",
-        muscleGroup: .chest,
-        equipment: "Barra",
-        imageName: nil
-    )
+    // Usa o contexto de preview com dados mockados
+    let viewContext = PreviewCoreDataStack.shared.viewContext
     
-    let plan = WorkoutPlan(title: "Treino A")
-    let planExercise = PlanExercise(order: 0, plan: plan, template: template)
-    plan.exercises.append(planExercise)
+    // Busca um plano existente dos dados mockados
+    let request: NSFetchRequest<CDWorkoutPlan> = CDWorkoutPlan.fetchRequest()
+    request.fetchLimit = 1
     
-    return VStack(spacing: 16) {
-        WorkoutPlanCard(plan: plan, onTap: nil, onDelete: nil)
+    if let plan = try? viewContext.fetch(request).first {
+        return VStack(spacing: 16) {
+            WorkoutPlanCard(
+                plan: plan,
+                onTap: { print("Plano selecionado: \(plan.displayTitle)") },
+                onDelete: { print("Delete solicitado para: \(plan.displayTitle)") }
+            )
+        }
+        .padding()
+        .background(Color.black)
+    } else {
+        // Fallback caso não encontre dados mockados
+        return VStack {
+            Text("Nenhum plano encontrado nos dados de preview")
+                .foregroundColor(.white)
+        }
+        .padding()
+        .background(Color.black)
     }
-    .padding()
-    .background(Color.black)
 }

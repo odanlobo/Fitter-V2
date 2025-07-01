@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MainTabView: View {
     @EnvironmentObject var authViewModel: LoginViewModel
-    @Environment(\.modelContext) private var modelContext
     @State private var selectedTab = 0
     
     var body: some View {
@@ -57,15 +56,10 @@ struct MainTabView: View {
     }
 }
 
-// MARK: - Preview
-#Preview("Com dados mock") {
-    MainTabView()
-        .withMockData()
-        .environmentObject(LoginViewModel.preview)
-}
-
-#Preview("Sem dados") {
-    MainTabView()
-        .modelContainer(for: WorkoutPlan.self, inMemory: true)
-        .environmentObject(LoginViewModel(mockUser: PreviewData.mockUser))
+struct MainTabView_Previews: PreviewProvider {
+    static var previews: some View {
+        MainTabView()
+            .environment(\.managedObjectContext, PreviewCoreDataStack.shared.viewContext)
+            .environmentObject(LoginViewModel.preview)
+    }
 }

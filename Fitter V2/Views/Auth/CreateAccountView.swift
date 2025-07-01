@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct CreateAccountView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var authViewModel: LoginViewModel
     @StateObject private var viewModel = CreateAccountViewModel()
     @State private var name = ""
@@ -154,8 +156,4 @@ private struct PasswordField: View {
         .cornerRadius(30)
         .padding(.horizontal, 46)
     }
-}
-
-#Preview {
-    CreateAccountView()
 }

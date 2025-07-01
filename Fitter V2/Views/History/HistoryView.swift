@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct HistoryView: View {
+    @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var authViewModel: LoginViewModel
     @StateObject private var connectivity = ConnectivityManager.shared
     
@@ -37,6 +39,10 @@ struct HistoryView: View {
     }
 }
 
-#Preview {
-    HistoryView()
+struct HistoryView_Previews: PreviewProvider {
+    static var previews: some View {
+        HistoryView()
+            .environment(\.managedObjectContext, PreviewCoreDataStack.shared.viewContext)
+            .environmentObject(LoginViewModel.preview)
+    }
 }

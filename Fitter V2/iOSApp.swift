@@ -11,7 +11,6 @@ import WatchConnectivity
 import CoreData
 import FirebaseCore
 import FacebookCore
-import SwiftData
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
@@ -42,6 +41,9 @@ struct iOSApp: App {
     @StateObject private var connectivityManager = ConnectivityManager.shared
     @StateObject private var authViewModel = LoginViewModel()
     
+    // Core Data stack
+    private let coreDataStack = CoreDataStack.shared
+    
     init() {
         // register app delegate for Firebase setup
         @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
@@ -55,17 +57,18 @@ struct iOSApp: App {
             if authViewModel.isAuthenticated {
                 MainTabView()
                     .environmentObject(authViewModel)
+                    .environment(\.managedObjectContext, coreDataStack.viewContext)
             } else {
                 LoginView()
                     .environmentObject(authViewModel)
+                    .environment(\.managedObjectContext, coreDataStack.viewContext)
             }
         }
-        .modelContainer(PersistenceController.shared.container)
     }
     
     private func requestHealthKitAuthorization() {
         guard HKHealthStore.isHealthDataAvailable() else {
-            print("HealthKit não está disponível neste dispositivo")
+            print("❌ HealthKit não está disponível neste dispositivo")
             return
         }
         
@@ -73,19 +76,44 @@ struct iOSApp: App {
         
         // Definir os tipos que queremos ler e compartilhar
         let typesToShare: Set<HKSampleType> = [
-            HKObjectType.workoutType()
+            HKObjectType.workoutType(),
+            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+            HKObjectType.quantityType(forIdentifier: .heartRate)!
         ]
         
         let typesToRead: Set<HKObjectType> = [
             HKObjectType.workoutType(),
-            HKObjectType.quantityType(forIdentifier: .heartRate)!
+            HKObjectType.quantityType(forIdentifier: .heartRate)!,
+            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+            HKObjectType.quantityType(forIdentifier: .basalEnergyBurned)!,
+            HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
         ]
         
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { (success, error) in
             if let error = error {
-                print("Erro ao solicitar autorização do HealthKit: \(error.localizedDescription)")
+                print("❌ Erro ao solicitar autorização do HealthKit: \(error.localizedDescription)")
             } else {
-                print("Autorização do HealthKit: \(success ? "concedida" : "negada")")
+                print("✅ Autorização do HealthKit: \(success ? "concedida" : "negada")")
+                
+                // Configurar background delivery se autorizado
+                if success {
+                    self.setupBackgroundDelivery(healthStore: healthStore)
+                }
+            }
+        }
+    }
+    
+    private func setupBackgroundDelivery(healthStore: HKHealthStore) {
+        guard let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate) else { return }
+        
+        // Configurar background delivery para frequência cardíaca
+        healthStore.enableBackgroundDelivery(for: heartRateType, frequency: .immediate) { success, error in
+            if let error = error {
+                print("❌ Erro ao configurar background delivery: \(error.localizedDescription)")
+            } else if success {
+                print("✅ Background delivery configurado com sucesso")
+            } else {
+                print("⚠️ Background delivery não foi configurado")
             }
         }
     }

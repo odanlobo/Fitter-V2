@@ -19,6 +19,10 @@
 	<string>ea5acd844d7b936bbd16615049e1875b</string>
 	<key>FacebookDisplayName</key>
 	<string>Fitter</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<false/>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<false/>
 	
 	<!-- URL Schemes -->
 	<key>CFBundleURLTypes</key>

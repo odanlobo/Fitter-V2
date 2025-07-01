@@ -5,162 +5,190 @@
 //  Created by Daniel Lobo on 24/05/25.
 //
 
+// MARK: - WorkoutExerciseCard.swift
+// Componente reordenável para exercícios salvos localmente
+// Responsável apenas pela UI e callbacks, sem lógica de negócio
+// Padrão Clean Architecture - Fitter App V2
+//
+// Contextos: Criação, edição e treino ativo
+// Features: Drag & drop, swipe actions (Substituir/Deletar), drag handle sempre visível
+// Compatível com ExerciseDisplayable
+//
+// Pendências:
+// - [ ] Integrar ExerciseCardContent/ExerciseCardMediaView quando disponíveis (itens 36-37 do REFATORAÇÃO.md)
+
 import SwiftUI
-import SwiftData
 
+/// Card reordenável para exercícios salvos localmente (CDPlanExercise, CDCurrentExercise, etc)
+/// Compatível com Clean Architecture e ExerciseDisplayable
 struct WorkoutExerciseCard: View {
-    @Environment(\.modelContext) private var modelContext
-    @State private var offset: CGFloat = 0
-    @State private var confirmDelete = false
-
-    let exercise: PlanExercise
-    let onReplace: () -> Void
-    let onDelete: () -> Void
-    var onTap: (() -> Void)? = nil
+    // MARK: - Propriedades
+    /// Exercício a ser exibido (deve conformar ExerciseDisplayable)
+    let exercise: ExerciseDisplayable
+    /// Índice do exercício na lista
+    let index: Int
+    /// Indica se o exercício está ativo (destaque visual)
+    let isActive: Bool
+    /// Indica se é o primeiro item (UX de borda/cantos)
+    let isFirst: Bool
+    /// Indica se é o último item (UX de borda/cantos)
+    let isLast: Bool
+    /// Modo de exibição do card (creation, editableList, activeWorkout, etc)
+    let displayMode: ExerciseCardDisplayMode
+    /// Callback para reordenação (drag & drop)
+    let onMove: (_ from: Int, _ to: Int) -> Void
+    /// Callback para deleção via swipe
+    let onDelete: (_ index: Int) -> Void
+    /// Callback para substituição via swipe
+    let onSubstitute: (_ index: Int) -> Void
+    /// Callback para tap no card (abrir detalhes, editar, etc)
+    let onTap: (_ exercise: ExerciseDisplayable) -> Void
     
-    // Computa a opacidade do handle a partir do offset
-    private var handleOpacity: Double {
-        let progress = min(abs(offset) / 120, 1)   // 0 à 1
-        return 1 - progress                       // 1 → 0
-    }
-
+    // MARK: - Estado interno
+    @State private var isPressed = false
+    
     var body: some View {
         ZStack {
-            // MARK: – Fundo com botões de ação
-            HStack(spacing: 8) {
-                Spacer()
-
-                Button(action: onReplace) {
-                    Image(systemName: "arrow.left.arrow.right")
-                        .font(.system(size: 20))
-                        .fontWeight(.heavy)
-                        .foregroundColor(.white)
-                        .frame(width: 44, height: 44) // mantém o frame
-                }
-                .background(Color.black)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-
-                Button(action: { confirmDelete = true }) {
-                    Image(systemName: "trash")
-                        .font(.system(size: 20))
-                        .fontWeight(.heavy)
-                        .foregroundColor(.red)
-                        .frame(width: 44, height: 44) // mantém o frame
-                }
-                .background(Color.black)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 70)
-            .padding(.horizontal)
-
-            // MARK: – Card principal
-            HStack(spacing: 12) {
-                // Imagem ou placeholder
-                if let imageName = exercise.template?.imageName {
-                    Image(imageName)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 50, height: 50)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                } else {
-                    Image(systemName: "photo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50, height: 50)
-                        .foregroundColor(.gray)
-                        .background(Color.gray.opacity(0.2))
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                }
-
-                // Nome e equipamento
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(exercise.template?.name ?? "Exercício")
-                        .font(.headline)
-                        .foregroundColor(.white)
-
-                    Text(exercise.template?.equipment ?? "")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                }
-
-                Spacer()
-
-                // 3️⃣ Handle com opacidade animada
-                Image(systemName: "line.horizontal.3")
-                    .font(.system(size: 20))
-                    .fontWeight(.heavy)
-                    .foregroundColor(.white)
-                    .opacity(handleOpacity)     // usa a variável acima
-            }
-            .padding(.horizontal)
-            .frame(maxWidth: .infinity)
-            .frame(height: 70)
-            .background(Color.black)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-            )
-            .offset(x: offset)
-            .gesture(
-                DragGesture()
-                    .onChanged { value in
-                        if value.translation.width < 0 {
-                            offset = max(value.translation.width, -120)
-                        } else if offset < 0 {
-                            offset = min(0, offset + value.translation.width)
-                        }
-                    }
-                    .onEnded { value in
-                        withAnimation(.spring()) {
-                            offset = (value.translation.width < -60) ? -120 : 0
-                        }
-                    }
-            )
-            .onTapGesture {
-                if offset < 0 {
-                    // Se o card estiver aberto, apenas feche-o
-                    withAnimation(.spring()) {
-                        offset = 0
-                    }
-                } else if let onTap = onTap {
-                    // Se o card estiver fechado e tiver uma ação onTap, execute-a
-                    onTap()
-                }
-            }
+            cardContent
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(isActive ? Color.accentColor.opacity(0.12) : Color(.systemBackground))
+                        .shadow(color: isActive ? Color.accentColor.opacity(0.18) : Color.black.opacity(0.04), radius: isActive ? 6 : 2, x: 0, y: 2)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(isActive ? Color.accentColor : Color(.separator), lineWidth: isActive ? 2 : 1)
+                )
+                .scaleEffect(isPressed ? 0.97 : 1.0)
+                .animation(.spring(response: 0.25, dampingFraction: 0.7), value: isPressed)
         }
-        .alert("Remover Exercício?", isPresented: $confirmDelete) {
-            Button("Cancelar", role: .cancel) {
-                withAnimation(.spring()) { offset = 0 }
-            }
-            Button("Remover", role: .destructive) {
-                onDelete()
-            }
-        } message: {
-            Text("Esta ação não pode ser desfeita.")
-        }
-    }
-}
-
-#Preview {
-    let template = ExerciseTemplate(
-        templateId: "test_1",
-        name: "Supino Reto",
-        muscleGroup: .chest,
-        equipment: "Barra",
-        imageName: nil
-    )
-    let plan = WorkoutPlan(title: "Treino A")
-    let planExercise = PlanExercise(order: 0, plan: plan, template: template)
-
-    return VStack(spacing: 16) {
-        WorkoutExerciseCard(
-            exercise: planExercise,
-            onReplace: { print("Substituir") },
-            onDelete: { print("Deletar") }
+        .padding(.horizontal, 4)
+        .padding(.vertical, 2)
+        .gesture(
+            LongPressGesture(minimumDuration: 0.25)
+                .onChanged { _ in isPressed = true }
+                .onEnded { _ in
+                    isPressed = false
+                    // Drag & drop será controlado pela lista (ex: ForEach com .onMove)
+                }
         )
+        .onTapGesture {
+            onTap(exercise)
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+            Button(role: .destructive) {
+                onDelete(index)
+            } label: {
+                Label("Deletar", systemImage: "trash")
+            }
+            Button {
+                onSubstitute(index)
+            } label: {
+                Label("Substituir", systemImage: "arrow.triangle.2.circlepath")
+            }
+            .tint(.blue)
+        }
     }
-    .padding()
-    .background(Color.black)
+    
+    /// Conteúdo visual principal do card
+    private var cardContent: some View {
+        HStack(spacing: 12) {
+            // Thumbnail/vídeo (placeholder por enquanto)
+            Group {
+                if let url = exercise.videoURL, !url.isEmpty {
+                    ZStack {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.18))
+                            .frame(width: 56, height: 56)
+                            .cornerRadius(8)
+                        Image(systemName: "play.rectangle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 28, height: 28)
+                            .foregroundColor(.accentColor)
+                    }
+                } else {
+                    ZStack {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.10))
+                            .frame(width: 56, height: 56)
+                            .cornerRadius(8)
+                        Image(systemName: "figure.strengthtraining.traditional")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 28, height: 28)
+                            .foregroundColor(.gray)
+                    }
+                }
+            }
+            // Conteúdo textual principal
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Text(exercise.displayName)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                        .lineLimit(1)
+                    if isActive {
+                        Image(systemName: "bolt.fill")
+                            .foregroundColor(.accentColor)
+                            .font(.caption)
+                    }
+                }
+                Text(exercise.muscleGroup)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+                Text(exercise.equipment)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+            }
+            Spacer()
+            // Drag handle sempre visível
+            Image(systemName: "line.horizontal.3")
+                .foregroundColor(.gray)
+                .padding(.trailing, 2)
+        }
+        .padding(.vertical, 10)
+        .padding(.leading, 8)
+        .padding(.trailing, 4)
+    }
 }
+
+// MARK: - Preview
+#if DEBUG
+/// Preview usando dados mock do MockDataProvider
+struct WorkoutExerciseCard_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack(spacing: 12) {
+            WorkoutExerciseCard(
+                exercise: MockDataProvider.examplePlanExercise,
+                index: 0,
+                isActive: true,
+                isFirst: true,
+                isLast: false,
+                displayMode: .creation,
+                onMove: { _,_ in },
+                onDelete: { _ in },
+                onSubstitute: { _ in },
+                onTap: { _ in }
+            )
+            WorkoutExerciseCard(
+                exercise: MockDataProvider.examplePlanExercise,
+                index: 1,
+                isActive: false,
+                isFirst: false,
+                isLast: true,
+                displayMode: .editableList,
+                onMove: { _,_ in },
+                onDelete: { _ in },
+                onSubstitute: { _ in },
+                onTap: { _ in }
+            )
+        }
+        .padding()
+        .background(Color(.systemGroupedBackground))
+        .previewLayout(.sizeThatFits)
+    }
+}
+#endif 

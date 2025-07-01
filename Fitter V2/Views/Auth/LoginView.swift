@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct LoginView: View {
+    @Environment(\.managedObjectContext) private var viewContext
     @StateObject private var viewModel = LoginViewModel()
     @State private var email = ""
     @State private var password = ""
@@ -142,8 +143,4 @@ struct LoginView: View {
             .navigationBarHidden(true)
         }
     }
-}
-
-#Preview {
-    LoginView()
 }

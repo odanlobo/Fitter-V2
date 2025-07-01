@@ -23,11 +23,11 @@ struct CreateButton: View {
                     .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundColor(.black)
             }
+            .padding(.horizontal)
             .padding(.vertical, 14)
-            .padding(.horizontal, 20)
             .frame(maxWidth: .infinity)
             .background(
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 20)
                     .fill(Color.white)
                     .shadow(color: Color.white.opacity(0.12), radius: 12, x: 0, y: 6)
             )
@@ -35,7 +35,6 @@ struct CreateButton: View {
             .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
         }
         .buttonStyle(PlainButtonStyle())
-        .padding(.horizontal)
         .gesture(
             DragGesture(minimumDistance: 0)
                 .updating($isPressed) { _, state, _ in state = true }
@@ -53,6 +52,7 @@ struct CreateButton: View {
             CreateButton {
                 print("Criar novo treino")
             }
+            .padding(.horizontal)
 
             Spacer()
         }

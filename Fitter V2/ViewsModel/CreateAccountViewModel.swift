@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 @MainActor
 class CreateAccountViewModel: ObservableObject {
@@ -13,7 +14,7 @@ class CreateAccountViewModel: ObservableObject {
     @Published var errorMessage = ""
     @Published var isLoading = false
     
-    var onAccountCreated: ((AppUser?) -> Void)?
+    var onAccountCreated: ((CDAppUser?) -> Void)?
     
     func createAccount(
         name: String,

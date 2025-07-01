@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
-import SwiftData
+import CoreData
 
 struct ProfileView: View {
+    @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var authViewModel: LoginViewModel
     @StateObject private var connectivity = ConnectivityManager.shared
     
@@ -28,12 +29,31 @@ struct ProfileView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.top)
                     
-                    // Email do usuário autenticado
-                    if let email = authViewModel.currentUser?.email {
-                        Text(email)
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                            .frame(maxWidth: .infinity)
+                    // Informações do usuário autenticado
+                    if let user = authViewModel.currentUser {
+                        VStack(spacing: 12) {
+                            // Nome do usuário
+                            Text(user.safeName)
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                            
+                            // Email do usuário
+                            if !user.safeEmail.isEmpty {
+                                Text(user.safeEmail)
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                                    .frame(maxWidth: .infinity)
+                            }
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical, 16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.gray.opacity(0.15))
+                        )
+                        .padding(.horizontal)
                     }
                     
                     Spacer()
@@ -42,6 +62,8 @@ struct ProfileView: View {
                     Button(action: {
                         do {
                             try AuthService.shared.signOut()
+                            // Limpa os dados locais ao fazer logout
+                            try? viewContext.save()
                         } catch {
                             print("Erro ao fazer logout: \(error)")
                         }
@@ -70,6 +92,10 @@ struct ProfileView: View {
     }
 }
 
-#Preview {
-    ProfileView()
+struct ProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfileView()
+            .environment(\.managedObjectContext, PreviewCoreDataStack.shared.viewContext)
+            .environmentObject(LoginViewModel.preview)
+    }
 }

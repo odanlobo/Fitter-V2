@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SwiftData
+import CoreData
 
 struct CreateWorkoutView: View {
     @Environment(\.dismiss) private var dismiss
@@ -17,12 +17,15 @@ struct CreateWorkoutView: View {
     @State private var selectedMuscleGroup: MuscleGroup? = nil
     @State private var selectedEquipment: String? = nil
     @State private var showExerciseReplacement = false
-    @State private var exerciseToReplace: ExerciseTemplate? = nil
+    @State private var exerciseToReplace: FirebaseExercise? = nil
     @State private var showError = false
     @State private var errorMessage = ""
+    
+    // MARK: - ListExerciseViewModel para navegação
+    @StateObject private var listExerciseViewModel = ListExerciseViewModel()
 
     private let letters = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -45,16 +48,9 @@ struct CreateWorkoutView: View {
                             Button("Salvar") {
                                 Task {
                                     do {
-                                        let planExercises = viewModel.selectedExercisesList.enumerated().map { idx, tpl in
-                                            PlanExercise(order: idx, plan: nil, template: tpl)
-                                        }
-                                        let newPlan = WorkoutPlan(
-                                            title: workoutTitle,
-                                            createdAt: Date(),
-                                            order: viewModel.plans.count
+                                        try await viewModel.createWorkoutPlanWithFirebaseExercises(
+                                            title: workoutTitle
                                         )
-                                        newPlan.exercises = planExercises
-                                        try await viewModel.addPlan(newPlan)
                                         dismiss()
                                     } catch {
                                         errorMessage = error.localizedDescription
@@ -83,7 +79,8 @@ struct CreateWorkoutView: View {
                                     selectedExercises: $viewModel.selectedExercises,
                                     workoutTitle: workoutTitle,
                                     exerciseToReplace: $exerciseToReplace,
-                                    showExerciseReplacement: $showExerciseReplacement
+                                    showExerciseReplacement: $showExerciseReplacement,
+                                    listExerciseViewModel: listExerciseViewModel
                                 )
                             }
                         }
@@ -97,12 +94,8 @@ struct CreateWorkoutView: View {
                 Text(errorMessage)
             }
             .task {
-                do {
-                    try await viewModel.loadExercises()
-                } catch {
-                    errorMessage = error.localizedDescription
-                    showError = true
-                }
+                // Carrega exercícios do Firebase
+                await viewModel.loadFirebaseExercises()
             }
         }
         .onAppear {
@@ -171,8 +164,9 @@ private struct ExercisesSection: View {
     @ObservedObject var viewModel: WorkoutViewModel
     @Binding var selectedExercises: Set<String>
     let workoutTitle: String
-    @Binding var exerciseToReplace: ExerciseTemplate?
+    @Binding var exerciseToReplace: FirebaseExercise?
     @Binding var showExerciseReplacement: Bool
+    let listExerciseViewModel: ListExerciseViewModel
     
     var body: some View {
         VStack(spacing: 16) {
@@ -183,6 +177,7 @@ private struct ExercisesSection: View {
                 Spacer()
                 NavigationLink(
                     destination: ListExerciseView(
+                        viewModel: listExerciseViewModel,
                         selectedExercises: $selectedExercises,
                         workoutTitle: workoutTitle
                     )
@@ -204,7 +199,11 @@ private struct ExercisesSection: View {
                 )
             }
 
-            AddExercisesButton(workoutTitle: workoutTitle, selectedExercises: $selectedExercises)
+            AddExercisesButton(
+                listExerciseViewModel: listExerciseViewModel,
+                workoutTitle: workoutTitle, 
+                selectedExercises: $selectedExercises
+            )
                 .padding(.top, 16)
         }
         Spacer(minLength: 32)
@@ -230,26 +229,21 @@ private struct EmptyExercisesView: View {
 
 private struct ExercisesList: View {
     @ObservedObject var viewModel: WorkoutViewModel
-    @Binding var exerciseToReplace: ExerciseTemplate?
+    @Binding var exerciseToReplace: FirebaseExercise?
     @Binding var showExerciseReplacement: Bool
     
     var body: some View {
         VStack(spacing: 12) {
-            ForEach(viewModel.selectedExercisesList) { tpl in
-                let idx = viewModel.selectedExercisesList.firstIndex(of: tpl) ?? 0
-                let temp = PlanExercise(
-                    order: idx,
-                    plan: nil,
-                    template: tpl
-                )
+            ForEach(viewModel.selectedFirebaseExercisesList) { firebaseExercise in
                 WorkoutExerciseCard(
-                    exercise: temp,
+                    firebaseExercise: firebaseExercise,
+                    order: viewModel.selectedFirebaseExercisesList.firstIndex(of: firebaseExercise) ?? 0,
                     onReplace: {
-                        exerciseToReplace = tpl
+                        exerciseToReplace = firebaseExercise
                         showExerciseReplacement = true
                     },
                     onDelete: {
-                        viewModel.selectedExercises.remove(tpl.templateId)
+                        viewModel.selectedExercises.remove(firebaseExercise.safeTemplateId)
                     }
                 )
             }
@@ -259,12 +253,14 @@ private struct ExercisesList: View {
 }
 
 private struct AddExercisesButton: View {
+    let listExerciseViewModel: ListExerciseViewModel
     let workoutTitle: String
     @Binding var selectedExercises: Set<String>
     
     var body: some View {
         NavigationLink(
             destination: ListExerciseView(
+                viewModel: listExerciseViewModel,
                 selectedExercises: $selectedExercises,
                 workoutTitle: workoutTitle
             )

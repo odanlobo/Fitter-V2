@@ -1,11 +1,11 @@
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
-import SwiftData
 import GoogleSignIn
 import GoogleSignInSwift
 import FirebaseCore
 import FacebookLogin
+import CoreData
 
 enum AuthError: LocalizedError {
     case invalidEmail
@@ -46,55 +46,70 @@ enum AuthError: LocalizedError {
 }
 
 @MainActor
-final class AuthService {
+final class AuthService: ObservableObject {
     static let shared = AuthService()
+    
+    @Published var errorMessage: String?
+    @Published var isLoading = false
     
     private let auth = Auth.auth()
     private let firestore = Firestore.firestore()
-    private let modelContext = PersistenceController.shared.container.mainContext
+    
+    // Core Data context
+    private var viewContext: NSManagedObjectContext {
+        return CoreDataStack.shared.viewContext
+    }
     
     private init() {}
     
-    // MARK: – Usuário atual mapeado para AppUser
-    var currentUser: AppUser? {
+    // MARK: – Usuário atual mapeado para CDAppUser
+    var currentUser: CDAppUser? {
         guard let fbUser = auth.currentUser else { return nil }
         
         // extrai o uid para uma String pura
         let fbUid = fbUser.uid
         
-        // 1) Cria o predicado do SwiftData
-        let predicate = #Predicate<AppUser> { $0.providerId == fbUid }
+        // 1) Cria a fetch request do Core Data
+        let request: NSFetchRequest<CDAppUser> = CDAppUser.fetchRequest()
+        request.predicate = NSPredicate(format: "providerId == %@", fbUid)
+        request.fetchLimit = 1
 
-        // 2) Instancia o FetchDescriptor explicando o tipo <AppUser>
-        let request = FetchDescriptor<AppUser>(predicate: predicate)
-
-        // 3) Faz o fetch (throws), então usamos try?
-        let results = try? modelContext.fetch(request)
+        // 2) Faz o fetch
+        let results = try? viewContext.fetch(request)
 
         if let existing = results?.first {
-            // Atualiza o último login
+            // Atualiza o último login e email se necessário
             existing.lastLoginDate = Date()
-            try? modelContext.save()
+            if let email = fbUser.email {
+                existing.email = email
+            }
+            if let name = fbUser.displayName, !name.isEmpty {
+                existing.name = name
+            }
+            existing.updatedAt = Date()
+            try? viewContext.save()
             return existing
         }
 
-        // 4) Se não existir, cria um novo AppUser
-        let newUser = AppUser(
-            name: fbUser.displayName ?? "",
-            birthDate: Date(),    // ajuste no seu fluxo
-            height: 0,
-            weight: 0,
-            provider: fbUser.providerID,
-            providerId: fbUser.uid,
-            email: fbUser.email,
-            profilePictureURL: fbUser.photoURL,
-            locale: nil,
-            gender: nil
-        )
+        // 3) Se não existir, cria um novo CDAppUser
+        let newUser = CDAppUser(context: viewContext)
+        newUser.id = UUID()
+        newUser.name = fbUser.displayName ?? ""
+        newUser.birthDate = Date()    // ajuste no seu fluxo
+        newUser.height = 0
+        newUser.weight = 0
+        newUser.provider = fbUser.providerID
+        newUser.providerId = fbUser.uid
+        newUser.email = fbUser.email
+        newUser.profilePictureURL = fbUser.photoURL
+        newUser.locale = nil
+        newUser.gender = nil
+        newUser.createdAt = Date()
+        newUser.updatedAt = Date()
         newUser.lastLoginDate = Date()
+        newUser.cloudSyncStatus = CloudSyncStatus.synced.rawValue  // Campo obrigatório
 
-        modelContext.insert(newUser)
-        try? modelContext.save()
+        try? viewContext.save()
         return newUser
     }
     
@@ -106,6 +121,10 @@ final class AuthService {
         do {
             let result = try await auth.signIn(withEmail: email, password: password)
             print("Usuário logado com sucesso: \(result.user.uid)")
+            
+            // Exibe dados do usuário no terminal
+            await printUserDataToTerminal()
+            
             ConnectivityManager.shared.sendAuthStatusToWatch()
         } catch {
             throw mapFirebaseError(error)
@@ -136,6 +155,10 @@ final class AuthService {
             try await changeRequest.commitChanges()
             
             print("Conta criada com sucesso: \(result.user.uid)")
+            
+            // Exibe dados do usuário no terminal
+            await printUserDataToTerminal()
+            
         } catch {
             throw mapFirebaseError(error)
         }
@@ -203,6 +226,11 @@ final class AuthService {
                 .setData(userData, merge: true)
             
             print("Login com Google realizado com sucesso: \(authResult.user.uid)")
+            
+            // Exibe dados do usuário no terminal
+            await printUserDataToTerminal()
+            
+            ConnectivityManager.shared.sendAuthStatusToWatch()
         } catch {
             throw AuthError.googleSignInError
         }
@@ -257,6 +285,13 @@ final class AuthService {
                             .document(authResult.user.uid)
                             .setData(userData, merge: true)
                         
+                        print("Login com Facebook realizado com sucesso: \(authResult.user.uid)")
+                        
+                        // Exibe dados do usuário no terminal
+                        await self.printUserDataToTerminal()
+                        
+                        ConnectivityManager.shared.sendAuthStatusToWatch()
+                        
                         continuation.resume()
                     } catch {
                         continuation.resume(throwing: AuthError.facebookSignInError)
@@ -284,6 +319,93 @@ final class AuthService {
             return .networkError
         default:
             return .unknownError
+        }
+    }
+    
+    // MARK: - Terminal Data Display
+    
+    /// Exibe dados do usuário no terminal após login
+    private func printUserDataToTerminal() async {
+        print("\n" + String(repeating: "=", count: 60))
+        print("📱 DADOS DO USUÁRIO LOGADO")
+        print(String(repeating: "=", count: 60))
+        
+        guard let user = currentUser else {
+            print("❌ Nenhum usuário encontrado")
+            print(String(repeating: "=", count: 60) + "\n")
+            return
+        }
+        
+        // Informações básicas do usuário
+        print("👤 Nome: \(user.safeName)")
+        print("📧 Email: \(user.safeEmail)")
+        print("🔑 Provider ID: \(user.providerId ?? "N/A")")
+        
+        if let createdAt = user.createdAt {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .short
+            print("📅 Conta criada: \(formatter.string(from: createdAt))")
+        }
+        
+        if let lastLogin = user.lastLoginDate {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .short
+            print("🕐 Último login: \(formatter.string(from: lastLogin))")
+        }
+        
+        // Busca treinos localmente primeiro
+        let localWorkoutCount = await getLocalWorkoutCount(for: user)
+        print("🏋️‍♂️ Treinos locais: \(localWorkoutCount)")
+        
+        // Se não encontrar treinos localmente, busca no Firebase
+        if localWorkoutCount == 0 {
+            print("🔍 Buscando treinos no Firebase...")
+            let firebaseWorkoutCount = await getFirebaseWorkoutCount(for: user)
+            print("☁️ Treinos no Firebase: \(firebaseWorkoutCount)")
+            
+            if firebaseWorkoutCount == 0 {
+                print("📊 Total de treinos: 0 treinos")
+            } else {
+                print("📊 Total de treinos: \(firebaseWorkoutCount) treinos (sincronizando...)")
+            }
+        } else {
+            print("📊 Total de treinos: \(localWorkoutCount) treinos")
+        }
+        
+        print(String(repeating: "=", count: 60) + "\n")
+    }
+    
+    /// Busca quantidade de treinos localmente no Core Data
+    private func getLocalWorkoutCount(for user: CDAppUser) async -> Int {
+        let request: NSFetchRequest<CDWorkoutPlan> = CDWorkoutPlan.fetchRequest()
+        request.predicate = NSPredicate(format: "user == %@", user)
+        
+        do {
+            let count = try viewContext.count(for: request)
+            return count
+        } catch {
+            print("❌ Erro ao buscar treinos locais: \(error)")
+            return 0
+        }
+    }
+    
+    /// Busca quantidade de treinos no Firebase
+    private func getFirebaseWorkoutCount(for user: CDAppUser) async -> Int {
+        guard let providerId = user.providerId else { return 0 }
+        
+        do {
+            let snapshot = try await firestore
+                .collection("users")
+                .document(providerId)
+                .collection("workoutPlans")
+                .getDocuments()
+            
+            return snapshot.documents.count
+        } catch {
+            print("❌ Erro ao buscar treinos no Firebase: \(error)")
+            return 0
         }
     }
 } 
