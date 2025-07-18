@@ -53,8 +53,8 @@ Esta seção lista **TODOS** os arquivos envolvidos no fluxo completo de um trei
 - `Fitter V2/Views/Home/HomeView.swift` - Tela inicial, acesso aos treinos
 - `Fitter V2/Views/Workout/WorkoutView.swift` - Lista e gerenciamento de treinos
 - `Fitter V2/Views/Workout/WorkoutSessionView.swift` - **[🚧 A IMPLEMENTAR]** Interface principal do treino ativo
-- `Fitter V2 Watch App/Views/WatchView.swift` - Interface Watch do treino
-- `Fitter V2 Watch App/Views/WatchWorkoutSessionView.swift` - **[🚧 A IMPLEMENTAR]** Interface específica treino Watch
+- `Fitter V2 Watch App/Views/WatchView.swift` - Tela inicial do Wacth
+- `Fitter V2 Watch App/Views/WatchWorkoutSessionView.swift` - **[🚧 A IMPLEMENTAR]** Interface principal do treino ativo
 - `Fitter V2 Watch App/Views/PendingLoginView.swift` - Tela de aguardo sincronização
 
 #### Componentes de UI (Cards e Botões) - Gerais
