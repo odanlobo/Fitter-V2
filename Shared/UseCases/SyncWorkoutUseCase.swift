@@ -120,7 +120,7 @@ enum SyncWorkoutStrategy {
 // MARK: - SyncWorkoutResult
 
 struct SyncWorkoutResult {
-    let entityId: UUID?
+    let entityId: UUID
     let entityType: String
     let strategy: SyncWorkoutStrategy
     let success: Bool
@@ -128,7 +128,7 @@ struct SyncWorkoutResult {
     let timestamp: Date
     
     init(
-        entityId: UUID?,
+        entityId: UUID,
         entityType: String,
         strategy: SyncWorkoutStrategy,
         success: Bool,
@@ -184,9 +184,7 @@ final class SyncWorkoutUseCase: SyncWorkoutUseCaseProtocol {
         let entityType = String(describing: type(of: entity))
         print("🔄 Sincronizando \(entityType)")
         
-        guard let entityId = entity.id else {
-            throw SyncWorkoutError.invalidEntity("Entidade não possui ID válido")
-        }
+        let entityId = entity.coreDataId
         
         do {
             if entity.needsSync {
@@ -225,7 +223,7 @@ final class SyncWorkoutUseCase: SyncWorkoutUseCaseProtocol {
             }
             
             let result = SyncWorkoutResult(
-                entityId: entity.id,
+                entityId: entity.coreDataId,
                 entityType: entityType,
                 strategy: strategy,
                 success: true
@@ -238,7 +236,7 @@ final class SyncWorkoutUseCase: SyncWorkoutUseCaseProtocol {
             print("❌ Falha na sincronização \(strategy.description) para \(entityType): \(error)")
             
             let result = SyncWorkoutResult(
-                entityId: entity.id,
+                entityId: entity.coreDataId,
                 entityType: entityType,
                 strategy: strategy,
                 success: false,
@@ -262,7 +260,7 @@ final class SyncWorkoutUseCase: SyncWorkoutUseCaseProtocol {
             } catch {
                 let entityType = String(describing: type(of: entity))
                 let failedResult = SyncWorkoutResult(
-                    entityId: entity.id,
+                    entityId: entity.coreDataId,
                     entityType: entityType,
                     strategy: .auto,
                     success: false,
@@ -308,11 +306,6 @@ final class SyncWorkoutUseCase: SyncWorkoutUseCaseProtocol {
     // MARK: - Private Methods
     
     private func validateEntity(_ entity: any Syncable) throws {
-        // Validar que a entidade tem ID
-        guard entity.id != nil else {
-            throw SyncWorkoutError.invalidEntity("Entidade não possui ID válido")
-        }
-        
         // Validar tipo de entidade suportado
         let entityType = String(describing: type(of: entity))
         let supportedTypes = ["CDWorkoutPlan", "CDAppUser", "CDExerciseTemplate", "CDWorkoutHistory"]
@@ -327,10 +320,7 @@ final class SyncWorkoutUseCase: SyncWorkoutUseCaseProtocol {
     }
     
     private func executeUpload(_ entity: any Syncable) async throws {
-        guard let entityId = entity.id else {
-            throw SyncWorkoutError.invalidEntity("Entidade não possui ID para upload")
-        }
-        
+        let entityId = entity.coreDataId
         await cloudSyncManager.scheduleUpload(entityId: entityId)
     }
     
@@ -339,10 +329,7 @@ final class SyncWorkoutUseCase: SyncWorkoutUseCaseProtocol {
     }
     
     private func executeDelete(_ entity: any Syncable) async throws {
-        guard let entityId = entity.id else {
-            throw SyncWorkoutError.invalidEntity("Entidade não possui ID para deleção")
-        }
-        
+        let entityId = entity.coreDataId
         await cloudSyncManager.scheduleDeletion(entityId: entityId)
     }
     

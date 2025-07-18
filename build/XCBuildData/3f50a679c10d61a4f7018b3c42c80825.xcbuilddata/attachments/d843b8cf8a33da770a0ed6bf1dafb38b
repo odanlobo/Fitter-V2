@@ -1,0 +1,18 @@
+{
+  "" : {
+    "diagnostics" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/build/KeychainAccess.build/Debug-iphoneos/KeychainAccess.build/Objects-normal/arm64/KeychainAccess-master.dia",
+    "emit-module-dependencies" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/build/KeychainAccess.build/Debug-iphoneos/KeychainAccess.build/Objects-normal/arm64/KeychainAccess-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/build/KeychainAccess.build/Debug-iphoneos/KeychainAccess.build/Objects-normal/arm64/KeychainAccess-master-emit-module.dia",
+    "swift-dependencies" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/build/KeychainAccess.build/Debug-iphoneos/KeychainAccess.build/Objects-normal/arm64/KeychainAccess-master.swiftdeps"
+  },
+  "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/Lib/KeychainAccess/Keychain.swift" : {
+    "const-values" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/build/KeychainAccess.build/Debug-iphoneos/KeychainAccess.build/Objects-normal/arm64/Keychain.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/build/KeychainAccess.build/Debug-iphoneos/KeychainAccess.build/Objects-normal/arm64/Keychain.d",
+    "diagnostics" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/build/KeychainAccess.build/Debug-iphoneos/KeychainAccess.build/Objects-normal/arm64/Keychain.dia",
+    "index-unit-output-path" : "/KeychainAccess.build/Debug-iphoneos/KeychainAccess.build/Objects-normal/arm64/Keychain.o",
+    "llvm-bc" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/build/KeychainAccess.build/Debug-iphoneos/KeychainAccess.build/Objects-normal/arm64/Keychain.bc",
+    "object" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/build/KeychainAccess.build/Debug-iphoneos/KeychainAccess.build/Objects-normal/arm64/Keychain.o",
+    "swift-dependencies" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/build/KeychainAccess.build/Debug-iphoneos/KeychainAccess.build/Objects-normal/arm64/Keychain.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/build/KeychainAccess.build/Debug-iphoneos/KeychainAccess.build/Objects-normal/arm64/Keychain~partial.swiftmodule"
+  }
+}

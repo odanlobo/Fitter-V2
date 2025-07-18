@@ -56,6 +56,10 @@
 		<string>fbshareextension</string>
 	</array>
 	
+	<!-- Location Permission -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>O Fitter salva a localização dos seus treinos para que você possa visualizar onde treinou, acessar estatísticas por local e revisar seu histórico no mapa. Seus dados de localização são mantidos privados e seguros.</string>
+	
 	<!-- Basic App Configuration -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

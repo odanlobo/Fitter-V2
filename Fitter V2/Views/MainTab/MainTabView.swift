@@ -7,17 +7,34 @@
 
 import SwiftUI
 
+/**
+ * MainTabView - Navegação principal do aplicativo
+ * 
+ * RESPONSABILIDADE:
+ * - Container de navegação por abas (Home, Treinos, Histórico, Perfil)
+ * - Integração com AuthViewModel via @EnvironmentObject
+ * - Interface simples e focada apenas em navegação
+ * 
+ * CLEAN ARCHITECTURE:
+ * - NÃO possui ViewModel próprio (desnecessário para container simples)
+ * - Usa @EnvironmentObject para ViewModels injetados via iOSApp.swift
+ * - Delega toda lógica de negócio para Views filhas
+ * 
+ * NAVEGAÇÃO:
+ * - TabView padrão com 4 abas bem definidas
+ * - Seleção gerenciada automaticamente pelo sistema
+ * - Reset automático via fluxo natural do iOSApp.swift (sem duplicação)
+ */
 struct MainTabView: View {
     @EnvironmentObject var authViewModel: LoginViewModel
-    @State private var selectedTab = 0
     
     var body: some View {
         ZStack {
-            // Fundo preto
+            // Fundo preto consistente com design do app
             Color.black
                 .ignoresSafeArea()
             
-            TabView(selection: $selectedTab) {
+            TabView {
                 // Tab da tela principal
                 HomeView()
                     .tabItem {
@@ -46,12 +63,7 @@ struct MainTabView: View {
                     }
                     .tag(3)
             }
-            .tint(.white) // Cor dos ícones selecionados
-        }
-        .onChange(of: authViewModel.currentUser) { newUser in
-            if newUser != nil {
-                selectedTab = 0 // Sempre volta para Home ao logar
-            }
+            .tint(.white) // Cor dos ícones selecionados (Apple guidelines)
         }
     }
 }
@@ -59,7 +71,6 @@ struct MainTabView: View {
 struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
         MainTabView()
-            .environment(\.managedObjectContext, PreviewCoreDataStack.shared.viewContext)
             .environmentObject(LoginViewModel.preview)
     }
 }

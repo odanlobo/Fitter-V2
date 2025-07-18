@@ -30,6 +30,16 @@ import CoreData
 struct PersistenceController {
     static let shared = PersistenceController()
     let container: NSPersistentContainer
+    
+    /// Contexto principal para operações na UI
+    var viewContext: NSManagedObjectContext {
+        return container.viewContext
+    }
+    
+    /// Contexto background para operações pesadas
+    var backgroundContext: NSManagedObjectContext {
+        return container.newBackgroundContext()
+    }
 
     private init() {
         // 🆕 MODELO ATUALIZADO: FitterModel (era "Model" antes da refatoração)
@@ -63,9 +73,7 @@ struct PersistenceController {
                 fatalError("Erro ao carregar Core Data FitterModel: \(error.localizedDescription)")
             } else {
                 print("✅ FitterModel carregado com sucesso")
-                if let storeURL = description?.url {
-                    print("📁 Localização: \(storeURL)")
-                }
+                print("📁 Localização: \(description.url)")
             }
         }
         

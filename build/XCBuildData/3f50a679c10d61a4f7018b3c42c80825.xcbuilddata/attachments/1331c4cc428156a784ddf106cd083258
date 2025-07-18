@@ -1,0 +1,28 @@
+{
+  "" : {
+    "diagnostics" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/FacebookCore-master.dia",
+    "emit-module-dependencies" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/FacebookCore-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/FacebookCore-master-emit-module.dia",
+    "swift-dependencies" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/FacebookCore-master.swiftdeps"
+  },
+  "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/Sources/FacebookCore/Exports.swift" : {
+    "const-values" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Exports.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Exports.d",
+    "diagnostics" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Exports.dia",
+    "index-unit-output-path" : "/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Exports.o",
+    "llvm-bc" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Exports.bc",
+    "object" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Exports.o",
+    "swift-dependencies" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Exports.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Exports~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/Sources/FacebookCore/Imports.swift" : {
+    "const-values" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Imports.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Imports.d",
+    "diagnostics" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Imports.dia",
+    "index-unit-output-path" : "/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Imports.o",
+    "llvm-bc" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Imports.bc",
+    "object" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Imports.o",
+    "swift-dependencies" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Imports.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Facebook.build/Debug-iphoneos/FacebookCore.build/Objects-normal/arm64/Imports~partial.swiftmodule"
+  }
+}

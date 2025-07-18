@@ -2,7 +2,7 @@
 //  StartWorkoutUseCase.swift
 //  Fitter V2
 //
-//  📋 RESPONSABILIDADE: Iniciar sessão completa de treino
+//  📋 RESPONSABILIDADE: Iniciar sessão completa de treino + ativar MotionManager no Watch
 //  
 //  🎯 OPERAÇÕES PRINCIPAIS:
 //  • Validar usuário autenticado e plano válido
@@ -11,7 +11,7 @@
 //  • Configurar primeiro exercício automaticamente
 //  • Sincronizar dados via SyncWorkoutUseCase
 //  • Preparar integração com HealthKit (quando disponível)
-//  • Notificar Apple Watch sobre nova sessão
+//  • Ativar MotionManager no Apple Watch (captura contínua)
 //  
 //  🏗️ ARQUITETURA:
 //  • Protocol + Implementation para testabilidade
@@ -23,15 +23,16 @@
 //  ⚡ INTEGRAÇÃO:
 //  • WorkoutDataService: Operações CRUD de sessão
 //  • SyncWorkoutUseCase: Sincronização automática
+//  • PhoneSessionManager: Ativação do MotionManager no Watch
 //  • AuthService: Validação de usuário (será AuthUseCase no item 34)
-//  • HealthKitManager: Workout sessions (será implementado no item 54)
+//  • HealthKitManager: Workout sessions (item 45 - CONCLUÍDO)
 //  
 //  🔄 LIFECYCLE:
 //  1. Validação de entrada (usuário, plano, sessão ativa)
 //  2. Criação de CDCurrentSession
 //  3. Configuração do primeiro exercício (se existir)
 //  4. Sincronização automática
-//  5. Notificação para Apple Watch
+//  5. Ativação do MotionManager no Apple Watch
 //  6. Início de workout session HealthKit (futuro)
 //
 //  Created by Daniel Lobo on 13/05/25.
@@ -39,6 +40,34 @@
 
 import Foundation
 import CoreData
+import CoreLocation
+
+// MARK: - StartWorkoutCommand
+
+/// Comando estruturado para iniciar MotionManager no Watch
+struct StartWorkoutCommand: WatchCommand {
+    let sessionId: String
+    let planId: String
+    let planTitle: String
+    let startTime: Date
+    let exerciseCount: Int
+    let firstExerciseName: String
+    
+    var commandType: WatchCommandType {
+        return .startWorkout
+    }
+    
+    var payload: [String: Any] {
+        return [
+            "sessionId": sessionId,
+            "planId": planId,
+            "planTitle": planTitle,
+            "startTime": startTime.timeIntervalSince1970,
+            "exerciseCount": exerciseCount,
+            "firstExerciseName": firstExerciseName
+        ]
+    }
+}
 
 // MARK: - StartWorkoutInput
 
@@ -164,19 +193,22 @@ final class StartWorkoutUseCase: StartWorkoutUseCaseProtocol {
     
     private let workoutDataService: WorkoutDataServiceProtocol
     private let syncWorkoutUseCase: SyncWorkoutUseCaseProtocol
+    private let locationManager: LocationManagerProtocol?
     // TODO: Adicionar AuthUseCase quando item 34 for implementado
     // private let authUseCase: AuthUseCaseProtocol
-    // TODO: Adicionar HealthKitManager quando item 54 for implementado
+    // ✅ HealthKitManager disponível via DI no iOSApp.swift (item 55 concluído)
     // private let healthKitManager: HealthKitManagerProtocol
     
     // MARK: - Initialization
     
     init(
         workoutDataService: WorkoutDataServiceProtocol,
-        syncWorkoutUseCase: SyncWorkoutUseCaseProtocol
+        syncWorkoutUseCase: SyncWorkoutUseCaseProtocol,
+        locationManager: LocationManagerProtocol? = nil
     ) {
         self.workoutDataService = workoutDataService
         self.syncWorkoutUseCase = syncWorkoutUseCase
+        self.locationManager = locationManager
     }
     
     // MARK: - Public Methods
@@ -195,7 +227,10 @@ final class StartWorkoutUseCase: StartWorkoutUseCaseProtocol {
             throw StartWorkoutError.sessionAlreadyActive
         }
         
-        // 3. Criar sessão de treino
+        // 3. Capturar localização (opcional, não bloqueia treino)
+        let location = await captureLocation()
+        
+        // 4. Criar sessão de treino
         print("📝 [START WORKOUT] Criando sessão para usuário: \(input.user.safeName)")
         let session: CDCurrentSession
         do {
@@ -204,6 +239,11 @@ final class StartWorkoutUseCase: StartWorkoutUseCaseProtocol {
                 user: input.user,
                 startTime: input.startTime
             )
+            
+            // Aplicar localização se obtida
+            if let location = location {
+                applyLocationToSession(session, location: location)
+            }
         } catch {
             throw StartWorkoutError.workoutDataServiceError(error)
         }
@@ -330,15 +370,15 @@ final class StartWorkoutUseCase: StartWorkoutUseCaseProtocol {
         }
     }
     
-    /// Integração com HealthKit (preparação para item 54)
+    /// Integração com HealthKit (item 45 - CONCLUÍDO)
     private func startHealthKitSession(input: StartWorkoutInput, session: CDCurrentSession) async -> Bool {
         guard input.enableHealthKit else {
             print("ℹ️ [START WORKOUT] HealthKit desabilitado pelo usuário")
             return false
         }
         
-        print("🏥 [START WORKOUT] HealthKit será integrado no item 54")
-        // TODO: Implementar quando HealthKitManager estiver disponível
+        print("🏥 [START WORKOUT] HealthKit disponível via DI - integração futura conforme necessidade")
+        // TODO: Implementar quando HealthKitManager for injetado no item 65
         // guard let healthKitManager = self.healthKitManager else { return false }
         // 
         // do {
@@ -354,45 +394,140 @@ final class StartWorkoutUseCase: StartWorkoutUseCaseProtocol {
         //     return false
         // }
         
-        return false // Temporário até item 54
+        return false // Temporário até item 65
     }
     
-    /// Notificação para Apple Watch
+    /// Notificação para Apple Watch + Ativação do MotionManager
     private func notifyAppleWatch(session: CDCurrentSession) async -> Bool {
         #if os(iOS)
-        print("⌚ [START WORKOUT] Notificando Apple Watch sobre nova sessão")
+        print("⌚ [START WORKOUT] Notificando Apple Watch e ativando MotionManager")
         
-        // Integração com ConnectivityManager existente
-        guard let connectivityManager = getConnectivityManager() else {
-            print("⚠️ [START WORKOUT] ConnectivityManager não disponível")
+        // Integração com PhoneSessionManager para comandos estruturados
+        guard let phoneSessionManager = getPhoneSessionManager() else {
+            print("⚠️ [START WORKOUT] PhoneSessionManager não disponível")
             return false
         }
         
-        let sessionContext: [String: Any] = [
-            "type": "sessionStarted",
-            "sessionId": session.safeId.uuidString,
-            "planId": session.plan?.safeId.uuidString ?? "",
-            "planTitle": session.plan?.displayTitle ?? "",
-            "startTime": session.startTime.timeIntervalSince1970,
-            "exerciseCount": session.plan?.exercisesArray.count ?? 0,
-            "firstExerciseName": session.plan?.exercisesArray.first?.template?.safeName ?? ""
-        ]
+        // Comando estruturado para iniciar MotionManager no Watch
+        let startWorkoutCommand = StartWorkoutCommand(
+            sessionId: session.safeId.uuidString,
+            planId: session.plan?.safeId.uuidString ?? "",
+            planTitle: session.plan?.displayTitle ?? "",
+            startTime: session.startTime,
+            exerciseCount: session.plan?.exercisesArray.count ?? 0,
+            firstExerciseName: session.plan?.exercisesArray.first?.template?.safeName ?? ""
+        )
         
-        await connectivityManager.sendMessage(sessionContext, replyHandler: nil)
-        return true
+        do {
+            try await phoneSessionManager.sendCommand(startWorkoutCommand)
+            print("✅ [START WORKOUT] MotionManager ativado no Watch")
+            return true
+        } catch {
+            print("❌ [START WORKOUT] Erro ao ativar MotionManager: \(error)")
+            return false
+        }
         #else
         print("ℹ️ [START WORKOUT] Watch notification skipped (watchOS)")
         return false
         #endif
     }
     
-    /// Helper para obter ConnectivityManager
-    private func getConnectivityManager() -> ConnectivityManager? {
+    /// Helper para obter PhoneSessionManager
+    private func getPhoneSessionManager() -> PhoneSessionManager? {
         #if os(iOS)
-        return ConnectivityManager.shared
+        return PhoneSessionManager.shared
         #else
         return nil
         #endif
+    }
+    
+    // MARK: - Location Methods
+    
+    /// Captura localização de forma opcional (não bloqueia treino)
+    /// 
+    /// **Filosofia:**
+    /// - Localização é completamente opcional
+    /// - Se usuário negou permissão, treino continua normalmente
+    /// - Timeout rápido para não atrasar início do treino
+    /// 
+    /// - Returns: CLLocation se obtida, nil caso contrário
+    private func captureLocation() async -> CLLocation? {
+        guard let locationManager = locationManager else {
+            print("📍 [START WORKOUT] LocationManager não disponível - treino sem localização")
+            return nil
+        }
+        
+        // Solicitar permissão se necessário (não bloqueia treino)
+        print("📍 [START WORKOUT] Verificando permissão de localização...")
+        let hasPermission = await locationManager.requestPermission()
+        
+        guard hasPermission else {
+            print("⚠️ [START WORKOUT] Permissão de localização negada - continuando treino sem localização")
+            return nil
+        }
+        
+        // Tentar obter localização com timeout rápido
+        print("📍 [START WORKOUT] Obtendo localização para treino...")
+        
+        return await withTaskGroup(of: CLLocation?.self) { group in
+            // Tarefa 1: Obter localização
+            group.addTask {
+                return await locationManager.requestSingleLocation()
+            }
+            
+            // Tarefa 2: Timeout de 8 segundos para não atrasar treino
+            group.addTask {
+                try? await Task.sleep(nanoseconds: 8_000_000_000) // 8 segundos
+                return nil
+            }
+            
+            // Retorna o primeiro resultado (localização ou timeout)
+            if let location = await group.next() {
+                group.cancelAll()
+                return location
+            }
+            
+            return nil
+        }
+    }
+    
+    /// Aplica localização à sessão de treino
+    /// 
+    /// **Segurança:**
+    /// - Valida coordenadas antes de aplicar
+    /// - Não falha se aplicação der erro
+    /// 
+    /// - Parameters:
+    ///   - session: Sessão de treino ativa
+    ///   - location: Localização capturada
+    private func applyLocationToSession(_ session: CDCurrentSession, location: CLLocation) {
+        do {
+            // Validar coordenadas
+            let latitude = location.coordinate.latitude
+            let longitude = location.coordinate.longitude
+            let accuracy = location.horizontalAccuracy
+            
+            guard latitude >= -90.0 && latitude <= 90.0 &&
+                  longitude >= -180.0 && longitude <= 180.0 &&
+                  accuracy > 0 else {
+                print("⚠️ [START WORKOUT] Coordenadas inválidas ignoradas")
+                return
+            }
+            
+            // Aplicar à sessão
+            session.latitude = latitude
+            session.longitude = longitude
+            session.locationAccuracy = accuracy
+            
+            print("✅ [START WORKOUT] Localização aplicada: \(latitude), \(longitude) (±\(accuracy)m)")
+            
+            // Salvar mudanças
+            try session.managedObjectContext?.save()
+            
+        } catch {
+            print("⚠️ [START WORKOUT] Erro ao aplicar localização: \(error.localizedDescription)")
+            // Não falha o treino por causa da localização
+        }
     }
 }
 

@@ -2,10 +2,11 @@
 //  EndWorkoutUseCase.swift
 //  Fitter V2
 //
-//  📋 RESPONSABILIDADE: Finalizar sessão de treino e salvar histórico completo
+//  📋 RESPONSABILIDADE: Finalizar sessão de treino + finalizar MotionManager no Watch + salvar histórico completo
 //  
 //  🎯 OPERAÇÕES PRINCIPAIS:
 //  • Finalizar CDCurrentSession com endTime
+//  • Finalizar MotionManager no Apple Watch via PhoneSessionManager
 //  • Migrar dados completos para CDWorkoutHistory
 //  • Preservar exercícios e séries com sensorData
 //  • Calcular estatísticas de performance
@@ -23,23 +24,50 @@
 //  ⚡ INTEGRAÇÃO:
 //  • WorkoutDataService: Migração Current → History
 //  • SyncWorkoutUseCase: Sincronização automática
-//  • HealthKitManager: Finalização workout session (será item 54)
+//  • PhoneSessionManager: Finalização do MotionManager no Watch
+//  • HealthKitManager: Finalização workout session (item 45 - CONCLUÍDO)
 //  • CoreDataAdapter: Preservação de sensorData JSON
 //  
 //  🔄 LIFECYCLE:
 //  1. Validação de entrada (sessão ativa, usuário)
 //  2. Finalização de CDCurrentSession/Exercise/Set
-//  3. Migração completa para entidades History
-//  4. Cálculo de estatísticas de performance
-//  5. Sincronização automática
-//  6. Limpeza de dados temporários
-//  7. Finalização de workout session HealthKit (futuro)
+//  3. Finalização do MotionManager no Apple Watch
+//  4. Migração completa para entidades History
+//  5. Cálculo de estatísticas de performance
+//  6. Sincronização automática
+//  7. Limpeza de dados temporários
+//  8. Finalização de workout session HealthKit (futuro)
 //
 //  Created by Daniel Lobo on 13/05/25.
 //
 
 import Foundation
 import CoreData
+
+// MARK: - EndWorkoutCommand
+
+/// Comando estruturado para finalizar MotionManager no Watch
+struct EndWorkoutCommand: WatchCommand {
+    let sessionId: String
+    let endTime: Date
+    let duration: TimeInterval
+    let totalExercises: Int
+    let totalSets: Int
+    
+    var commandType: WatchCommandType {
+        return .endWorkout
+    }
+    
+    var payload: [String: Any] {
+        return [
+            "sessionId": sessionId,
+            "endTime": endTime.timeIntervalSince1970,
+            "duration": duration,
+            "totalExercises": totalExercises,
+            "totalSets": totalSets
+        ]
+    }
+}
 
 // MARK: - EndWorkoutInput
 
@@ -219,17 +247,20 @@ final class EndWorkoutUseCase: EndWorkoutUseCaseProtocol {
     
     private let workoutDataService: WorkoutDataServiceProtocol
     private let syncWorkoutUseCase: SyncWorkoutUseCaseProtocol
-    // TODO: Adicionar HealthKitManager quando item 54 for implementado
+    private let locationManager: LocationManagerProtocol
+    // TODO: Adicionar HealthKitManager quando item 65 for implementado (iOSApp.swift)
     // private let healthKitManager: HealthKitManagerProtocol
     
     // MARK: - Initialization
     
     init(
         workoutDataService: WorkoutDataServiceProtocol,
-        syncWorkoutUseCase: SyncWorkoutUseCaseProtocol
+        syncWorkoutUseCase: SyncWorkoutUseCaseProtocol,
+        locationManager: LocationManagerProtocol
     ) {
         self.workoutDataService = workoutDataService
         self.syncWorkoutUseCase = syncWorkoutUseCase
+        self.locationManager = locationManager
     }
     
     // MARK: - Public Methods
@@ -247,21 +278,27 @@ final class EndWorkoutUseCase: EndWorkoutUseCaseProtocol {
             // 2. Finalizar entidades "current"
             try await finalizeCurrentEntities(input.session, endTime: input.endTime)
             
-            // 3. Migrar para histórico
+            // 3. Finalizar MotionManager no Apple Watch
+            let watchFinalized = await finalizeMotionManager(input.session, endTime: input.endTime)
+            
+            // 4. Migrar para histórico
             let (workoutHistory, migrationDetails) = try await migrateToHistory(input.session, user: input.user, endTime: input.endTime)
             
-            // 4. Calcular estatísticas
+            // 4.1. Salvar localização final no histórico (opcional)
+            await saveLocationToHistory(workoutHistory)
+            
+            // 5. Calcular estatísticas
             let statistics = input.shouldCalculateStats ? 
                 try await calculateDetailedStatistics(input.session, workoutHistory) :
                 try await calculateBasicStatistics(input.session)
             
-            // 5. Finalizar HealthKit
+            // 6. Finalizar HealthKit
             let healthKitStatus = await finalizeHealthKitSession(input)
             
-            // 6. Sincronizar
+            // 7. Sincronizar
             let syncStatus = await performSync(workoutHistory, shouldSync: input.shouldSync)
             
-            // 7. Limpeza final
+            // 8. Limpeza final
             try await performCleanup(input.session)
             
             let result = EndWorkoutResult(
@@ -532,21 +569,21 @@ final class EndWorkoutUseCase: EndWorkoutUseCaseProtocol {
         }
     }
     
-    /// Finaliza sessão HealthKit (preparação para item 54)
+    /// Finaliza sessão HealthKit (item 45 - CONCLUÍDO)
     private func finalizeHealthKitSession(_ input: EndWorkoutInput) async -> EndWorkoutResult.HealthKitStatus {
         guard input.saveToHealthKit else {
             print("ℹ️ [END WORKOUT] HealthKit desabilitado pelo usuário")
             return .skipped
         }
         
-        print("🏥 [END WORKOUT] HealthKit será integrado no item 54")
-        // TODO: Implementar quando HealthKitManager estiver disponível
+        print("🏥 [END WORKOUT] HealthKit será integrado no item 65 (iOSApp.swift)")
+        // TODO: Implementar quando HealthKitManager for injetado no item 65
         // guard let healthKitManager = self.healthKitManager else { return .disabled }
         // 
         // do {
         //     try await healthKitManager.endWorkoutSession(
-        //         session: input.session,
-        //         endTime: input.endTime
+        //         session: activeWorkoutSession,
+        //         endDate: input.endTime
         //     )
         //     return .saved
         // } catch {
@@ -554,7 +591,7 @@ final class EndWorkoutUseCase: EndWorkoutUseCaseProtocol {
         //     return .failed(error)
         // }
         
-        return .disabled // Temporário até item 54
+        return .disabled // Temporário até item 65
     }
     
     /// Sincronização com tratamento de erro
@@ -571,6 +608,83 @@ final class EndWorkoutUseCase: EndWorkoutUseCaseProtocol {
         } catch {
             print("⚠️ [END WORKOUT] Falha na sincronização: \(error)")
             return .failed(error)
+        }
+    }
+    
+    /// Finaliza MotionManager no Apple Watch
+    private func finalizeMotionManager(_ session: CDCurrentSession, endTime: Date) async -> Bool {
+        #if os(iOS)
+        print("⌚ [END WORKOUT] Finalizando MotionManager no Apple Watch")
+        
+        // Integração com PhoneSessionManager para comandos estruturados
+        guard let phoneSessionManager = getPhoneSessionManager() else {
+            print("⚠️ [END WORKOUT] PhoneSessionManager não disponível")
+            return false
+        }
+        
+        // Buscar estatísticas básicas para o comando
+        let duration = session.duration
+        let totalExercises = session.plan?.exercisesArray.count ?? 0
+        
+        do {
+            let allCurrentSets = try await workoutDataService.fetchCurrentSets(for: nil)
+            let totalSets = allCurrentSets.count
+            
+            // Comando estruturado para finalizar MotionManager no Watch
+            let endWorkoutCommand = EndWorkoutCommand(
+                sessionId: session.safeId.uuidString,
+                endTime: endTime,
+                duration: duration,
+                totalExercises: totalExercises,
+                totalSets: totalSets
+            )
+            
+            try await phoneSessionManager.sendCommand(endWorkoutCommand)
+            print("✅ [END WORKOUT] MotionManager finalizado no Watch")
+            return true
+        } catch {
+            print("❌ [END WORKOUT] Erro ao finalizar MotionManager: \(error)")
+            return false
+        }
+        #else
+        print("ℹ️ [END WORKOUT] Watch finalization skipped (watchOS)")
+        return false
+        #endif
+    }
+    
+    /// Helper para obter PhoneSessionManager
+    private func getPhoneSessionManager() -> PhoneSessionManager? {
+        #if os(iOS)
+        return PhoneSessionManager.shared
+        #else
+        return nil
+        #endif
+    }
+    
+    /// Salva localização final no histórico do treino
+    private func saveLocationToHistory(_ workoutHistory: CDWorkoutHistory) async {
+        print("📍 [END WORKOUT] Salvando localização no histórico...")
+        
+        do {
+            // Capturar localização atual (com timeout de 5s para não atrasar finalização)
+            let location = try await locationManager.getCurrentLocation(timeout: 5.0)
+            
+            // Atualizar CDWorkoutHistory com localização
+            try await workoutDataService.updateWorkoutHistoryLocation(
+                workoutHistory: workoutHistory,
+                latitude: location.latitude,
+                longitude: location.longitude,
+                locationAccuracy: location.accuracy
+            )
+            
+            print("✅ [END WORKOUT] Localização salva: (\(location.latitude), \(location.longitude)) ±\(location.accuracy)m")
+            
+        } catch LocationManagerError.permissionDenied {
+            print("ℹ️ [END WORKOUT] Localização negada pelo usuário - continuando sem localização")
+        } catch LocationManagerError.timeout {
+            print("⏱️ [END WORKOUT] Timeout na captura de localização - continuando sem localização")
+        } catch {
+            print("⚠️ [END WORKOUT] Erro ao capturar localização (não crítico): \(error)")
         }
     }
     

@@ -1,60 +1,72 @@
 # Fitter V2 - Aplicativo de Treino iOS + watchOS
 
-## 📁 Estrutura do Projeto
+## 🏗️ **ARQUITETURA ATUAL - CLEAN ARCHITECTURE**
+
+O **Fitter V2** implementa uma arquitetura **Clean Architecture** moderna com foco em **Clean Code**, **Dependency Injection** e **separation of concerns**. O app possui uma estrutura robusta para captura de dados de sensores do Apple Watch, sincronização bidirecional com iPhone, e integração com Firebase para exercícios.
+
+### 🎯 **PRINCÍPIOS ARQUITETURAIS FUNDAMENTAIS**
+
+#### **1. Clean Architecture**
+- **Separação de camadas**: Presentation → Domain → Data
+- **Dependency Inversion**: Dependências apontam para abstrações (protocols)
+- **Single Responsibility**: Cada classe tem uma responsabilidade específica
+- **Open/Closed Principle**: Extensível sem modificação
+
+#### **2. Login Obrigatório + Sessão Persistente**
+- **Primeira vez**: Login obrigatório (Apple, Google, Facebook, Email)
+- **Sessão persistente**: Continua logado automaticamente
+- **Logout automático**: Após 7 dias de inatividade por segurança
+- **Ownership garantido**: Todos os dados vinculados ao usuário autenticado
+
+#### **3. Injeção de Dependências**
+- **@StateObject** no App entry point
+- **@EnvironmentObject** nas Views filhas
+- **Eliminação de singletons** (exceto infraestrutura compartilhada)
+- **Testabilidade** via protocols e mocks
+
+---
+
+## 📁 **ESTRUTURA DO PROJETO ATUALIZADA**
 
 ### 🍎 **Fitter V2/** (iOS App)
 Aplicativo principal para iPhone com interface SwiftUI e integração completa com Firebase.
 
 #### **Views/**
-- **Auth/**
-  - `LoginView.swift` - Tela de login com suporte a email/senha, Google, Facebook e Apple
-  - `CreateAccountView.swift` - Tela de criação de conta com validação de dados
+   - **Auth/**
+      - `LoginView.swift` - Tela de login com suporte a email/senha, Google, Facebook e Apple
+      - `CreateAccountView.swift` - Tela de criação de conta com validação de dados
 
-- **Home/**
-  - Telas principais do dashboard e navegação
+   - **Home/**
+      - `HomeView.swift` - Dashboard principal com status de conectividade
 
-- **Workout/**
-  - `CreateWorkoutView.swift` - Criação de novos planos de treino
-  - `ListExerciseView.swift` - Lista de exercícios do Firebase com filtros avançados
-  - `WorkoutView.swift` - Execução e acompanhamento de treinos
-  - `DetailWorkoutView.swift` - Detalhes e visualização de planos de treino
+   - **Workout/**
+      - `WorkoutView.swift` - Lista de treinos e navegação principal
+      - `WorkoutEditorView.swift` - **UNIFICADO**: Criação e edição de treinos (substitui CreateWorkoutView + DetailWorkoutView)
+      - `ListExerciseView.swift` - Lista de exercícios do Firebase com filtros avançados
 
 - **Profile/**
-  - Telas de perfil e configurações do usuário
+  - `ProfileView.swift` - Perfil e configurações do usuário
 
 - **History/**
-  - Histórico de treinos realizados
+  - `HistoryView.swift` - Histórico de treinos realizados
 
 - **MainTab/**
-  - Navegação principal por abas
+  - `MainTabView.swift` - Navegação principal por abas
 
-#### **ViewModels/**
-- `LoginViewModel.swift` - Lógica de autenticação e validação de login
-- `CreateAccountViewModel.swift` - Lógica de criação de conta
-- `WorkoutViewModel.swift` - Gerenciamento de planos de treino e exercícios
-- `ListExerciseViewModel.swift` - Filtros e busca de exercícios do Firebase
-
-#### **Services/**
-- `AuthService.swift` - Serviço principal de autenticação (Firebase, Google, Facebook, Apple)
-- `FirebaseExerciseService.swift` - Gerenciamento de exercícios do Firestore
-- `WorkoutService.swift` - Integração entre Firebase e CoreData para treinos
-
-#### **Models/**
-- `FirebaseExercise.swift` - Modelo de exercícios do Firestore
+#### **ViewsModel/** (Clean Architecture)
+- `BaseViewModel.swift` - **NOVO**: ViewModel base com estados comuns e orquestração de Use Cases
+- `LoginViewModel.swift` - Herda BaseViewModel, usa AuthUseCase
+- `CreateAccountViewModel.swift` - Herda BaseViewModel, usa AuthUseCase
+- `WorkoutViewModel.swift` - Herda BaseViewModel, usa Use Cases de Workout
+- `ListExerciseViewModel.swift` - Herda BaseViewModel, usa FetchFBExercisesUseCase
 
 #### **Components/**
-- Componentes reutilizáveis da interface (cards, botões, etc.)
-
-#### **Sync/**
-- Sincronização de dados entre dispositivos
-
-#### **Assets.xcassets/**
-- Recursos visuais (imagens, ícones, cores)
-
-#### **Arquivos de Configuração:**
-- `iOSApp.swift` - Ponto de entrada do app iOS
-- `GoogleService-Info.plist` - Configuração do Firebase/Google
-- `Fitter V2.entitlements` - Permissões e capabilities
+- `ExerciseCard.swift` - **UNIFICADO**: Card para exercícios Firebase e Core Data (substitui 3 componentes antigos)
+- `WorkoutPlanCard.swift` - Card de planos de treino
+- `UploadButton.swift` - Botão de upload de treinos
+- `ImportWorkoutCard.swift` - Card de status de importação
+- `BackButton.swift` - Botão de navegação
+- `CreateButton.swift` - Botão de criação
 
 ---
 
@@ -62,16 +74,13 @@ Aplicativo principal para iPhone com interface SwiftUI e integração completa c
 Aplicativo complementar para Apple Watch com sincronização em tempo real.
 
 #### **Views/**
-- Interface específica do Apple Watch
-
-#### **ViewModels/**
-- Lógica de negócio adaptada para watchOS
+- `WatchView.swift` - Interface principal do treino ativo
+- `PendingLoginView.swift` - Aguardando autenticação do iPhone
 
 #### **Managers/**
-- `MotionManager.swift` - Captura de dados de sensores (CoreMotion + HealthKit)
-
-#### **Data/**
-- `WatchDataManager.swift` - Gerenciamento de dados no Apple Watch
+- `MotionManager.swift` - **REFATORADO**: Captura de dados de sensores (50Hz execução, 20Hz descanso)
+- `WorkoutPhaseManager.swift` - **NOVO**: Controle de estados execução/descanso + timer automático
+- `WatchSessionManager.swift` - **NOVO**: WCSession no Watch + envio de chunks
 
 #### **Arquivos Principais:**
 - `WatchApp.swift` - Ponto de entrada do app watchOS
@@ -79,79 +88,118 @@ Aplicativo complementar para Apple Watch com sincronização em tempo real.
 
 ---
 
-### 🔄 **Shared/** (Código Compartilhado)
-Código compartilhado entre iOS e watchOS para máxima reutilização.
+### 🔄 **Shared/** (Código Compartilhado - Clean Architecture)
+Código compartilhado entre iOS e watchOS organizado por Clean Architecture.
 
-#### **CoreData 2/**
-- `Model.xcdatamodeld/` - Modelo de dados Core Data
-- `CoreDataStack.swift` - Configuração e gerenciamento do Core Data
-- `CoreDataModels.swift` - Extensions e business logic das entidades
-- `CoreDataAdapter.swift` - Adaptador para integração com Apple Watch
+#### **UseCases/** (Camada de Domínio)
+**Use Cases de Autenticação:**
+- `AuthUseCase.swift` - **NOVO**: Orquestração de todos os fluxos de autenticação
 
-#### **Models/**
-- `MuscleGroup.swift` - Enumeração dos grupos musculares
+**Use Cases de Workout (CRUD):**
+- `CreateWorkoutUseCase.swift` - **NOVO**: Criação de treinos com títulos duais
+- `FetchWorkoutUseCase.swift` - **NOVO**: Busca com filtros e estatísticas
+- `UpdateWorkoutUseCase.swift` - **NOVO**: Edição com rollback
+- `DeleteWorkoutUseCase.swift` - **NOVO**: Exclusão segura
+- `ReorderWorkoutUseCase.swift` - **NOVO**: Reordenação de treinos
+- `ReorderExerciseUseCase.swift` - **NOVO**: Reordenação de exercícios
 
-#### **Services/**
-- Serviços compartilhados entre plataformas
+**Use Cases de Lifecycle de Workout:**
+- `StartWorkoutUseCase.swift` - **NOVO**: Inicia sessão + ativa MotionManager
+- `StartExerciseUseCase.swift` - **NOVO**: Inicia exercício individual
+- `StartSetUseCase.swift` - **NOVO**: Inicia série + captura sensores
+- `EndSetUseCase.swift` - **NOVO**: Finaliza série + rest timer
+- `EndExerciseUseCase.swift` - **NOVO**: Finaliza exercício + navegação
+- `EndWorkoutUseCase.swift` - **NOVO**: Finaliza treino + histórico
 
-#### **Protocols/**
-- `ExerciseDisplayable.swift` - Protocolo para exibição de exercícios
-- Outros protocolos compartilhados
+**Use Cases Especializados:**
+- `SyncWorkoutUseCase.swift` - **NOVO**: Motor de sincronização
+- `FetchFBExercisesUseCase.swift` - **NOVO**: Exercícios Firebase
+- `ImportWorkoutUseCase.swift` - **NOVO**: Importação de arquivos
 
-#### **Manager/**
-- `WorkoutManager.swift` - Gerenciador principal de treinos
-- `ConnectivityManager.swift` - Comunicação entre iPhone e Apple Watch
-- `SessionManager.swift` - Gerenciamento de sessões de treino
+#### **Services/** (Camada de Dados)
+- `CoreDataService.swift` - **NOVO**: CRUD genérico para Core Data
+- `WorkoutDataService.swift` - **NOVO**: CRUD especializado para entidades de treino
+- `ImportWorkoutService.swift` - **NOVO**: Importação de arquivos (OCR, PDF, CSV)
 
 #### **Repository/**
-- `WorkoutRepository.swift` - Implementação do padrão Repository
-- `WorkoutRepositoryProtocol.swift` - Interface do repositório de dados
+- `FirestoreExerciseRepository.swift` - **REFATORADO**: Repository direto para Firestore
 
-#### **Persistence/**
-- `PersistenceController.swift` - Controlador de persistência Core Data
+#### **Manager/**
+- `ConnectivityManager.swift` - **REFATORADO**: Monitoramento de rede (NWPathMonitor)
+- `SessionManager.swift` - **REFATORADO**: Coordenação de sessão (preparado para Use Cases)
 
-#### **Utilities/**
-- `PreviewDataLoader.swift` - População de dados para previews
-- `PreviewCoreDataStack.swift` - Core Data em memória para desenvolvimento
+#### **Sync/**
+- `CloudSyncStatus.swift` - **REFATORADO**: Estados simplificados (pending/synced)
+- `CloudSyncManager.swift` - **REFATORADO**: Sincronização genérica para qualquer Syncable
+
+#### **CoreData 2/**
+- `FitterModel.xcdatamodeld/` - **ATUALIZADO**: Modelo Core Data com External Storage
+- `CoreDataModels.swift` - **REFATORADO**: Extensions sem lógica de negócio
+- `CoreDataAdapter.swift` - **REFATORADO**: Serialização/deserialização SensorData
+
+#### **Models/**
+- `FirebaseExercise.swift` - **ATUALIZADO**: Modelo alinhado com Firebase + vídeos
+- `SensorData.swift` - **REFATORADO**: Struct otimizada para Binary Data
+- `MuscleGroup.swift` - Enumeração dos grupos musculares
+- `SubscriptionType.swift` - **NOVO**: Tipos de assinatura
+
+#### **Protocols/**
+- `ExerciseDisplayable.swift` - **ATUALIZADO**: Protocolo para exibição de exercícios
 
 #### **Network/**
 - `NetworkMonitor.swift` - Monitor de conectividade de rede
 
-#### **Sync/**
-- `CloudSyncStatus.swift` - Status e protocolo de sincronização
-- `CloudSyncManager.swift` - Gerenciador de sincronização com Firestore
+#### **Utilities/**
+- `PreviewDataLoader.swift` - **OBSOLETO**: Será substituído por sistema de mocks
+- `PreviewCoreDataStack.swift` - **OBSOLETO**: Será substituído por MockPersistenceController
 
 ---
 
-## 🗄️ **Arquitetura de Banco de Dados**
+## 🗄️ **ARQUITETURA DE BANCO DE DADOS ATUALIZADA**
 
 ### **📊 Visão Geral da Arquitetura**
 
 O Fitter V2 implementa uma arquitetura sofisticada que combina **Core Data local** com **Firebase/Firestore na nuvem**, além de integração completa com **Apple Watch** para coleta de dados de sensores.
 
-#### **Camadas da Arquitetura:**
-1. **Camada de Dados**: Core Data (local) + Firestore (nuvem)
-2. **Camada de Sincronização**: CloudSyncManager + CloudSyncStatus
-3. **Camada de Repositório**: WorkoutRepository + WorkoutRepositoryProtocol
-4. **Camada de Serviço**: WorkoutService + FirebaseExerciseService
-5. **Camada de Gerenciamento**: WorkoutManager
-6. **Camada de Apresentação**: WorkoutViewModel
-7. **Camada Apple Watch**: WatchDataManager + MotionManager
+#### **Camadas da Arquitetura (Clean Architecture):**
+1. **Camada de Apresentação**: Views + ViewModels (SwiftUI)
+2. **Camada de Domínio**: Use Cases (lógica de negócio)
+3. **Camada de Dados**: Services + Repository + Core Data/Firebase
 
 #### **Fluxo de Dados Geral:**
 ```
 📱 iPhone App ←→ ☁️ Firestore
       ↕
-🔄 ConnectivityManager
+🔄 WatchSessionManager ↔ PhoneSessionManager
       ↕
-⌚ Apple Watch ←→ 📊 Sensores
+⌚ Apple Watch ←→ 📊 Sensores (50Hz/20Hz)
 ```
+---
+
+## Diagrama
+
+[Sensores Apple Watch + Captura HealthKit]
+                  |                         
+                  v                         
+            +-----------+               +-----------+
+            | Watch App | ↔ WCSession ↔ |  iPhone   |
+            +-----------+               +-----------+
+                                              |
+                                              v
+                                      +----------------+
+                                      |    CoreData    |
+                                      +----------------+
+                                              |
+                                              v
+                                      +----------------+
+                                      |   Firestore    |
+                                      +----------------+
 
 ---
 
-### **🏗️ Modelo Core Data**
+### **🏗️ Modelo Core Data Atualizado (FitterModel)**
 
-#### **🟦 Entidades "Vivas" (Estado Ativo)**
+#### **🟦 Entidades "Current" (Estado Ativo)**
 
 **`CDCurrentSession`** - Treino em andamento
 - `id: UUID` - Identificador único
@@ -160,7 +208,7 @@ O Fitter V2 implementa uma arquitetura sofisticada que combina **Core Data local
 - `currentExerciseIndex: Int32` - Índice do exercício atual
 - `isActive: Bool` - Status ativo/inativo
 - **Relacionamentos:**
-  - `user: CDAppUser` (1:1)
+  - `user: CDAppUser` (1:1) - **OBRIGATÓRIO** (login obrigatório)
   - `plan: CDWorkoutPlan` (1:1)
   - `currentExercise: CDCurrentExercise?` (1:0..1)
 
@@ -188,26 +236,22 @@ O Fitter V2 implementa uma arquitetura sofisticada que combina **Core Data local
   - `isActive: Bool` - Status ativo/inativo
   - `restTime: Double?` - Tempo de descanso
 
-- **Dados de sensores (Apple Watch):**
-  - `accelerationX/Y/Z: Double?` - Acelerômetro (3 eixos)
-  - `rotationX/Y/Z: Double?` - Giroscópio (3 eixos)
-  - `gravityX/Y/Z: Double?` - Gravidade (3 eixos)
-  - `attitudeRoll/Pitch/Yaw: Double?` - Orientação (3 eixos)
-  - `heartRate: Int32?` - Frequência cardíaca
-  - `caloriesBurned: Double?` - Calorias queimadas
+- **⚠️ IMPORTANTE**: Dados de sensores NÃO são armazenados em entidades "current"
+- **Dados leves apenas**: Para controle de UI e navegação
 
 #### **🟢 Entidades de Planejamento**
 
 **`CDWorkoutPlan`** - Planos de treino criados
 - `id: UUID` - Identificador único
-- `title: String` - Nome do plano
+- `autoTitle: String` - **NOVO**: Título automático ("Treino A", "Treino B")
+- `title: String?` - **NOVO**: Título personalizado opcional
 - `createdAt: Date` - Data de criação
 - `order: Int32` - Ordem de exibição
 - `muscleGroups: String` - Grupos musculares (concatenados)
 - `cloudSyncStatus: Int16` - Status de sincronização
 - `lastCloudSync: Date?` - Última sincronização
 - **Relacionamentos:**
-  - `user: CDAppUser` (1:1)
+  - `user: CDAppUser` (1:1) - **OBRIGATÓRIO** (login obrigatório)
   - `exercises: Set<CDPlanExercise>` (1:N)
   - `currentSessions: Set<CDCurrentSession>` (1:N)
 
@@ -225,10 +269,13 @@ O Fitter V2 implementa uma arquitetura sofisticada que combina **Core Data local
 - `templateId: String` - Identificador Firebase
 - `name: String` - Nome do exercício
 - `muscleGroup: String` - Grupo muscular
-- `legSubgroup: String?` - Subgrupo (pernas)
+- `legSubgroup: String?` - **NOVO**: Subgrupo (apenas para exercícios de perna)
 - `equipment: String` - Equipamento necessário
 - `gripVariation: String?` - Variação de pegada
-- `imageName: String?` - Nome da imagem
+- `description: String?` - **NOVO**: Descrição do exercício
+- `videoURL: String?` - **NOVO**: URL do vídeo
+- `createdAt: Date?` - **NOVO**: Data de criação
+- `updatedAt: Date?` - **NOVO**: Data de atualização
 - `cloudSyncStatus: Int16` - Status de sincronização
 - `lastCloudSync: Date?` - Última sincronização
 
@@ -237,16 +284,22 @@ O Fitter V2 implementa uma arquitetura sofisticada que combina **Core Data local
 **`CDWorkoutHistory`** - Histórico de treinos concluídos
 - `id: UUID` - Identificador único
 - `date: Date` - Data do treino
+- `sensorData: Data?` - **NOVO**: Dados de sensores (External Storage)
+- `heartRateData: Data?` - **NOVO**: Dados de frequência cardíaca (External Storage)
+- `caloriesData: Data?` - **NOVO**: Dados de calorias (External Storage)
 - `cloudSyncStatus: Int16` - Status de sincronização
 - `lastCloudSync: Date?` - Última sincronização
 - **Relacionamentos:**
-  - `user: CDAppUser` (1:1)
+  - `user: CDAppUser` (1:1) - **OBRIGATÓRIO** (login obrigatório)
   - `exercises: Set<CDHistoryExercise>` (1:N)
 
 **`CDHistoryExercise`** - Exercícios executados no histórico
 - `id: UUID` - Identificador único
 - `name: String` - Nome do exercício
 - `order: Int32` - Ordem de execução
+- `sensorData: Data?` - **NOVO**: Dados de sensores (External Storage)
+- `heartRateData: Data?` - **NOVO**: Dados de frequência cardíaca (External Storage)
+- `caloriesData: Data?` - **NOVO**: Dados de calorias (External Storage)
 - `cloudSyncStatus: Int16` - Status de sincronização
 - `lastCloudSync: Date?` - Última sincronização
 - **Relacionamentos:**
@@ -255,7 +308,9 @@ O Fitter V2 implementa uma arquitetura sofisticada que combina **Core Data local
 
 **`CDHistorySet`** - Séries executadas com dados de sensores
 - **Atributos básicos:** (idênticos ao CDCurrentSet)
-- **Dados de sensores:** (todos os 11 canais preservados)
+- `sensorData: Data?` - **NOVO**: Dados de sensores (External Storage)
+- `heartRateData: Data?` - **NOVO**: Dados de frequência cardíaca (External Storage)
+- `caloriesData: Data?` - **NOVO**: Dados de calorias (External Storage)
 - **Relacionamentos:**
   - `exercise: CDHistoryExercise` (1:1)
 
@@ -268,17 +323,20 @@ O Fitter V2 implementa uma arquitetura sofisticada que combina **Core Data local
   - `email: String?` - Email
   - `providerId: String` - ID do provedor de auth
   - `provider: String?` - Provedor (Google, Facebook, etc.)
-  - `birthDate: Date` - Data de nascimento
+  - `birthDate: Date?` - Data de nascimento
   - `gender: String?` - Gênero
-  - `height: Double` - Altura
-  - `weight: Double` - Peso
+  - `height: Double?` - Altura
+  - `weight: Double?` - Peso
   - `profilePictureURL: URI?` - URL da foto
   - `locale: String?` - Localização
 
 - **Atributos de controle:**
   - `createdAt: Date` - Data de criação
   - `updatedAt: Date` - Última atualização
-  - `lastLoginDate: Date?` - Último login
+  - `lastLoginDate: Date?` - **NOVO**: Último login (indexado)
+  - `subscriptionType: Int16` - **NOVO**: Tipo de assinatura
+  - `subscriptionValidUntil: Date?` - **NOVO**: Validade da assinatura (indexado)
+  - `subscriptionStartDate: Date?` - **NOVO**: Início da assinatura
   - `cloudSyncStatus: Int16` - Status de sincronização
   - `lastCloudSync: Date?` - Última sincronização
 
@@ -289,219 +347,216 @@ O Fitter V2 implementa uma arquitetura sofisticada que combina **Core Data local
 
 ---
 
-### **🔧 Infraestrutura Core Data**
+### **🔧 Infraestrutura Core Data Atualizada**
 
-#### **CoreDataStack.swift**
+#### **PersistenceController.swift**
 - **Responsabilidades:**
   - Configuração centralizada do NSPersistentContainer
   - Gerenciamento de contextos (main + background)
-  - Configuração de sincronização automática
-  - Suporte a banco pré-populado
+  - Configuração de External Storage para Binary Data
+  - Migração automática (Model → FitterModel)
   - Operações de save com tratamento de erro
 
 - **Características:**
   - Singleton para acesso global
+  - External Storage configurado para sensorData
   - Contextos otimizados para sync em background
   - Histórico de mudanças habilitado
-  - Migração automática entre versões
 
-#### **CoreDataAdapter.swift**
+#### **CoreDataAdapter.swift** (refatorado)
 - **Responsabilidades:**
+  - Serialização/deserialização SensorData JSON
   - Conversão de dados do Apple Watch para Core Data
-  - Criação de CDHistorySet a partir de dados de sensores
-  - Mapeamento de dados de movimento (11 canais de sensores)
+  - Mapeamento Dictionary ↔ SensorData para sync Firestore
+  - Migração de dados legacy
 
 - **Características:**
   - Adapter Pattern para integração Watch
-  - Processamento de todos os canais de sensores
-  - Marcação automática para sincronização
+  - External Storage para Binary Data
+  - Versionamento e validação de dados
 
-#### **CoreDataModels.swift**
+#### **CoreDataModels.swift** (refatorado)
 - **Responsabilidades:**
   - Extensions das entidades Core Data
-  - Métodos de negócio (startWorkout, endWorkout, nextExercise)
-  - Conversões seguras (safeId, safeName, etc.)
-  - Lógica de conversão Current → History
+  - Propriedades convenientes (safeId, safeTitle, etc.)
+  - Conversões Set → Array para SwiftUI
+  - **LIMPEZA**: Removida lógica de negócio (migrada para Use Cases)
 
 - **Características:**
-  - Business logic diretamente nas entidades
-  - Fluxo completo de gestão de sessões
-  - Conversão automática Current → History
+  - Foco apenas em extensões Core Data
   - Propriedades computed para segurança
+  - Conversões para SwiftUI
 
 ---
 
-### **☁️ Sistema de Sincronização**
+### **☁️ Sistema de Sincronização Atualizado**
 
 #### **CloudSyncStatus.swift**
 - **Estados de Sync:**
-  - `synced = 0` - ✅ Sincronizado
-  - `pendingUpload = 1` - ⏳ Esperando upload
-  - `uploading = 2` - ⬆️ Fazendo upload
-  - `conflict = 3` - ⚠️ Conflito detectado
-  - `error = 4` - ❌ Erro na sincronização
+  - `pending = 0` - ⏳ Aguardando sincronização
+  - `synced = 1` - ✅ Sincronizado
 
-- **Estratégias de Resolução de Conflitos:**
-  - `localWins` - Local sempre ganha
-  - `remoteWins` - Remote sempre ganha
-  - `lastModified` - Último modificado ganha
-  - `manual` - Resolução manual pelo usuário
-
-#### **CloudSyncManager.swift**
+#### **CloudSyncManager.swift** (generalizado)
 - **Responsabilidades:**
-  - Sincronização bidirecional com Firestore
+  - Sincronização genérica para qualquer Syncable
   - Gerenciamento de filas de upload/delete
-  - Resolução automática de conflitos
+  - Retry automático com back-off
   - Conversão Core Data ↔ Firestore
 
 - **Fluxo de Sincronização:**
   1. **Upload**: Mudanças locais → Firestore
   2. **Download**: Mudanças remotas → Core Data
-  3. **Conflitos**: Estratégias configuráveis
+  3. **Retry**: Falhas retornam para pending
   4. **Filas**: Operações pendentes em background
 
 ---
 
-### **🔥 Integração Firebase**
+### **🔥 Integração Firebase Atualizada**
 
-#### **FirebaseExercise.swift**
+#### **FirebaseExercise.swift** (atualizado)
 - **Responsabilidades:**
   - Modelo para exercícios do Firestore
   - Conversão para CDExerciseTemplate
   - Conformidade com ExerciseDisplayable
 
-- **Características:**
-  - Struct para exercícios da coleção "exercisesList"
-  - Método de conversão para Core Data
-  - Hashable para seleção e comparação
+- **Novos campos:**
+  - `description: String` - Descrição do exercício
+  - `videoURL: String?` - URL do vídeo
+  - `thumbnailURL: String?` - URL da thumbnail
+  - `createdAt: Date` - Data de criação
+  - `updatedAt: Date` - Data de atualização
+  - `legSubgroup: String?` - Subgrupo (pernas)
 
-#### **FirebaseExerciseService.swift**
+- **Eliminações:**
+  - `imageName: String?` - Removido completamente
+
+#### **FirestoreExerciseRepository.swift** (refatorado)
 - **Responsabilidades:**
-  - Carregamento de exercícios do Firestore
-  - Cache local (opcional)
-  - Listeners em tempo real
-  - Filtros por grupo muscular e equipamento
+  - Repository direto para Firestore
+  - Busca de exercícios com filtros
+  - Streaming de vídeos
+  - Cache inteligente
 
 - **Características:**
-  - `@MainActor` para operações na thread principal
-  - Carregamento on-demand e listeners opcionais
-  - Filtros inteligentes com priorização
+  - Protocol + Implementation para testabilidade
+  - Dependency injection via inicializador
+  - Operações assíncronas com async/await
 
 ---
 
-### **⌚ Componentes Apple Watch**
+### **⌚ Componentes Apple Watch Atualizados**
 
-#### **WatchDataManager.swift**
+#### **MotionManager.swift** (refatorado)
 - **Responsabilidades:**
-  - Gerenciamento centralizado de dados no Apple Watch
-  - Recepção e armazenamento de dados do iPhone
-  - Cache local de dados pendentes (UserDefaults)
-  - Sincronização bidirecional com iPhone
-  - Mapeamento de contexto de sessão ativa
+  - Captura contínua de sensores com frequência variável
+  - Fase Execução: 50Hz (0.02s)
+  - Fase Descanso: 20Hz (0.05s)
+  - Bufferização de 100 amostras por chunk
+  - Detecção automática de fases (execução/descanso)
+  - Delegação do envio para WatchSessionManager
 
-- **Estados Gerenciados:**
-  - `workoutPlans: [WatchWorkoutPlan]` - Planos recebidos do iPhone
-  - `pendingSensorData: [WatchSensorData]` - Dados aguardando sincronização
-  - `isConnectedToPhone: Bool` - Status de conectividade
-  - `currentSessionContext: WatchSessionContext?` - Contexto da sessão ativa
+- **Sensores capturados:**
+  - Acelerômetro (X, Y, Z)
+  - Giroscópio (X, Y, Z)
+  - Gravidade (X, Y, Z)
+  - Orientação (Roll, Pitch, Yaw)
+  - Campo Magnético (se disponível)
 
-- **Sistema de Contexto:**
-  ```swift
-  struct WatchSessionContext: Codable {
-      let sessionId: String
-      let planId: String
-      let currentSetId: String        // ⭐ CHAVE para mapear sensores
-      let currentExerciseId: String
-      let isActive: Bool
-  }
-  ```
-
-#### **MotionManager.swift**
+#### **WorkoutPhaseManager.swift** (novo)
 - **Responsabilidades:**
-  - Integração com CoreMotion e HealthKit
-  - Captura de dados de sensores em tempo real (30Hz)
-  - Gerenciamento de sessões de treino
-  - Processamento e filtragem de dados (30Hz → 2Hz)
-  - Comunicação com WatchConnectivity
+  - Controle de estados execução/descanso
+  - Timer de descanso automático (10s)
+  - Notificações para usuário
+  - Ajuste de frequência de captura
+  - Override manual de fase
+  - Sincronização bidirecional Watch-iPhone
 
-- **Integração Dupla:**
-  - **CoreMotion**: Dados de movimento (acelerômetro, giroscópio, etc.)
-  - **HealthKit**: Frequência cardíaca, calorias, sessão oficial
+- **Funcionalidades:**
+  - Enum WorkoutPhase com samplingRate
+  - Timer de descanso com pausa/retomada
+  - Ações automáticas após timer
+  - Sincronização via WCSession
 
-- **Dados de Sensores (11 canais):**
-  ```swift
-  struct WatchSensorData: Codable {
-      // Movimento
-      let accelerationX/Y/Z: Double?    // Acelerômetro
-      let rotationX/Y/Z: Double?        // Giroscópio
-      let gravityX/Y/Z: Double?         // Gravidade
-      let attitudeRoll/Pitch/Yaw: Double? // Orientação
-      
-      // Saúde
-      let heartRate: Int?
-      let calories: Double?
-      
-      // Mapeamento com Core Data
-      let setId: UUID?        // CDCurrentSet.id
-      let sessionId: UUID?    // CDCurrentSession.id
-  }
-  ```
+#### **WatchSessionManager.swift** (novo)
+- **Responsabilidades:**
+  - Gerenciamento do WCSession no Watch
+  - Transferência assíncrona de chunks
+  - Gerenciamento de conexão Watch-iPhone
+  - Recebimento de comandos do iPhone
+  - Envio de heartRate/calories (a cada 2s)
+  - Sincronização de treinos Watch → iPhone
+
+- **Funcionalidades:**
+  - Implementar WCSessionDelegate
+  - Buffer e chunking de dados
+  - Envio em background
+  - Retry automático
+  - Monitoramento de reachability
 
 ---
 
-### **🔄 Fluxos de Dados Completos**
+### **🔄 Fluxos de Dados Atualizados**
 
-#### **Fluxo 1: Criação de Plano de Treino**
+#### **Fluxo 1: Criação de Plano de Treino (Clean Architecture)**
 ```
-1. UI (ListExerciseView)
+1. UI (WorkoutEditorView)
    ↓ Usuário seleciona exercícios do Firebase
    
 2. ViewModel (WorkoutViewModel)
-   ↓ Gerencia selectedExercises: Set<String>
+   ↓ Herda BaseViewModel, usa CreateWorkoutUseCase
    
-3. Service (WorkoutService)
-   ↓ Converte FirebaseExercise → CDExerciseTemplate
+3. Use Case (CreateWorkoutUseCase)
+   ↓ Orquestra WorkoutDataService + SyncWorkoutUseCase
    
-4. Manager (WorkoutManager)
-   ↓ Cria CDWorkoutPlan + CDPlanExercise
+4. Service (WorkoutDataService)
+   ↓ CRUD especializado para entidades de treino
    
-5. Repository (WorkoutRepository)
-   ↓ Persiste no Core Data
-   ↓ Marca cloudSyncStatus = .pendingUpload
+5. Sync (SyncWorkoutUseCase)
+   ↓ Upload para Firestore via CloudSyncManager
    
-6. Sync (CloudSyncManager)
-   ↓ Upload para Firestore collection "workoutPlans"
-   
-7. Watch (ConnectivityManager)
+6. Watch (WatchSessionManager)
    ↓ Envia planos atualizados para Apple Watch
 ```
 
-#### **Fluxo 2: Execução de Treino com Apple Watch**
-```
-1. iPhone: CDCurrentSession criada com UUID
-   ↓ CDCurrentExercise + CDCurrentSet criados
-   
-2. ConnectivityManager (iPhone)
-   ↓ Envia WatchSessionContext com currentSetId
-   
-3. WatchDataManager (Watch)
-   ↓ Armazena contexto com IDs para mapeamento
-   
-4. MotionManager (Watch)
-   ↓ Captura sensores (30Hz) → Filtra (2Hz)
-   ↓ Vincula dados ao currentSetId
-   
-5. WatchSensorData
-   ↓ 11 canais de sensores + mapeamento de IDs
-   
-6. Sincronização (Watch → iPhone)
-   ↓ CoreDataAdapter converte para CDHistorySet
-   ↓ CloudSyncManager agenda upload para Firestore
-```
+#### **Fluxo 2: FLUXO CORRETO DE NAVEGAÇÃO (GRANULAR - SÉRIES DINÂMICAS):**
 
-#### **Fluxo 3: Conversão Current → History**
+> **IMPORTANTE:** Este fluxo foi atualizado para refletir a lógica detalhada em @FLUXO_TREINO_COMPLETO.md
+
+StartWorkoutUseCase → CDCurrentSession + inicia MotionManager
+      ↓
+StartExerciseUseCase → Próximo exercício + finaliza anterior
+      ↓
+╔═══ LOOP SÉRIES (DINÂMICO - CONTROLADO PELO USUÁRIO) ══════════════════════════════╗
+║ 🎯 **LÓGICA UI:** WorkoutSessionView mostra APENAS 1 série no incio do exercício  ║
+║ 🎯 **CONTROLE:** Usuário decide quantas séries fazer via botão "+"                ║
+║ 🎯 **FLEXÍVEL:** 1 série mínima, sem máximo definido                              ║
+║                                                                                   ║
+║ StartSetUseCase → Inicia série atual                                              ║
+║       ↓                                                                           ║
+║ • Captura contínua de sensores (50 Hz)                                            ║
+║ • Chunks enviados a cada 100 amostras                                             ║
+║ • ML processa dados em tempo real                                                 ║
+║ • UI sincronizada Watch ↔ iPhone                                                  ║
+║ • Detecção automática de descanso                                                 ║
+║       ↓                                                                           ║
+║ EndSetUseCase → Finaliza série atual + persiste                                   ║
+║       ↓                                                                           ║
+║ 🔄 **DECISÃO DO USUÁRIO:**                                                        ║
+║ ├─ Botão "+" → StartSetUseCase (nova série do mesmo exercício)                    ║
+║ └─ Botão "Próximo" → EndExerciseUseCase (finalizar exercício)                     ║
+╚═══════════════════════════════════════════════════════════════════════════════════╝
+      ↓
+EndExerciseUseCase → Finaliza exercício + decide próximo passo + salva dados
+      ↓
+┌─ StartExerciseUseCase → Próximo exercício (se houver exercícios restantes)
+│        ↓
+│   (volta ao LOOP SÉRIES DINÂMICO)
+│
+└─ EndWorkoutUseCase → Finaliza treino + finaliza MotionManager + persiste histórico completo
+
+#### **Fluxo 3: Conversão Current → History (Otimizado)**
 ```
-1. CDAppUser.endWorkout()
+1. EndWorkoutUseCase
    ↓ CDCurrentSession.convertToHistory()
    
 2. Criação de CDWorkoutHistory
@@ -509,7 +564,7 @@ O Fitter V2 implementa uma arquitetura sofisticada que combina **Core Data local
    ↓ Para cada CDCurrentSet → CDHistorySet
    
 3. Preservação de dados de sensores
-   ↓ Todos os 11 canais mantidos no histórico
+   ↓ sensorData, heartRateData, caloriesData (External Storage)
    ↓ Timestamps e metadados preservados
    
 4. Limpeza
@@ -519,53 +574,19 @@ O Fitter V2 implementa uma arquitetura sofisticada que combina **Core Data local
 
 ---
 
-### **💡 Pontos Fortes da Arquitetura**
-
-1. **Separação Clara de Responsabilidades**
-   - Cada camada tem função específica e bem definida
-   - Baixo acoplamento entre componentes
-
-2. **Offline-First com Sync Inteligente**
-   - Core Data como fonte de verdade local
-   - Sincronização eventual com Firestore
-   - Resolução automática de conflitos
-
-3. **Integração Apple Watch Avançada**
-   - **11 canais de sensores**: Dados completos de movimento
-   - **Mapeamento inteligente**: setId vincula dados à série correta
-   - **Performance otimizada**: 30Hz → 2Hz filtering
-   - **Cache resiliente**: UserDefaults para dados pendentes
-
-4. **Flexibilidade de Fontes de Dados**
-   - **Exercícios**: Firebase (fonte) → Core Data (cache)
-   - **Planos**: Core Data (criação) → Firestore (sync)
-   - **Histórico**: Core Data + dados de sensores
-
-5. **Type Safety e Protocolos**
-   - **ExerciseDisplayable**: Interface comum para exercícios
-   - **CloudSyncable**: Protocolo de sincronização
-   - **Repository Pattern**: Abstração de persistência
-
-6. **Preview Support**
-   - Sistema completo de dados mock
-   - Core Data em memória para desenvolvimento
-   - Isolamento do ambiente de preview
-
----
-
-## 🔐 Fluxo de Autenticação
+## 🔐 **SISTEMA DE AUTENTICAÇÃO ATUALIZADO**
 
 ### 📱 **Visão Geral do Sistema de Auth**
 
-O Fitter V2 suporta múltiples métodos de autenticação através do Firebase Auth, com sincronização automática para Apple Watch.
+O Fitter V2 suporta múltiples métodos de autenticação através do **AuthUseCase**, com sincronização automática para Apple Watch.
 
 **Arquivos Principais:**
-- `AuthService.swift` - Serviço central de autenticação
-- `LoginViewModel.swift` - Lógica da tela de login
-- `CreateAccountViewModel.swift` - Lógica de criação de conta
+- `AuthUseCase.swift` - **NOVO**: Use Case central de autenticação
+- `AuthService.swift` - Serviço de autenticação (email/senha)
+- `LoginViewModel.swift` - Herda BaseViewModel, usa AuthUseCase
+- `CreateAccountViewModel.swift` - Herda BaseViewModel, usa AuthUseCase
 - `LoginView.swift` - Interface de login
 - `CreateAccountView.swift` - Interface de criação de conta
-- `ConnectivityManager.swift` - Sincronização com Apple Watch
 
 ---
 
@@ -577,19 +598,20 @@ O Fitter V2 suporta múltiples métodos de autenticação através do Firebase A
    - Validação básica de formato
 
 2. **Processamento** (`LoginViewModel.swift`)
-   - Chama `AuthService.signIn(email:password:)`
+   - Herda BaseViewModel
+   - Chama `AuthUseCase.signIn(with:)`
    - Gerencia estados de loading e erro
 
-3. **Autenticação** (`AuthService.swift`)
+3. **Autenticação** (`AuthUseCase.swift`)
    ```swift
-   func signIn(email: String, password: String) async throws
+   func signIn(with credentials: AuthCredentials) async throws -> AuthResult
    ```
-   - Autentica via `Firebase.Auth.auth().signIn()`
-   - Mapeia erros específicos do Firebase
+   - Orquestra AuthService para autenticação
+   - Mapeia erros específicos
    - Sincroniza status com Apple Watch
 
-4. **Sincronização Watch** (`ConnectivityManager.swift`)
-   - `sendAuthStatusToWatch()` notifica o Watch
+4. **Sincronização Watch** (via WatchSessionManager)
+   - Notifica o Watch sobre mudança de status
    - Transfere dados essenciais do usuário
 
 #### **Fluxo de Criação de Conta:**
@@ -597,112 +619,71 @@ O Fitter V2 suporta múltiples métodos de autenticação através do Firebase A
    - Nome, email, senha, confirmação
 
 2. **Validação** (`CreateAccountViewModel.swift`)
+   - Herda BaseViewModel
    - Validação de força da senha
    - Verificação de email válido
 
-3. **Criação** (`AuthService.swift`)
+3. **Criação** (`AuthUseCase.swift`)
    ```swift
-   func createAccount(name: String, email: String, password: String) async throws
+   func createAccount(with registration: AuthRegistration) async throws -> AuthResult
    ```
-   - Cria usuário no Firebase Auth
+   - Orquestra AuthService para criação
    - Salva perfil no Firestore
    - Atualiza displayName do usuário
 
 ---
 
-### 🔵 **2. Login com Google (Google Sign-In)**
+### 🔵 **2. Login Social (Google, Facebook, Apple)**
 
 #### **Configuração:**
 - `GoogleService-Info.plist` - Configuração do projeto Firebase
-- Google Sign-In SDK integrado
+- SDKs integrados: Google Sign-In, Facebook Login, Apple Sign In
 
-#### **Fluxo:**
+#### **Fluxo Unificado:**
 1. **Iniciação** (`LoginView.swift`)
-   - Botão "Entrar com Google"
-   - Chama `AuthService.signInWithGoogle()`
+   - Botões para cada provedor
+   - Chama métodos específicos do AuthUseCase
 
-2. **Autenticação Google** (`AuthService.swift`)
+2. **Autenticação** (`AuthUseCase.swift`)
    ```swift
-   func signInWithGoogle() async throws
+   func signInWithGoogle() async throws -> AuthResult
+   func signInWithFacebook() async throws -> AuthResult
+   func signInWithApple() async throws -> AuthResult
    ```
-   - Configura `GIDConfiguration` com clientID do Firebase
-   - Apresenta tela de login do Google
-   - Obtém tokens de acesso e ID
+   - Orquestra autenticação específica
+   - Integração com Firebase
+   - Sincronização automática
 
 3. **Integração Firebase:**
-   - Cria `GoogleAuthProvider.credential()`
-   - Autentica no Firebase com credencial Google
+   - Cria credenciais específicas do provedor
+   - Autentica no Firebase
    - Salva/atualiza dados no Firestore
 
 4. **Sincronização:**
    - Cria/atualiza `CDAppUser` no Core Data
-   - Notifica Apple Watch via `ConnectivityManager`
+   - Notifica Apple Watch via WatchSessionManager
 
 ---
 
-### 🔵 **3. Login com Facebook (Facebook Login)**
-
-#### **Configuração:**
-- Facebook SDK integrado
-- Permissões: `["public_profile", "email"]`
-
-#### **Fluxo:**
-1. **Iniciação** (`LoginView.swift`)
-   - Botão "Entrar com Facebook"
-   - Chama `AuthService.signInWithFacebook()`
-
-2. **Autenticação Facebook** (`AuthService.swift`)
-   ```swift
-   func signInWithFacebook() async throws
-   ```
-   - Usa `LoginManager` do Facebook SDK
-   - Solicita permissões de perfil e email
-   - Obtém `AccessToken`
-
-3. **Integração Firebase:**
-   - Cria `FacebookAuthProvider.credential()`
-   - Autentica no Firebase
-   - Salva dados do perfil no Firestore
-
-4. **Tratamento de Erros:**
-   - Login cancelado pelo usuário
-   - Erros de rede ou permissão
-   - Mapeamento para `AuthError.facebookSignInError`
-
----
-
-### 🍎 **4. Login com Apple (Sign in with Apple)**
-
-#### **Configuração:**
-- `Fitter V2.entitlements` - Capability "Sign in with Apple"
-- AuthenticationServices framework
-
-#### **Fluxo (Implementação Pendente):**
-1. **Interface** - Botão nativo do Apple Sign In
-2. **Autenticação** - `ASAuthorizationAppleIDProvider`
-3. **Integração Firebase** - `OAuthProvider.credential()`
-4. **Sincronização** - Mesmo fluxo dos outros métodos
-
----
-
-### ⌚ **5. Integração com Apple Watch**
+### ⌚ **3. Integração com Apple Watch**
 
 #### **Arquivos Envolvidos:**
-- `ConnectivityManager.swift` (Shared)
-- `WatchApp.swift` (Watch App)
-- Managers específicos do Watch
+- `WatchSessionManager.swift` - Comunicação Watch ↔ iPhone (no Watch)
+- `PhoneSessionManager.swift` - Comunicação Watch ↔ iPhone (no iPhone)
 
 #### **Fluxo de Sincronização:**
 
 1. **Detecção de Login** (iPhone)
    ```swift
-   // AuthService.swift
-   ConnectivityManager.shared.sendAuthStatusToWatch()
+   // AuthUseCase.swift
+   // WatchSessionManager/PhoneSessionManager são responsáveis pela comunicação
    ```
 
-2. **Envio de Dados** (`ConnectivityManager.swift`)
+2. **Envio de Dados** (`WatchSessionManager.swift`)
    ```swift
-   func sendMessage(_ message: [String: Any], replyHandler: ...)
+   // WatchSessionManager.swift
+   // Exemplo: Envio de status de autenticação para o iPhone
+   try await sendMessage(["type": "authStatus", "isAuthenticated": true])
    ```
    - Envia status de autenticação
    - Transfere dados essenciais do usuário
@@ -725,16 +706,16 @@ O Fitter V2 suporta múltiples métodos de autenticação através do Firebase A
 
 ---
 
-### 🗄️ **6. Integração com Firebase**
+### 🗄️ **4. Integração com Firebase**
 
 #### **Serviços Utilizados:**
 - **Firebase Auth** - Autenticação multi-provider
 - **Firestore** - Banco de dados de exercícios e perfis
-- **Firebase Storage** - (Futuro) Imagens de exercícios
+- **Firebase Storage** - Vídeos de exercícios
 
 #### **Fluxo de Dados:**
 
-1. **Autenticação** (`AuthService.swift`)
+1. **Autenticação** (`AuthUseCase.swift`)
    - Login via Firebase Auth
    - Suporte a múltiplos providers
 
@@ -748,7 +729,7 @@ O Fitter V2 suporta múltiples métodos de autenticação através do Firebase A
    - updatedAt: Timestamp
    ```
 
-3. **Exercícios** (`FirebaseExerciseService.swift`)
+3. **Exercícios** (`FirestoreExerciseRepository.swift`)
    ```
    Collection: exercisesList
    - templateId: String
@@ -756,88 +737,119 @@ O Fitter V2 suporta múltiples métodos de autenticação através do Firebase A
    - muscleGroup: String
    - equipment: String
    - gripVariation: String?
+   - description: String
+   - videoURL: String?
+   - thumbnailURL: String?
    ```
 
-4. **Sincronização Local** (`WorkoutService.swift`)
+4. **Sincronização Local** (`WorkoutDataService.swift`)
    - Converte exercícios Firebase → Core Data
    - Mantém cache local para offline
    - Sincronização bidirecional
 
 ---
 
-### 🔄 **7. Fluxo Completo de Autenticação**
+### 🔄 **5. Fluxo Completo de Autenticação**
 
 ```mermaid
 graph TD
     A[LoginView] --> B{Método de Login}
-    B -->|Email/Senha| C[AuthService.signIn]
-    B -->|Google| D[AuthService.signInWithGoogle]
-    B -->|Facebook| E[AuthService.signInWithFacebook]
-    B -->|Apple| F[AuthService.signInWithApple]
+    B -->|Email/Senha| C[AuthUseCase.signIn]
+    B -->|Google| D[AuthUseCase.signInWithGoogle]
+    B -->|Facebook| E[AuthUseCase.signInWithFacebook]
+    B -->|Apple| F[AuthUseCase.signInWithApple]
     
-    C --> G[Firebase Auth]
+    C --> G[AuthService]
     D --> G
     E --> G
     F --> G
     
-    G --> H[Firestore - Perfil]
-    G --> I[Core Data - CDAppUser]
+    G --> H[Firebase Auth]
+    H --> I[Firestore - Perfil]
+    H --> J[Core Data - CDAppUser]
     
-    I --> J[ConnectivityManager]
-    J --> K[Apple Watch Sync]
+    J --> K[WatchSessionManager/PhoneSessionManager]
+    K --> L[Apple Watch Sync]
     
-    H --> L[App Autenticado]
-    I --> L
-    K --> M[Watch Autenticado]
+    I --> M[App Autenticado]
+    J --> M
+    L --> N[Watch Autenticado]
 ```
 
 ---
 
-### 🛡️ **8. Segurança e Tratamento de Erros**
+### 🛡️ **6. Segurança e Tratamento de Erros**
 
-#### **Tipos de Erro** (`AuthError`)
-- `invalidEmail` - Email inválido
+#### **Tipos de Erro** (`AuthUseCaseError`)
+- `invalidCredentials` - Credenciais inválidas
 - `weakPassword` - Senha fraca (< 6 caracteres)
 - `emailAlreadyInUse` - Email já cadastrado
 - `userNotFound` - Usuário não encontrado
-- `wrongPassword` - Senha incorreta
 - `networkError` - Erro de conectividade
-- `googleSignInError` - Erro no login Google
-- `facebookSignInError` - Erro no login Facebook
+- `providerError` - Erro no provedor social
+- `unknownError` - Erro inesperado
 
-#### **Mapeamento de Erros** (`AuthService.mapFirebaseError()`)
-- Converte erros do Firebase para mensagens user-friendly
+#### **Mapeamento de Erros** (`AuthUseCase.mapError()`)
+- Converte erros específicos para mensagens user-friendly
 - Tratamento específico por tipo de erro
 - Logs detalhados para debugging
 
 ---
 
-### 📊 **9. Estados da Aplicação**
+### 📊 **7. Estados da Aplicação**
 
 #### **Estados de Autenticação:**
 - `isAuthenticated: Bool` - Status global
-- `currentUser: CDAppUser?` - Usuário atual (Core Data)
+- `currentUser: CDAppUser!` - **OBRIGATÓRIO**: Usuário atual (nunca nil após login)
 - `isLoading: Bool` - Estados de carregamento
 - `errorMessage: String?` - Mensagens de erro
 
 #### **Sincronização com Watch:**
 - `isReachable: Bool` - Watch conectado
-- `lastReceived: String?` - Última mensagem recebida
 - Status de sincronização em tempo real
 
 ---
 
-## 🚀 **Próximos Passos**
+## 🎯 **SISTEMA DE VÍDEO E EXERCÍCIOS**
 
-1. **Implementar Sign in with Apple** completo
-2. **Melhorar sincronização offline** entre dispositivos
-3. **Adicionar biometria** (Face ID/Touch ID) para login rápido
-4. **Implementar refresh tokens** para sessões longas
-5. **Adicionar analytics** de uso de autenticação
-6. **Otimizar sincronização de dados de sensores** para grandes volumes
-7. **Implementar cache inteligente** para exercícios do Firebase
-8. **Adicionar compressão** para dados de movimento do Apple Watch
+### **🎯 ExerciseCard Unificado**
+```swift
+ExerciseCard.swift (597 linhas)
+├── Mode.firebaseList (seleção de exercícios)
+├── Mode.workoutEditor (criação/edição de treinos)
+├── Mode.details (visualização de detalhes)
+├── Modal de vídeo 1:1 com descrição
+└── 70% menos código vs 3 componentes antigos
+```
+
+### **🔥 Firebase Integration Atualizada**
+```swift
+FirebaseExercise:
+├── videoURL (streaming via Firebase Storage)
+├── thumbnailURL (preview otimizada)
+├── description (detalhes do exercício)
+├── legSubgroup (exercícios de perna)
+├── createdAt/updatedAt (timestamps)
+└── Suporte completo a vídeos
+```
 
 ---
 
-*Este README documenta a arquitetura completa do Fitter V2. Para mais detalhes técnicos, consulte os arquivos de código mencionados.* 
+## 🏆 **CONCLUSÃO**
+
+O **Fitter** possui uma arquitetura **robusta e moderna** baseada em Clean Architecture, com separação clara de responsabilidades e foco em testabilidade. A estrutura atual suporta:
+
+- ✅ **Captura contínua** de dados de sensores (50Hz/20Hz)
+- ✅ **Sincronização bidirecional** Watch ↔ iPhone
+- ✅ **Integração Firebase** para exercícios com vídeos
+- ✅ **Sistema de autenticação** completo (multi-provider)
+- ✅ **Persistência otimizada** com External Storage
+- ✅ **UI reativa** com SwiftUI
+- ✅ **Login obrigatório** com sessão persistente
+- ✅ **Logout automático** por inatividade (7 dias)
+
+A refatoração em andamento está **61% concluída**, com foco em eliminar violações arquiteturais e completar a migração para Clean Architecture. O app está bem posicionado para escalabilidade e manutenibilidade futuras.
+
+---
+
+*Este README documenta a arquitetura completa e atualizada do Fitter V2. Para mais detalhes técnicos sobre a refatoração em andamento, consulte o arquivo REFATORAÇÃO.md.* 

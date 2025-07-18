@@ -52,6 +52,7 @@
  * ✅ Preparado para SyncWorkoutUseCase (item 23)
  * ✅ Clean Architecture - sem acesso direto ao Core Data
  * ✅ Tratamento de erros específicos do domínio
+ * ✅ ITEM 66: Bloqueio de funcionalidades premium - limite de 4 treinos para usuários free
  */
 
 import Foundation
@@ -60,6 +61,8 @@ import Foundation
 
 enum CreateWorkoutError: Error, LocalizedError {
     case invalidInput(String)
+    case workoutLimitExceeded(limit: Int, current: Int)
+    case subscriptionRequired(feature: String)
     case creationFailed(Error)
     case syncFailed(Error)
     
@@ -67,6 +70,10 @@ enum CreateWorkoutError: Error, LocalizedError {
         switch self {
         case .invalidInput(let message):
             return "Dados inválidos para criação do treino: \(message)"
+        case .workoutLimitExceeded(let limit, let current):
+            return "Limite de treinos excedido: \(current)/\(limit). Faça upgrade para Premium para treinos ilimitados."
+        case .subscriptionRequired(let feature):
+            return "Recurso premium necessário: \(feature). Faça upgrade para continuar."
         case .creationFailed(let error):
             return "Falha na criação do treino: \(error.localizedDescription)"
         case .syncFailed(let error):
@@ -136,15 +143,18 @@ final class CreateWorkoutUseCase: CreateWorkoutUseCaseProtocol {
     // MARK: - Properties
     
     private let workoutDataService: WorkoutDataServiceProtocol
+    private let subscriptionManager: SubscriptionManagerProtocol
     private let syncUseCase: SyncWorkoutUseCaseProtocol?
     
     // MARK: - Initialization
     
     init(
         workoutDataService: WorkoutDataServiceProtocol,
+        subscriptionManager: SubscriptionManagerProtocol,
         syncUseCase: SyncWorkoutUseCaseProtocol? = nil // Optional for testing - should be provided in production
     ) {
         self.workoutDataService = workoutDataService
+        self.subscriptionManager = subscriptionManager
         self.syncUseCase = syncUseCase
         
         print("🏋️‍♂️ CreateWorkoutUseCase inicializado")
@@ -161,7 +171,11 @@ final class CreateWorkoutUseCase: CreateWorkoutUseCaseProtocol {
             try input.validate()
             print("✅ Validação de entrada concluída")
             
-            // 2. Criar plano de treino via WorkoutDataService
+            // 2. Validar limite de treinos
+            try await validateWorkoutLimit(for: input.user)
+            print("✅ Validação de limite de treinos concluída")
+            
+            // 3. Criar plano de treino via WorkoutDataService
             let workoutPlan = try await createWorkoutPlan(input)
             print("✅ Plano de treino criado: \(workoutPlan.displayTitle)")
             
@@ -276,6 +290,59 @@ final class CreateWorkoutUseCase: CreateWorkoutUseCaseProtocol {
         }
     }
     
+    /// Valida limite de treinos para usuários free
+    /// ✅ Implementação do item 66 - bloqueio de funcionalidades premium
+    private func validateWorkoutLimit(for user: CDAppUser) async throws {
+        // ⚠️ REMOVER ANTES DO LANÇAMENTO: Sistema de admin para desenvolvimento
+        // Verificar se é usuário admin primeiro
+        if await subscriptionManager.isAdminUser(user) {
+            print("👑 [CREATE] Usuário admin detectado: treinos ilimitados")
+            return
+        }
+        
+        // ✅ Verificar status premium via SubscriptionManager
+        let status = await subscriptionManager.getSubscriptionStatus(for: user)
+        
+        switch status {
+        case .active(let type, _):
+            if type != .none {
+                print("💎 [CREATE] Usuário premium: treinos ilimitados")
+                return  // Premium: ilimitado
+            }
+        case .gracePeriod(let type, _):
+            if type != .none {
+                print("⏰ [CREATE] Usuário em grace period: treinos ilimitados")
+                return  // Grace period: manter benefícios
+            }
+        case .expired, .none:
+            // Continuar para verificar limite
+            break
+        }
+        
+        // ✅ Usuário free: verificar limite de 4 treinos
+        do {
+            let existingPlans = try await workoutDataService.fetchWorkoutPlans(for: user)
+            let currentCount = existingPlans.count
+            let maxWorkouts = 4
+            
+            if currentCount >= maxWorkouts {
+                print("🚫 [CREATE] Limite de treinos atingido: \(currentCount)/\(maxWorkouts)")
+                throw CreateWorkoutError.workoutLimitExceeded(limit: maxWorkouts, current: currentCount)
+            }
+            
+            print("✅ [CREATE] Limite de treinos OK: \(currentCount)/\(maxWorkouts)")
+        } catch let error as CreateWorkoutError {
+            throw error
+        } catch {
+            print("⚠️ [CREATE] Erro ao verificar limite de treinos: \(error)")
+            throw CreateWorkoutError.creationFailed(error)
+        }
+    }
+    
+    /// Sistema de admin movido para SubscriptionManager.isAdminUser() para evitar duplicação
+    /// ✅ Para desenvolvimento e testes sem limitações
+    /// ⚠️ REMOVER ANTES DO LANÇAMENTO: Sistema de admin apenas para desenvolvimento
+    
     private func cleanupPartialCreation(_ planExercises: [CDPlanExercise]) async {
         print("🧹 Limpando criação parcial de exercícios...")
         
@@ -294,6 +361,7 @@ final class CreateWorkoutUseCase: CreateWorkoutUseCaseProtocol {
 extension CreateWorkoutUseCase {
     
     /// Método de conveniência para criação rápida de treino
+    /// ✅ Inclui validação automática de limite de treinos (item 66)
     /// - Parameter title: Título do treino (opcional - se nil, gera automaticamente)
     func createQuickWorkout(
         title: String? = nil,
@@ -311,6 +379,7 @@ extension CreateWorkoutUseCase {
     }
     
     /// Método de conveniência para criação automática de treino (título gerado automaticamente)
+    /// ✅ Inclui validação automática de limite de treinos (item 66)
     func createAutoWorkout(
         exercises: [CDExerciseTemplate],
         user: CDAppUser // ✅ LOGIN OBRIGATÓRIO - BaseViewModel.currentUser nunca nil

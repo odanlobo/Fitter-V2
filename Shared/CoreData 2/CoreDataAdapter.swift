@@ -4,10 +4,10 @@
 //
 //  📋 IMPLEMENTAÇÃO DA SERIALIZAÇÃO/DESERIALIZAÇÃO sensorData JSON
 //  
-//  🎯 OBJETIVO: Otimizar modelo Core Data eliminando duplicação
-//  • ANTES: 18 atributos individuais de sensores (9 em CurrentSet + 9 em HistorySet)
-//  • DEPOIS: 2 campos JSON consolidados (1 em CurrentSet + 1 em HistorySet)
-//  • REDUÇÃO: 89% menos atributos no schema
+//  🎯 OBJETIVO: Otimizar modelo Core Data para histórico
+//  • ANTES: 18 atributos individuais de sensores em múltiplas entidades
+//  • DEPOIS: 1 campo JSON consolidado APENAS em CDHistorySet/CDWorkoutHistory
+//  • TEMPO REAL: heartRate, caloriesBurned, timers via HealthKitManager/TimerService
 //  
 //  🔄 FLUXO DE DADOS:
 //  1. Apple Watch → [String: Any] (dados individuais)
@@ -137,53 +137,32 @@ final class CoreDataAdapter {
         
         // Dados básicos da série
         if let reps = data["reps"] as? Int {
-            cdHistorySet.reps = Int32(reps)
+            cdHistorySet.targetReps = Int32(reps)
         }
         if let weight = data["weight"] as? Double {
             cdHistorySet.weight = weight
         }
         
-        // Dados de saúde (mantidos separados)
-        if let heartRate = data["heartRate"] as? Int {
-            cdHistorySet.heartRate = Int32(heartRate)
-        }
-        if let calories = data["calories"] as? Double {
-            cdHistorySet.caloriesBurned = calories
-        }
+        // Dados de saúde (mantidos separados para queries rápidas)
+        // NÃO salvamos em heartRateData/caloriesData aqui - apenas campos diretos para queries
         
-        // 🆕 CONSOLIDAÇÃO DE DADOS DE SENSORES EM JSON
-        // Substitui 15 atributos individuais por 1 struct unificado
-        let sensorData = SensorData(
-            // Acelerômetro (3 eixos) - detecta movimento linear
-            accelerationX: data["accelerationX"] as? Double,
-            accelerationY: data["accelerationY"] as? Double,
-            accelerationZ: data["accelerationZ"] as? Double,
+        // 🆕 CONSOLIDAÇÃO DE DADOS DE SENSORES EM JSON UNIFICADO (APENAS HISTÓRICO)
+        // SensorData é usado apenas para análise posterior e histórico
+        // Dados em tempo real (heartRate, caloriesBurned, timers) são processados separadamente
+        // via HealthKitManager, TimerService e WatchConnectivity
+        do {
+            let sensorData = try SensorData(from: data)
             
-            // Giroscópio (3 eixos) - detecta rotação
-            rotationX: data["rotationX"] as? Double,
-            rotationY: data["rotationY"] as? Double,
-            rotationZ: data["rotationZ"] as? Double,
+            // 🔄 SERIALIZAÇÃO AUTOMÁTICA PARA BINARY DATA (HISTÓRICO)
+            // Converte struct → JSON → Binary Data e armazena no Core Data
+            // Usa External Storage para otimizar performance com dados grandes
+            let binaryData = try sensorData.toBinaryData()
+            cdHistorySet.setValue(binaryData, forKey: "sensorData")
             
-            // Gravidade (3 eixos) - detecta orientação
-            gravityX: data["gravityX"] as? Double,
-            gravityY: data["gravityY"] as? Double,
-            gravityZ: data["gravityZ"] as? Double,
-            
-            // Atitude (3 eixos) - roll, pitch, yaw
-            attitudeRoll: data["attitudeRoll"] as? Double,
-            attitudePitch: data["attitudePitch"] as? Double,
-            attitudeYaw: data["attitudeYaw"] as? Double,
-            
-            // Campo magnético (3 eixos) - bússola
-            magneticFieldX: data["magneticFieldX"] as? Double,
-            magneticFieldY: data["magneticFieldY"] as? Double,
-            magneticFieldZ: data["magneticFieldZ"] as? Double
-        )
-        
-        // 🔄 SERIALIZAÇÃO AUTOMÁTICA PARA BINARY DATA
-        // Converte struct → JSON → Binary Data e armazena no Core Data
-        // Usa External Storage para otimizar performance com dados grandes
-        cdHistorySet.updateSensorData(sensorData)
+        } catch {
+            print("❌ Erro ao processar dados do Watch: \(error)")
+            return nil
+        }
         
         // Cloud sync status
         cdHistorySet.cloudSyncStatus = CloudSyncStatus.pending.rawValue
@@ -191,12 +170,12 @@ final class CoreDataAdapter {
         return cdHistorySet
     }
     
-    /// 🎯 Cria CDCurrentSet a partir de dados do Watch (usando sensorData JSON)
+    /// 🎯 Cria CDCurrentSet a partir de dados do Watch (SEM sensorData)
     /// 
-    /// **FUNCIONALIDADE IDÊNTICA ao HistorySet:**
-    /// - Mesma consolidação de 15 sensores → 1 campo JSON
-    /// - Mesma serialização otimizada para Binary Data
-    /// - Diferença: usado para treinos em andamento (isActive=true)
+    /// **DIFERENÇA DO HistorySet:**
+    /// - NÃO armazena sensorData (apenas para histórico)
+    /// - Dados em tempo real (heartRate, caloriesBurned, timers) via HealthKitManager/TimerService
+    /// - Usado para treinos em andamento (isActive=true)
     ///
     /// - Parameters:
     ///   - data: Dictionary com dados de sensores individuais do Watch
@@ -228,35 +207,10 @@ final class CoreDataAdapter {
             cdCurrentSet.weight = weight
         }
         
-        // Dados de saúde (mantidos separados)
-        if let heartRate = data["heartRate"] as? Int {
-            cdCurrentSet.heartRate = Int32(heartRate)
-        }
-        if let calories = data["calories"] as? Double {
-            cdCurrentSet.caloriesBurned = calories
-        }
-        
-        // 🆕 MESMA CONSOLIDAÇÃO DE DADOS (CurrentSet = HistorySet em estrutura)
-        let sensorData = SensorData(
-            accelerationX: data["accelerationX"] as? Double,
-            accelerationY: data["accelerationY"] as? Double,
-            accelerationZ: data["accelerationZ"] as? Double,
-            rotationX: data["rotationX"] as? Double,
-            rotationY: data["rotationY"] as? Double,
-            rotationZ: data["rotationZ"] as? Double,
-            gravityX: data["gravityX"] as? Double,
-            gravityY: data["gravityY"] as? Double,
-            gravityZ: data["gravityZ"] as? Double,
-            attitudeRoll: data["attitudeRoll"] as? Double,
-            attitudePitch: data["attitudePitch"] as? Double,
-            attitudeYaw: data["attitudeYaw"] as? Double,
-            magneticFieldX: data["magneticFieldX"] as? Double,
-            magneticFieldY: data["magneticFieldY"] as? Double,
-            magneticFieldZ: data["magneticFieldZ"] as? Double
-        )
-        
-        // 🔄 SERIALIZAÇÃO IDÊNTICA para Binary Data
-        cdCurrentSet.updateSensorData(sensorData)
+        // 🆕 DADOS DE SENSORES REMOVIDOS - NÃO NECESSÁRIOS EM TEMPO REAL
+        // Os dados de sensores (SensorData) são apenas para processamento posterior
+        // Dados em tempo real são: heartRate, caloriesBurned, timers
+        // Processados por: HealthKitManager, TimerService, WatchConnectivity
         
         return cdCurrentSet
     }
@@ -311,6 +265,24 @@ final class CoreDataAdapter {
             "magneticFieldZ": entity.value(forKey: "magneticFieldZ")
         ]
         
+        // 📍 MIGRAÇÃO DE DADOS DE LOCALIZAÇÃO (se aplicável)
+        // Verifica se a entidade suporta dados de localização
+        var locationDataMigrated = false
+        if entity.entity.name == "CDCurrentSession" || entity.entity.name == "CDWorkoutHistory" {
+            // Coleta dados de localização legacy se existirem
+            let legacyLocationData: [String: Any] = [
+                "latitude": entity.value(forKey: "latitude") as? Double ?? 0.0,
+                "longitude": entity.value(forKey: "longitude") as? Double ?? 0.0,
+                "locationAccuracy": entity.value(forKey: "locationAccuracy") as? Double ?? 0.0
+            ].compactMapValues { $0 }
+            
+            if !legacyLocationData.isEmpty {
+                print("📍 Dados de localização legacy encontrados: \(legacyLocationData.count) campos")
+                locationDataMigrated = true
+                // Dados de localização já estão nos campos corretos, apenas logamos
+            }
+        }
+        
         // Conta quantos atributos legados existem
         let existingLegacyCount = legacyAttributes.compactMap { $0.value }.count
         
@@ -343,7 +315,8 @@ final class CoreDataAdapter {
         // Serializa dados consolidados para JSON
         if let jsonData = serializeSensorData(sensorData) {
             entity.setValue(jsonData, forKey: "sensorData")
-            print("✅ Migração concluída - \(existingLegacyCount) atributos consolidados em sensorData JSON")
+            let locationInfo = locationDataMigrated ? " + dados de localização" : ""
+            print("✅ Migração concluída - \(existingLegacyCount) atributos consolidados em sensorData JSON\(locationInfo)")
         } else {
             print("❌ Falha na serialização durante migração")
         }
@@ -409,6 +382,139 @@ final class CoreDataAdapter {
         }
     }
     
+    // MARK: - Location Data Helpers
+    // 🗺️ Métodos para persistir e migrar dados de localização
+    
+    /// 📍 Extrai dados de localização do dictionary e aplica à entidade
+    /// 
+    /// **Processo:**
+    /// 1. Extrai latitude, longitude e locationAccuracy do dictionary
+    /// 2. Aplica os valores à entidade Core Data (CDCurrentSession ou CDWorkoutHistory)
+    /// 3. Fornece fallback seguro caso algum campo não exista
+    /// 
+    /// **Compatibilidade:**
+    /// - Suporta APENAS CDCurrentSession e CDWorkoutHistory (entidades principais)
+    /// - CDCurrentSet e CDHistorySet NÃO têm campos de localização
+    /// - Campos opcionais garantem compatibilidade com dados legacy
+    /// - Validação básica de coordenadas (latitude: -90 a 90, longitude: -180 a 180)
+    ///
+    /// - Parameters:
+    ///   - data: Dictionary com dados de localização (latitude, longitude, locationAccuracy)
+    ///   - entity: NSManagedObject (CDCurrentSession ou CDWorkoutHistory) para atualizar
+    static func applyLocationData(from data: [String: Any], to entity: NSManagedObject) {
+        // Validação de entidade - APENAS sessões e histórico têm localização
+        guard entity.entity.name == "CDCurrentSession" || entity.entity.name == "CDWorkoutHistory" else {
+            print("⚠️ Entidade \(entity.entity.name ?? "desconhecida") não suporta dados de localização")
+            print("ℹ️ Localização é suportada apenas em CDCurrentSession e CDWorkoutHistory")
+            return
+        }
+        
+        // Extração e validação de latitude
+        if let latitude = data["latitude"] as? Double {
+            if latitude >= -90.0 && latitude <= 90.0 {
+                entity.setValue(latitude, forKey: "latitude")
+                print("📍 Latitude aplicada: \(latitude)")
+            } else {
+                print("⚠️ Latitude inválida ignorada: \(latitude)")
+            }
+        }
+        
+        // Extração e validação de longitude
+        if let longitude = data["longitude"] as? Double {
+            if longitude >= -180.0 && longitude <= 180.0 {
+                entity.setValue(longitude, forKey: "longitude")
+                print("📍 Longitude aplicada: \(longitude)")
+            } else {
+                print("⚠️ Longitude inválida ignorada: \(longitude)")
+            }
+        }
+        
+        // Extração de precisão de localização (sempre positiva)
+        if let locationAccuracy = data["locationAccuracy"] as? Double {
+            if locationAccuracy >= 0.0 {
+                entity.setValue(locationAccuracy, forKey: "locationAccuracy")
+                print("📍 Precisão de localização aplicada: \(locationAccuracy)m")
+            } else {
+                print("⚠️ Precisão de localização inválida ignorada: \(locationAccuracy)")
+            }
+        }
+    }
+    
+    /// 📍 Migra dados de localização de CDCurrentSession para CDWorkoutHistory
+    /// 
+    /// **Processo:**
+    /// 1. Extrai latitude, longitude e locationAccuracy da sessão ativa
+    /// 2. Transfere os dados para o histórico de treino
+    /// 3. Garante que dados de localização sejam preservados no histórico
+    /// 
+    /// **Uso:** Chamado quando treino é finalizado (sessão ativa → histórico)
+    ///
+    /// - Parameters:
+    ///   - session: CDCurrentSession com dados de localização
+    ///   - history: CDWorkoutHistory para receber os dados
+    static func migrateLocationData(from session: NSManagedObject, to history: NSManagedObject) {
+        // Validação de entidades
+        guard session.entity.name == "CDCurrentSession" && history.entity.name == "CDWorkoutHistory" else {
+            print("⚠️ Migração de localização requer CDCurrentSession → CDWorkoutHistory")
+            return
+        }
+        
+        var locationDataFound = false
+        
+        // Migração de latitude
+        if let latitude = session.value(forKey: "latitude") as? Double {
+            history.setValue(latitude, forKey: "latitude")
+            locationDataFound = true
+        }
+        
+        // Migração de longitude
+        if let longitude = session.value(forKey: "longitude") as? Double {
+            history.setValue(longitude, forKey: "longitude")
+            locationDataFound = true
+        }
+        
+        // Migração de precisão
+        if let locationAccuracy = session.value(forKey: "locationAccuracy") as? Double {
+            history.setValue(locationAccuracy, forKey: "locationAccuracy")
+            locationDataFound = true
+        }
+        
+        if locationDataFound {
+            print("✅ Dados de localização migrados da sessão para o histórico")
+        } else {
+            print("ℹ️ Nenhum dado de localização encontrado na sessão para migrar")
+        }
+    }
+    
+    /// 📍 Converte dados de localização para Dictionary (sincronização/debug)
+    /// 
+    /// **Uso Principal:**
+    /// - Sincronização com Firestore
+    /// - Debug e logging de localização
+    /// - Backup de dados de localização
+    /// 
+    /// **Comportamento:** Remove valores nulos automaticamente
+    ///
+    /// - Parameter entity: NSManagedObject com dados de localização
+    /// - Returns: Dictionary com dados de localização não-nulos
+    static func locationDataToDictionary(from entity: NSManagedObject) -> [String: Any] {
+        var locationDict: [String: Any] = [:]
+        
+        if let latitude = entity.value(forKey: "latitude") as? Double {
+            locationDict["latitude"] = latitude
+        }
+        
+        if let longitude = entity.value(forKey: "longitude") as? Double {
+            locationDict["longitude"] = longitude
+        }
+        
+        if let locationAccuracy = entity.value(forKey: "locationAccuracy") as? Double {
+            locationDict["locationAccuracy"] = locationAccuracy
+        }
+        
+        return locationDict
+    }
+
     // MARK: - Dictionary Conversion
     // 🔄 Métodos auxiliares para conversão SensorData ↔ Dictionary (sincronização/debug)
     

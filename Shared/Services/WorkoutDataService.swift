@@ -114,6 +114,7 @@ protocol WorkoutDataServiceProtocol {
     func createWorkoutHistory(from session: CDCurrentSession, user: CDAppUser, date: Date) async throws -> CDWorkoutHistory
     func fetchWorkoutHistory(for user: CDAppUser) async throws -> [CDWorkoutHistory]
     func deleteWorkoutHistory(_ history: CDWorkoutHistory) async throws
+    func updateWorkoutHistoryLocation(workoutHistory: CDWorkoutHistory, latitude: Double, longitude: Double, locationAccuracy: Double) async throws
     
     // MARK: - History Exercises (Completed Exercises)
     func createHistoryExercise(name: String, order: Int32, workoutHistory: CDWorkoutHistory) async throws -> CDHistoryExercise
@@ -438,6 +439,8 @@ final class WorkoutDataService: WorkoutDataServiceProtocol {
         }
     }
     
+
+    
     func deleteCurrentSet(_ set: CDCurrentSet) async throws {
         try await handleCoreDataError {
             try await coreDataService.delete(set)
@@ -496,6 +499,18 @@ final class WorkoutDataService: WorkoutDataServiceProtocol {
         }
     }
     
+    func updateWorkoutHistoryLocation(workoutHistory: CDWorkoutHistory, latitude: Double, longitude: Double, locationAccuracy: Double) async throws {
+        try await handleCoreDataError {
+            workoutHistory.latitude = latitude
+            workoutHistory.longitude = longitude
+            workoutHistory.locationAccuracy = locationAccuracy
+            workoutHistory.cloudSyncStatus = CloudSyncStatus.pending.rawValue
+            
+            try await coreDataService.save()
+            print("📍 Localização atualizada no histórico: (\(latitude), \(longitude)) ±\(locationAccuracy)m")
+        }
+    }
+    
     // MARK: - History Exercises (Completed Exercises)
     
     func createHistoryExercise(name: String, order: Int32, workoutHistory: CDWorkoutHistory) async throws -> CDHistoryExercise {
@@ -529,9 +544,33 @@ final class WorkoutDataService: WorkoutDataServiceProtocol {
             historySet.restTime = currentSet.restTime
             historySet.heartRate = currentSet.heartRate
             historySet.caloriesBurned = currentSet.caloriesBurned
-            historySet.sensorData = currentSet.sensorData // Já serializado
+            historySet.sensorData = currentSet.sensorData // Dados brutos dos sensores
             historySet.exercise = exercise
             historySet.cloudSyncStatus = CloudSyncStatus.pending.rawValue
+            
+            // ✅ MIGRAÇÃO: Buscar TODOS os dados temporários do EndSetUseCase
+            if let temporaryData = EndSetUseCase.getTemporarySetData(for: currentSet.safeId) {
+                // Migrar dados de repetições processados pelo ML
+                historySet.repsCounterData = temporaryData.repsCounterData
+                
+                // Migrar dados de saúde coletados durante a série
+                historySet.heartRateData = temporaryData.heartRateData
+                historySet.caloriesData = temporaryData.caloriesData
+                
+                // Migrar dados brutos dos sensores (se disponíveis)
+                if let sensorData = temporaryData.finalSensorData {
+                    historySet.sensorData = try serializeSensorData(sensorData)
+                }
+                
+                // Limpar cache temporário
+                EndSetUseCase.clearTemporarySetData(for: currentSet.safeId)
+                
+                print("📊 Dados completos migrados para histórico:")
+                print("   - RepsCounterData: \(temporaryData.repsCounterData?.count ?? 0) bytes")
+                print("   - HeartRateData: \(temporaryData.heartRateData?.count ?? 0) bytes") 
+                print("   - CaloriesData: \(temporaryData.caloriesData?.count ?? 0) bytes")
+                print("   - SensorData: \(temporaryData.finalSensorData != nil ? "✅" : "❌")")
+            }
             
             try await coreDataService.save()
             
@@ -597,5 +636,19 @@ extension WorkoutDataService {
     /// Busca sensor data deserializado de um CDHistorySet
     func getSensorData(from historySet: CDHistorySet) throws -> SensorData? {
         return try deserializeSensorData(historySet.sensorData)
+    }
+} 
+
+// MARK: - Extension for RepsCounterData Access
+
+extension WorkoutDataService {
+    
+    /// Busca timeline de movimento de um CDHistorySet (apenas histórico tem repsCounterData)
+    func getMovementTimeline(from historySet: CDHistorySet) throws -> MovementTimeline? {
+        guard let repsCounterData = historySet.repsCounterData else {
+            return nil
+        }
+        
+        return try MovementTimeline.fromJSONData(repsCounterData)
     }
 } 

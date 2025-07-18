@@ -50,8 +50,8 @@ open class BaseViewModel: ObservableObject {
     /// Serviço de operações Core Data
     protected let coreDataService: CoreDataServiceProtocol
     
-    /// Serviço de autenticação (será migrado para AuthUseCase no item 34)
-    protected let authService: AuthService
+    /// Use Case de autenticação (Clean Architecture)
+    protected let authUseCase: AuthUseCaseProtocol
     
     // MARK: - Estado de Preview
     
@@ -67,16 +67,16 @@ open class BaseViewModel: ObservableObject {
     
     // MARK: - Inicialização
     
-    /// Inicializa BaseViewModel com dependências injetadas
+    /// Inicializa BaseViewModel com dependências injetadas via DI
     /// - Parameters:
     ///   - coreDataService: Serviço para operações Core Data
-    ///   - authService: Serviço de autenticação
+    ///   - authUseCase: Use Case de autenticação (OBRIGATÓRIO via DI)
     public init(
         coreDataService: CoreDataServiceProtocol = CoreDataService(),
-        authService: AuthService = AuthService.shared
+        authUseCase: AuthUseCaseProtocol = AuthUseCase(authService: AuthService())
     ) {
         self.coreDataService = coreDataService
-        self.authService = authService
+        self.authUseCase = authUseCase
         
         setupUserObserver()
     }
@@ -110,7 +110,10 @@ open class BaseViewModel: ObservableObject {
         
         do {
             return try await operation()
-        } catch let error as AuthError {
+        } catch let error as AuthUseCaseError {
+            showError(message: error.localizedDescription)
+            return nil
+        } catch let error as AuthServiceError {
             showError(message: error.localizedDescription)
             return nil
         } catch let error as CoreDataError {
@@ -131,7 +134,10 @@ open class BaseViewModel: ObservableObject {
         
         do {
             return try await operation()
-        } catch let error as AuthError {
+        } catch let error as AuthUseCaseError {
+            showError(message: error.localizedDescription)
+            return nil
+        } catch let error as AuthServiceError {
             showError(message: error.localizedDescription)
             return nil
         } catch let error as CoreDataError {
@@ -167,16 +173,24 @@ open class BaseViewModel: ObservableObject {
     
     /// Realiza login do usuário
     /// - Parameter credentials: Credenciais de login
-    public func login(with credentials: LoginCredentials) async {
-        let user = try await authService.signIn(credentials)
-        self.currentUser = user
+    public func login(with credentials: AuthCredentials) async {
+        do {
+            let result = try await authUseCase.signIn(with: credentials)
+            self.currentUser = result.user
+        } catch {
+            showError(message: error.localizedDescription)
+        }
     }
     
     /// Realiza logout manual do usuário
     /// ⚠️ ÚNICO meio de deslogar - app mantém sessão mesmo ao fechar
     public func logout() async {
-        try await authService.signOut()
-        self.currentUser = nil
+        do {
+            try await authUseCase.signOut()
+            self.currentUser = nil
+        } catch {
+            showError(message: error.localizedDescription)
+        }
     }
     
     // MARK: - Métodos Privados
@@ -188,18 +202,22 @@ open class BaseViewModel: ObservableObject {
         if isPreviewMode { return }
         #endif
         
-        // ✅ LOGIN OBRIGATÓRIO: Inicializa com usuário atual do AuthService
-        // Se não houver usuário, app mostrará tela de login
-        currentUser = authService.currentUser
+        // ✅ LOGIN OBRIGATÓRIO: Restaura sessão se existir
+        Task {
+            if let user = await authUseCase.restoreSession() {
+                await MainActor.run {
+                    self.currentUser = user
+                }
+            }
+        }
         
-        // TODO: Substituir por AuthUseCase no item 34
         // Observa mudanças no estado de autenticação
         NotificationCenter.default
             .publisher(for: .authStateChanged)
             .sink { [weak self] _ in
                 Task { @MainActor in
-                    // ✅ SESSÃO PERSISTENTE: Atualiza apenas se usuário válido
-                    if let user = self?.authService.currentUser {
+                    // ✅ SESSÃO PERSISTENTE: Verifica se há usuário válido
+                    if let user = await self?.authUseCase.restoreSession() {
                         self?.currentUser = user
                     }
                     // Se user for nil, mantém o anterior até logout manual
@@ -208,24 +226,27 @@ open class BaseViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    // Adicionar método de verificação de inatividade
-    func checkAndHandleInactivity() async {
-        if authService.checkInactivityTimeout() {
-            await authService.logoutDueToInactivity()
-            
-            // Limpar dados locais sensíveis
-            currentUser = nil
-            
-            // Mostrar mensagem explicativa
-            await MainActor.run {
-                showError(
-                    title: "Sessão Expirada", 
-                    message: "Por segurança, você foi deslogado após 7 dias de inatividade. Faça login novamente."
-                )
+    // MARK: - Métodos de Inatividade
+    
+    /// Verifica e trata logout por inatividade
+    public func checkAndHandleInactivity() async {
+        if authUseCase.checkInactivityTimeout() {
+            do {
+                try await authUseCase.logoutDueToInactivity()
+                
+                // Limpar dados locais sensíveis
+                currentUser = nil
+                
+                // Mostrar mensagem explicativa
+                await MainActor.run {
+                    showError(message: "Por segurança, você foi deslogado após 7 dias de inatividade. Faça login novamente.")
+                }
+            } catch {
+                showError(message: "Erro ao processar logout por inatividade: \(error.localizedDescription)")
             }
         } else {
             // Atualiza último acesso
-            authService.updateLastAppOpenDate()
+            authUseCase.updateLastAppOpenDate()
         }
     }
 }
@@ -236,7 +257,7 @@ extension BaseViewModel {
     /// Indica se o usuário está autenticado
     /// ✅ LOGIN OBRIGATÓRIO: Sempre true após login inicial (sessão persistente)
     public var isAuthenticated: Bool {
-        return currentUser != nil && authService.isAuthenticated
+        return currentUser != nil
     }
     
     /// Indica se há alguma operação em andamento
@@ -265,8 +286,8 @@ extension BaseViewModel {
             currentUser = user
             print("🎯 BaseViewModel configurado para preview com usuário: \(user.safeName)")
         } else {
-            // Tenta buscar usuário do contexto de preview
-            let context = PreviewCoreDataStack.shared.viewContext
+            // ✅ CORREÇÃO: Usar MockPersistenceController.shared em vez de PreviewCoreDataStack
+            let context = MockPersistenceController.shared.viewContext
             let fetch: NSFetchRequest<CDAppUser> = CDAppUser.fetchRequest()
             if let user = try? context.fetch(fetch).first {
                 currentUser = user
@@ -286,8 +307,9 @@ extension BaseViewModel {
         with mockUser: CDAppUser? = nil,
         mockCoreDataService: CoreDataServiceProtocol? = nil
     ) -> BaseViewModel {
+        // ✅ CORREÇÃO: Usar MockPersistenceController.shared em vez de PreviewCoreDataStack
         let coreDataService = mockCoreDataService ?? CoreDataService(
-            persistenceController: PreviewCoreDataStack.shared.persistenceController
+            persistenceController: MockPersistenceController.shared
         )
         
         let vm = BaseViewModel(coreDataService: coreDataService)

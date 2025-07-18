@@ -2,39 +2,59 @@
 //  ListExerciseViewModel.swift
 //  Fitter V2
 //
-//  Created by Daniel Lobo on 14/06/25.
+//  REFATORADO em 15/12/25 - ITEM 71 ✅
+//  RESPONSABILIDADE: Modernizar para herdar de BaseViewModel mantendo filtros existentes
+//  MIGRAÇÃO: Herança de BaseViewModel + eliminação de duplicação de estados
+//  ARQUITETURA: Clean Architecture com BaseViewModel inheritance implementada
 //
 
 import SwiftUI
 import Combine
 
 @MainActor
-class ListExerciseViewModel: ObservableObject {
-    // MARK: - Public States
+class ListExerciseViewModel: BaseViewModel {
+    // MARK: - Public States (específicos do ListExercise)
     @Published var selectedMuscleGroup: MuscleGroup? = nil
     @Published var selectedEquipment: String? = nil
     @Published var selectedGrip: String? = nil
     @Published var showGripFilter: Bool = true
     @Published var showEquipmentFilter: Bool = true
-    @Published var isLoading: Bool = false
     @Published var exercises: [FirebaseExercise] = []
     @Published var searchText: String = ""
     
     // MARK: - Selected Exercises Tracking
     var selectedExerciseIds: Set<String> = []
     
-    // MARK: - Dependencies
-    private let exerciseService: FirebaseExerciseService
-    private var cancellables = Set<AnyCancellable>()
-
-    // MARK: - Init
-    init(exerciseService: FirebaseExerciseService = .shared) {
-        self.exerciseService = exerciseService
-        self.exercises = exerciseService.exercises
-        observeService()
+    // MARK: - Dependencies (Clean Architecture)
+    private let fetchExercisesUseCase: FetchFBExercisesUseCaseProtocol
+    
+    // MARK: - Init (Dependency Injection)
+    init(
+        fetchExercisesUseCase: FetchFBExercisesUseCaseProtocol,
+        coreDataService: CoreDataServiceProtocol,
+        authUseCase: AuthUseCaseProtocol
+    ) {
+        self.fetchExercisesUseCase = fetchExercisesUseCase
+        super.init(coreDataService: coreDataService, authUseCase: authUseCase)
+        print("🎯 ListExerciseViewModel inicializado com BaseViewModel + FetchFBExercisesUseCase")
     }
     
-    // MARK: - Filtering Logic
+    // MARK: - Convenience Init (para compatibilidade e previews)
+    convenience init(fetchUseCase: FetchFBExercisesUseCaseProtocol) {
+        // Para manter compatibilidade, cria serviços padrão
+        let coreDataService = CoreDataService()
+        let authService = AuthService(coreDataService: coreDataService)
+        let authUseCase = AuthUseCase(authService: authService)
+        
+        self.init(
+            fetchExercisesUseCase: fetchUseCase,
+            coreDataService: coreDataService,
+            authUseCase: authUseCase
+        )
+        print("🔄 ListExerciseViewModel com UseCase personalizado")
+    }
+    
+    // MARK: - Filtering Logic (PRESERVADO 100%)
 
     /// Grupos musculares que possuem exercícios disponíveis
     var availableMuscleGroups: [MuscleGroup] {
@@ -172,7 +192,7 @@ class ListExerciseViewModel: ObservableObject {
             }
     }
 
-    // MARK: - Data Loading
+    // MARK: - Data Loading (REFATORADO com BaseViewModel)
 
     func loadExercises() async {
         #if DEBUG
@@ -181,25 +201,39 @@ class ListExerciseViewModel: ObservableObject {
             return
         }
         #endif
-        isLoading = true
-        await exerciseService.loadExercises()
-        exercises = exerciseService.exercises
-        isLoading = false
-    }
-
-    // MARK: - Observers
-
-    private func observeService() {
-        // Observe atualizações do serviço de exercícios do Firebase
-        exerciseService.$exercises
-            .receive(on: DispatchQueue.main)
-            .assign(to: &$exercises)
-        exerciseService.$isLoading
-            .receive(on: DispatchQueue.main)
-            .assign(to: &$isLoading)
+        
+        // ✅ Usa BaseViewModel.withLoading() para gerenciar estado
+        await withLoading {
+            let input = FetchFBExercisesInput(
+                muscleGroup: selectedMuscleGroup?.rawValue,
+                equipment: selectedEquipment,
+                searchText: searchText.isEmpty ? nil : searchText,
+                limit: 100,
+                sortBy: "name"
+            )
+            
+            let output = try await fetchExercisesUseCase.fetchExercises(input)
+            exercises = output.exercises
+            print("✅ \(exercises.count) exercícios carregados via UseCase")
+        }
     }
     
-    // MARK: - Filtros
+    /// Busca exercícios por texto livre
+    func searchExercises() async {
+        guard !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            await loadExercises()
+            return
+        }
+        
+        // ✅ Usa BaseViewModel.withLoading() para gerenciar estado
+        await withLoading {
+            let searchResults = try await fetchExercisesUseCase.searchExercises(query: searchText)
+            exercises = searchResults
+            print("🔍 \(exercises.count) exercícios encontrados para '\(searchText)'")
+        }
+    }
+    
+    // MARK: - Filtros (PRESERVADO)
 
     func resetFilters() {
         selectedMuscleGroup = nil
@@ -207,16 +241,52 @@ class ListExerciseViewModel: ObservableObject {
         selectedGrip = nil
         showGripFilter = true
         showEquipmentFilter = true
+        
+        // Recarrega exercícios sem filtros
+        Task {
+            await loadExercises()
+        }
     }
     
-    // MARK: - Selected Exercises Management
+    // MARK: - Selected Exercises Management (PRESERVADO)
     
     func updateSelectedExercises(_ selectedIds: Set<String>) {
         selectedExerciseIds = selectedIds
         objectWillChange.send() // Força atualização da UI para reordenar lista
     }
     
-    // MARK: - Debug Helper (Exemplo de como a ordenação funciona)
+    // MARK: - Reactive Listeners (REFATORADO)
+    
+    /// Inicia monitoramento de mudanças de filtros para recarregar automaticamente
+    func startReactiveLoading() {
+        // Recarrega exercícios quando filtros mudam
+        $selectedMuscleGroup
+            .combineLatest($selectedEquipment, $selectedGrip)
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .sink { [weak self] _, _, _ in
+                Task { @MainActor [weak self] in
+                    await self?.loadExercises()
+                }
+            }
+            .store(in: &cancellables)
+        
+        // Busca quando texto de pesquisa muda
+        $searchText
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .sink { [weak self] _ in
+                Task { @MainActor [weak self] in
+                    await self?.searchExercises()
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    /// Para o monitoramento reativo
+    func stopReactiveLoading() {
+        cancellables.removeAll()
+    }
+    
+    // MARK: - Debug Helper (PRESERVADO)
     
     /// Exemplo de como a ordenação funciona:
     /// Exercícios: ["Supino Inclinado", "Agachamento", "Supino Reto", "Rosca Direta"]
@@ -245,10 +315,19 @@ class ListExerciseViewModel: ObservableObject {
     }
 }
 
+// MARK: - Preview Support
+
 #if DEBUG
 extension ListExerciseViewModel {
     static var preview: ListExerciseViewModel {
-        let vm = ListExerciseViewModel(exerciseService: .preview)
+        // Mock UseCase para previews
+        let mockRepository = MockFirestoreExerciseRepository()
+        let mockUseCase = FetchFBExercisesUseCase(repository: mockRepository)
+        let vm = ListExerciseViewModel(fetchExercisesUseCase: mockUseCase)
+        
+        // Ativa modo preview
+        vm.isPreviewMode = true
+        
         // Popula com exercícios mockados
         vm.exercises = [
             FirebaseExercise(
@@ -257,7 +336,10 @@ extension ListExerciseViewModel {
                 muscleGroup: "chest",
                 equipment: "Barra",
                 gripVariation: "Pronada",
-                imageName: "chest_1"
+                description: "Exercício básico para peitorais",
+                videoURL: "https://example.com/video1.mp4",
+                createdAt: Date(),
+                updatedAt: Date()
             ),
             FirebaseExercise(
                 templateId: "preview_back_1",
@@ -265,7 +347,10 @@ extension ListExerciseViewModel {
                 muscleGroup: "back",
                 equipment: "Polia",
                 gripVariation: "Pronada",
-                imageName: "back_1"
+                description: "Exercício para dorsais",
+                videoURL: "https://example.com/video2.mp4",
+                createdAt: Date(),
+                updatedAt: Date()
             ),
             FirebaseExercise(
                 templateId: "preview_shoulders_1",
@@ -273,10 +358,28 @@ extension ListExerciseViewModel {
                 muscleGroup: "shoulders",
                 equipment: "Halteres",
                 gripVariation: "Neutra",
-                imageName: "shoulders_1"
+                description: "Exercício para ombros",
+                videoURL: "https://example.com/video3.mp4",
+                createdAt: Date(),
+                updatedAt: Date()
             )
         ]
         return vm
+    }
+}
+
+// MARK: - Mock Repository para Previews
+
+private class MockFirestoreExerciseRepository: FirestoreExerciseRepositoryProtocol {
+    func fetchExercises(
+        muscleGroup: String?,
+        equipment: String?,
+        searchText: String?,
+        limit: Int,
+        sortBy: String
+    ) async throws -> [FirebaseExercise] {
+        // Retorna exercícios mockados para previews
+        return []
     }
 }
 #endif

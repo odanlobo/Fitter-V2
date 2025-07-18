@@ -73,7 +73,10 @@ struct WorkoutView: View {
             }
             .navigationBarHidden(true)
             .navigationDestination(isPresented: $showCreateWorkout) {
-                CreateWorkoutView(viewModel: viewModel)
+                WorkoutEditorView.createMode(viewModel: viewModel)
+            }
+            .navigationDestination(item: $selectedPlan) { plan in
+                WorkoutEditorView.editMode(plan: plan, viewModel: viewModel)
             }
             .alert("Erro", isPresented: $showError) {
                 Button("OK") { }
@@ -88,21 +91,3 @@ struct WorkoutView: View {
     }
 }
 
-struct WorkoutView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            AnyView(
-                WorkoutView()
-                    .environment(\.managedObjectContext, PreviewCoreDataStack.shared.viewContext)
-                    .environmentObject(LoginViewModel.preview)
-                    .previewDisplayName("Com dados mockados")
-            )
-            AnyView(
-                WorkoutView()
-                    .environment(\.managedObjectContext, PreviewCoreDataStack.shared.viewContext)
-                    .environmentObject(LoginViewModel.emptyPreview)
-                    .previewDisplayName("Sem dados")
-            )
-        }
-    }
-}

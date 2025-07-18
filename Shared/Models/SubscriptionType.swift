@@ -150,33 +150,141 @@ extension SubscriptionType {
 
 // MARK: - Status da Assinatura
 
-enum SubscriptionStatus: String, CaseIterable, Codable {
-    case none = "none"
-    case active = "active"
-    case expired = "expired"
-    case gracePeriod = "grace_period"
-    case billingRetry = "billing_retry"
-    case cancelled = "cancelled"
+/// Status detalhado da assinatura do usuário
+/// ✅ Versão unificada para todo o projeto (AuthUseCase + SubscriptionManager)
+enum SubscriptionStatus: Codable, CustomStringConvertible {
+    case none
+    case active(type: SubscriptionType, expiresAt: Date)
+    case expired(type: SubscriptionType, expiredAt: Date)
+    case gracePeriod(type: SubscriptionType, expiresAt: Date)
+    
+    // MARK: - Computed Properties
+    
+    var isActive: Bool {
+        switch self {
+        case .active, .gracePeriod: return true
+        case .none, .expired: return false
+        }
+    }
+    
+    var isPremium: Bool {
+        switch self {
+        case .active(let type, _), .gracePeriod(let type, _):
+            return type != .none
+        case .none, .expired:
+            return false
+        }
+    }
+    
+    var type: SubscriptionType {
+        switch self {
+        case .active(let type, _), .expired(let type, _), .gracePeriod(let type, _):
+            return type
+        case .none:
+            return .none
+        }
+    }
     
     var displayName: String {
         switch self {
         case .none:
             return "Sem assinatura"
-        case .active:
-            return "Ativa"
-        case .expired:
-            return "Expirada"
-        case .gracePeriod:
-            return "Período de graça"
-        case .billingRetry:
-            return "Tentando cobrança"
-        case .cancelled:
-            return "Cancelada"
+        case .active(let type, _):
+            return "\(type.displayName) Ativa"
+        case .expired(let type, _):
+            return "\(type.displayName) Expirada"
+        case .gracePeriod(let type, _):
+            return "\(type.displayName) Grace Period"
         }
     }
     
-    var isValid: Bool {
-        return self == .active || self == .gracePeriod
+    var description: String {
+        return displayName
+    }
+    
+    // MARK: - Codable Implementation
+    
+    private enum CodingKeys: String, CodingKey {
+        case type = "status_type"
+        case subscriptionType = "subscription_type"
+        case date = "date"
+    }
+    
+    private enum StatusType: String, Codable {
+        case none, active, expired, gracePeriod
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let statusType = try container.decode(StatusType.self, forKey: .type)
+        
+        switch statusType {
+        case .none:
+            self = .none
+        case .active:
+            let subscriptionType = try container.decode(SubscriptionType.self, forKey: .subscriptionType)
+            let date = try container.decode(Date.self, forKey: .date)
+            self = .active(type: subscriptionType, expiresAt: date)
+        case .expired:
+            let subscriptionType = try container.decode(SubscriptionType.self, forKey: .subscriptionType)
+            let date = try container.decode(Date.self, forKey: .date)
+            self = .expired(type: subscriptionType, expiredAt: date)
+        case .gracePeriod:
+            let subscriptionType = try container.decode(SubscriptionType.self, forKey: .subscriptionType)
+            let date = try container.decode(Date.self, forKey: .date)
+            self = .gracePeriod(type: subscriptionType, expiresAt: date)
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        switch self {
+        case .none:
+            try container.encode(StatusType.none, forKey: .type)
+        case .active(let type, let date):
+            try container.encode(StatusType.active, forKey: .type)
+            try container.encode(type, forKey: .subscriptionType)
+            try container.encode(date, forKey: .date)
+        case .expired(let type, let date):
+            try container.encode(StatusType.expired, forKey: .type)
+            try container.encode(type, forKey: .subscriptionType)
+            try container.encode(date, forKey: .date)
+        case .gracePeriod(let type, let date):
+            try container.encode(StatusType.gracePeriod, forKey: .type)
+            try container.encode(type, forKey: .subscriptionType)
+            try container.encode(date, forKey: .date)
+        }
+    }
+}
+
+// MARK: - Legacy Support (para compatibilidade com versões anteriores)
+
+extension SubscriptionStatus {
+    /// Inicializa a partir de String simples (para compatibilidade com Core Data legado)
+    init?(legacyString: String) {
+        switch legacyString.lowercased() {
+        case "none", "":
+            self = .none
+        case "active":
+            self = .active(type: .monthly, expiresAt: Date.distantFuture) // Fallback
+        case "expired":
+            self = .expired(type: .monthly, expiredAt: Date.distantPast) // Fallback
+        case "grace_period":
+            self = .gracePeriod(type: .monthly, expiresAt: Date.distantFuture) // Fallback
+        default:
+            return nil
+        }
+    }
+    
+    /// Converte para String simples (para compatibilidade com Core Data legado)
+    var legacyString: String {
+        switch self {
+        case .none: return "none"
+        case .active: return "active"
+        case .expired: return "expired"
+        case .gracePeriod: return "grace_period"
+        }
     }
 }
 

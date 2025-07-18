@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct PendingLoginView: View {
-    @EnvironmentObject var dataManager: WatchDataManager
-    @StateObject private var connectivity = ConnectivityManager.shared
+    @EnvironmentObject var sessionManager: WatchSessionManager
+    @EnvironmentObject var connectivity: ConnectivityManager
     
     var body: some View {
         ZStack {
@@ -34,17 +34,26 @@ struct PendingLoginView: View {
                 
                 // Status de conexão
                 HStack(spacing: 8) {
-                    Image(systemName: dataManager.isConnectedToPhone ? "iphone" : "iphone.slash")
-                        .foregroundColor(dataManager.isConnectedToPhone ? .green : .red)
+                    Image(systemName: sessionManager.isConnectedToPhone ? "iphone" : "iphone.slash")
+                        .foregroundColor(sessionManager.isConnectedToPhone ? .green : .red)
                     
-                    Text(dataManager.isConnectedToPhone ? "Conectado" : "Desconectado")
+                    Text(sessionManager.isConnectedToPhone ? "Conectado" : "Desconectado")
                         .font(.caption2)
-                        .foregroundColor(dataManager.isConnectedToPhone ? .green : .red)
+                        .foregroundColor(sessionManager.isConnectedToPhone ? .green : .red)
                 }
                 .padding(.top)
             }
             .padding()
         }
+    }
+}
+
+// MARK: - Preview
+struct PendingLoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        PendingLoginView()
+            .environmentObject(WatchSessionManager())
+            .environmentObject(ConnectivityManager.shared)
     }
 } 
 

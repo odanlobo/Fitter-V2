@@ -1,23 +1,56 @@
+//
+//  AuthService.swift
+//  Fitter V2
+//
+//  Refatorado em 18/01/25 - Item 50
+//
+
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
-import GoogleSignIn
-import GoogleSignInSwift
-import FirebaseCore
-import FacebookLogin
 import CoreData
+import KeychainAccess
 
-enum AuthError: LocalizedError {
+// MARK: - Protocol
+
+/// Protocolo para AuthService seguindo Clean Architecture
+/// 
+/// **Responsabilidade:** Implementar AuthServiceProtocol APENAS para métodos CRUD (email/senha)
+/// **Limitações:** 
+/// - Nenhuma chamada cruzada para provedores sociais
+/// - Não contém lógica de orquestração ou navegação
+/// - Apenas operações básicas de autenticação Firebase
+/// - Testabilidade via dependency injection
+protocol AuthServiceProtocol {
+    // MARK: - Core Authentication (Email/Password only)
+    func signIn(email: String, password: String) async throws -> CDAppUser
+    func createAccount(name: String, email: String, password: String) async throws -> CDAppUser
+    func signOut() async throws
+    func resetPassword(email: String) async throws
+    
+    // MARK: - Session Management
+    func restoreSession() async -> CDAppUser?
+    var currentUser: CDAppUser? { get }
+    var isAuthenticated: Bool { get }
+    
+    // MARK: - Keychain & Inactivity (moved from AuthUseCase for separation)
+    func checkInactivityTimeout() -> Bool
+    func logoutDueToInactivity() async throws
+    func updateLastAppOpenDate()
+}
+
+// MARK: - Errors
+
+/// Erros específicos do AuthService (apenas email/senha)
+enum AuthServiceError: LocalizedError {
     case invalidEmail
     case weakPassword
     case emailAlreadyInUse
     case userNotFound
     case wrongPassword
-    case unknownError
     case networkError
-    case googleSignInError
-    case facebookSignInError
-    case noRootViewController
+    case sessionExpired
+    case unknownError(Error)
     
     var errorDescription: String? {
         switch self {
@@ -33,52 +66,92 @@ enum AuthError: LocalizedError {
             return "Senha incorreta."
         case .networkError:
             return "Erro de conexão. Verifique sua internet."
-        case .googleSignInError:
-            return "Erro ao fazer login com Google."
-        case .facebookSignInError:
-            return "Erro ao fazer login com Facebook."
-        case .noRootViewController:
-            return "Erro interno do aplicativo."
-        case .unknownError:
-            return "Ocorreu um erro inesperado."
+        case .sessionExpired:
+            return "Sua sessão expirou. Faça login novamente."
+        case .unknownError(let error):
+            return "Erro inesperado: \(error.localizedDescription)"
+        }
+    }
+    
+    var recoverySuggestion: String? {
+        switch self {
+        case .invalidEmail:
+            return "Verifique se o email está no formato correto."
+        case .weakPassword:
+            return "Use uma senha com pelo menos 6 caracteres."
+        case .emailAlreadyInUse:
+            return "Tente fazer login ou use outro email."
+        case .userNotFound:
+            return "Verifique seus dados ou crie uma conta."
+        case .wrongPassword:
+            return "Verifique se digitou a senha corretamente."
+        case .networkError:
+            return "Verifique sua conexão com a internet."
+        default:
+            return nil
         }
     }
 }
 
+// MARK: - Implementation
+
+/// Implementação do AuthService refatorada para Clean Architecture
+/// 
+/// **RESPONSABILIDADE RESTRITA:**
+/// - Apenas autenticação email/senha via Firebase
+/// - Gestão básica de sessão e Core Data
+/// - Controle de inatividade (delegado do AuthUseCase)
+/// - SEM lógica de orquestração ou navegação
+/// - SEM provedores sociais (delegados para AuthUseCase)
 @MainActor
-final class AuthService: ObservableObject {
-    static let shared = AuthService()
+final class AuthService: AuthServiceProtocol {
     
-    @Published var errorMessage: String?
-    @Published var isLoading = false
+    // MARK: - Dependencies
     
     private let auth = Auth.auth()
     private let firestore = Firestore.firestore()
+    private let coreDataService: CoreDataServiceProtocol
     
-    // Core Data context
-    private var viewContext: NSManagedObjectContext {
-        return CoreDataStack.shared.viewContext
+    // MARK: - Keychain & Inactivity Control
+    
+    private let keychain = Keychain(service: "com.fitter.auth")
+    private let inactivityTimeoutDays = 7
+    private let lastAppOpenKey = "lastAppOpenDate"
+    private let userSessionKey = "userSession"
+    
+    // MARK: - Initialization
+    
+    /// Inicializa AuthService com injeção de dependências
+    /// - Parameter coreDataService: Serviço Core Data injetado
+    init(coreDataService: CoreDataServiceProtocol = CoreDataService()) {
+        self.coreDataService = coreDataService
+        
+        print("🔐 [AuthService] Inicializado com Core Data Service")
     }
     
-    private init() {}
+    /// Singleton para compatibilidade temporária
+    /// ⚠️ SERÁ REMOVIDO: Substituído por dependency injection
+    static let shared = AuthService()
     
-    // MARK: – Usuário atual mapeado para CDAppUser
+    // MARK: - Session Management Properties
+    
+    /// Usuário atual mapeado para CDAppUser
+    /// ⚠️ CLEAN ARCHITECTURE: Apenas via AuthService, não diretamente do Firebase
     var currentUser: CDAppUser? {
         guard let fbUser = auth.currentUser else { return nil }
         
-        // extrai o uid para uma String pura
         let fbUid = fbUser.uid
         
-        // 1) Cria a fetch request do Core Data
+        // 1) Busca usuário existente via CoreDataService
         let request: NSFetchRequest<CDAppUser> = CDAppUser.fetchRequest()
         request.predicate = NSPredicate(format: "providerId == %@", fbUid)
         request.fetchLimit = 1
 
-        // 2) Faz o fetch
-        let results = try? viewContext.fetch(request)
+        do {
+            let results = try coreDataService.fetch(request)
 
-        if let existing = results?.first {
-            // Atualiza o último login e email se necessário
+            if let existing = results.first {
+                // Atualiza dados do último login
             existing.lastLoginDate = Date()
             if let email = fbUser.email {
                 existing.email = email
@@ -87,15 +160,20 @@ final class AuthService: ObservableObject {
                 existing.name = name
             }
             existing.updatedAt = Date()
-            try? viewContext.save()
+                
+                try coreDataService.save()
             return existing
+            }
+        } catch {
+            print("❌ [AuthService] Erro ao buscar usuário: \(error)")
         }
 
-        // 3) Se não existir, cria um novo CDAppUser
-        let newUser = CDAppUser(context: viewContext)
+        // 2) Se não existir, cria novo CDAppUser via CoreDataService
+        do {
+            let newUser: CDAppUser = coreDataService.create()
         newUser.id = UUID()
         newUser.name = fbUser.displayName ?? ""
-        newUser.birthDate = Date()    // ajuste no seu fluxo
+            newUser.birthDate = Date()
         newUser.height = 0
         newUser.weight = 0
         newUser.provider = fbUser.providerID
@@ -107,201 +185,270 @@ final class AuthService: ObservableObject {
         newUser.createdAt = Date()
         newUser.updatedAt = Date()
         newUser.lastLoginDate = Date()
-        newUser.cloudSyncStatus = CloudSyncStatus.synced.rawValue  // Campo obrigatório
+            newUser.cloudSyncStatus = CloudSyncStatus.synced.rawValue
+            
+            // Configuração inicial de assinatura
+            newUser.subscriptionType = SubscriptionType.none.rawValue
 
-        try? viewContext.save()
+            try coreDataService.save()
+            print("✅ [AuthService] Novo usuário criado: \(newUser.safeName)")
+            
         return newUser
+        } catch {
+            print("❌ [AuthService] Erro ao criar usuário: \(error)")
+            return nil
+        }
     }
     
+    /// Indica se o usuário está autenticado
     var isAuthenticated: Bool {
-        currentUser != nil
+        return currentUser != nil
     }
     
-    func signIn(email: String, password: String) async throws {
+    // MARK: - Core Authentication (Email/Password only)
+    
+    /// Realiza login com email e senha via Firebase
+    /// - Parameters:
+    ///   - email: Email do usuário
+    ///   - password: Senha do usuário
+    /// - Returns: CDAppUser autenticado
+    /// - Throws: AuthServiceError em caso de falha
+    func signIn(email: String, password: String) async throws -> CDAppUser {
+        print("🔐 [AuthService] Iniciando login com email: \(email)")
+        
         do {
             let result = try await auth.signIn(withEmail: email, password: password)
-            print("Usuário logado com sucesso: \(result.user.uid)")
+            print("✅ [AuthService] Login Firebase realizado: \(result.user.uid)")
             
-            // Exibe dados do usuário no terminal
-            await printUserDataToTerminal()
+            // Salva/atualiza dados do usuário no Firestore
+            try await saveUserToFirestore(result.user)
             
-            ConnectivityManager.shared.sendAuthStatusToWatch()
+            // Busca/cria usuário no Core Data
+            guard let user = currentUser else {
+                throw AuthServiceError.userNotFound
+            }
+            
+            // Salva sessão no Keychain para restauração
+            saveUserSession(user)
+            
+            print("✅ [AuthService] Login completo: \(user.safeName)")
+            return user
+            
         } catch {
+            print("❌ [AuthService] Erro no login: \(error)")
             throw mapFirebaseError(error)
         }
     }
     
-    func createAccount(name: String, email: String, password: String) async throws {
+    /// Cria nova conta com email e senha
+    /// - Parameters:
+    ///   - name: Nome do usuário
+    ///   - email: Email do usuário
+    ///   - password: Senha do usuário
+    /// - Returns: CDAppUser criado
+    /// - Throws: AuthServiceError em caso de falha
+    func createAccount(name: String, email: String, password: String) async throws -> CDAppUser {
+        print("📝 [AuthService] Criando conta para: \(email)")
+        
+        // Validações básicas
+        guard email.contains("@") && email.contains(".") else {
+            throw AuthServiceError.invalidEmail
+        }
+        
+        guard password.count >= 6 else {
+            throw AuthServiceError.weakPassword
+        }
+        
         do {
-            // Criar usuário no Firebase Auth
             let result = try await auth.createUser(withEmail: email, password: password)
+            print("✅ [AuthService] Conta Firebase criada: \(result.user.uid)")
             
-            // Criar perfil do usuário no Firestore
-            let userData: [String: Any] = [
-                "name": name,
-                "email": email,
-                "createdAt": Timestamp(),
-                "updatedAt": Timestamp()
-            ]
-            
-            try await firestore
-                .collection("users")
-                .document(result.user.uid)
-                .setData(userData)
-            
-            // Atualizar o displayName do usuário
+            // Atualiza perfil com nome
             let changeRequest = result.user.createProfileChangeRequest()
             changeRequest.displayName = name
             try await changeRequest.commitChanges()
             
-            print("Conta criada com sucesso: \(result.user.uid)")
+            // Salva dados no Firestore
+            try await saveUserToFirestore(result.user, name: name)
             
-            // Exibe dados do usuário no terminal
-            await printUserDataToTerminal()
+            // Busca/cria usuário no Core Data
+            guard let user = currentUser else {
+                throw AuthServiceError.unknownError(NSError(domain: "AuthService", code: -1))
+            }
+            
+            // Salva sessão no Keychain
+            saveUserSession(user)
+            
+            print("✅ [AuthService] Conta criada com sucesso: \(user.safeName)")
+            return user
             
         } catch {
+            print("❌ [AuthService] Erro ao criar conta: \(error)")
             throw mapFirebaseError(error)
         }
     }
     
-    func signOut() throws {
+    /// Realiza logout do usuário
+    func signOut() async throws {
+        print("🚪 [AuthService] Realizando logout")
+        
         do {
             try auth.signOut()
-            ConnectivityManager.shared.sendAuthStatusToWatch()
+            
+            // Remove sessão do Keychain
+            clearUserSession()
+            
+            print("✅ [AuthService] Logout realizado com sucesso")
+            
         } catch {
-            throw AuthError.unknownError
+            print("❌ [AuthService] Erro no logout: \(error)")
+            throw AuthServiceError.unknownError(error)
         }
     }
     
+    /// Envia email de reset de senha
+    /// - Parameter email: Email para envio do reset
     func resetPassword(email: String) async throws {
+        print("📧 [AuthService] Enviando reset de senha para: \(email)")
+        
+        guard email.contains("@") && email.contains(".") else {
+            throw AuthServiceError.invalidEmail
+        }
+        
         do {
             try await auth.sendPasswordReset(withEmail: email)
+            print("✅ [AuthService] Email de reset enviado com sucesso")
+            
         } catch {
+            print("❌ [AuthService] Erro ao enviar reset: \(error)")
             throw mapFirebaseError(error)
         }
     }
     
-    func signInWithGoogle() async throws {
-        guard let clientID = FirebaseApp.app()?.options.clientID else {
-            throw AuthError.googleSignInError
+    // MARK: - Session Management
+    
+    /// Restaura sessão do usuário salva no Keychain
+    /// - Returns: CDAppUser se sessão válida, nil caso contrário
+    func restoreSession() async -> CDAppUser? {
+        print("🔄 [AuthService] Restaurando sessão...")
+        
+        // Verifica inatividade primeiro
+        if checkInactivityTimeout() {
+            print("⚠️ [AuthService] Sessão expirada por inatividade")
+            try? await logoutDueToInactivity()
+            return nil
         }
         
-        // Configurar o Google Sign In
-        let config = GIDConfiguration(clientID: clientID)
-        GIDSignIn.sharedInstance.configuration = config
-        
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let rootViewController = windowScene.windows.first?.rootViewController else {
-            throw AuthError.noRootViewController
+        // Verifica se há usuário no Firebase Auth
+        guard auth.currentUser != nil else {
+            print("❌ [AuthService] Nenhuma sessão Firebase ativa")
+            clearUserSession()
+            return nil
         }
         
-        do {
-            // Fazer login com Google
-            let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController)
-            
-            guard let idToken = result.user.idToken?.tokenString else {
-                throw AuthError.googleSignInError
-            }
-            
-            // Criar credencial para o Firebase
-            let credential = GoogleAuthProvider.credential(
-                withIDToken: idToken,
-                accessToken: result.user.accessToken.tokenString
-            )
-            
-            // Fazer login no Firebase
-            let authResult = try await auth.signIn(with: credential)
-            
-            // Criar ou atualizar dados do usuário no Firestore
-            let userData: [String: Any] = [
-                "name": result.user.profile?.name ?? "",
-                "email": result.user.profile?.email ?? "",
-                "photoURL": result.user.profile?.imageURL(withDimension: 200)?.absoluteString ?? "",
-                "updatedAt": Timestamp()
-            ]
-            
-            try await firestore
-                .collection("users")
-                .document(authResult.user.uid)
-                .setData(userData, merge: true)
-            
-            print("Login com Google realizado com sucesso: \(authResult.user.uid)")
-            
-            // Exibe dados do usuário no terminal
-            await printUserDataToTerminal()
-            
-            ConnectivityManager.shared.sendAuthStatusToWatch()
-        } catch {
-            throw AuthError.googleSignInError
+        // Busca dados do usuário no Core Data
+        let user = currentUser
+        
+        if let user = user {
+            print("✅ [AuthService] Sessão restaurada: \(user.safeName)")
+            updateLastAppOpenDate()
+        } else {
+            print("❌ [AuthService] Usuário não encontrado no Core Data")
+            clearUserSession()
         }
+        
+        return user
     }
     
-    func signInWithFacebook() async throws {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let rootViewController = windowScene.windows.first?.rootViewController else {
-            throw AuthError.noRootViewController
+    // MARK: - Inactivity Control
+    
+    /// Verifica se passou do limite de inatividade (7 dias)
+    func checkInactivityTimeout() -> Bool {
+        guard let lastOpenString = keychain[lastAppOpenKey],
+              let lastOpenTimestamp = Double(lastOpenString) else {
+            // Primeira vez - atualiza timestamp
+            updateLastAppOpenDate()
+            return false
         }
         
-        let loginManager = LoginManager()
+        let lastOpenDate = Date(timeIntervalSince1970: lastOpenTimestamp)
+        let daysSinceLastOpen = Calendar.current.dateComponents([.day], 
+                                                               from: lastOpenDate, 
+                                                               to: Date()).day ?? 0
         
-        return try await withCheckedThrowingContinuation { continuation in
-            loginManager.logIn(permissions: ["public_profile", "email"], from: rootViewController) { loginResult, error in
-                if error != nil {
-                    continuation.resume(throwing: AuthError.facebookSignInError)
-                    return
-                }
-                
-                guard let loginResult = loginResult else {
-                    continuation.resume(throwing: AuthError.facebookSignInError)
-                    return
-                }
-                
-                if loginResult.isCancelled {
-                    continuation.resume(throwing: AuthError.facebookSignInError)
-                    return
-                }
-                
-                guard let accessToken = AccessToken.current else {
-                    continuation.resume(throwing: AuthError.facebookSignInError)
-                    return
-                }
-                
-                let credential = FacebookAuthProvider.credential(withAccessToken: accessToken.tokenString)
-                
-                Task {
-                    do {
-                        let authResult = try await self.auth.signIn(with: credential)
-                        
-                        // Criar ou atualizar dados do usuário no Firestore
+        let isInactive = daysSinceLastOpen >= inactivityTimeoutDays
+        
+        if isInactive {
+            print("⚠️ [AuthService] Inatividade detectada: \(daysSinceLastOpen) dias")
+        }
+        
+        return isInactive
+    }
+    
+    /// Executa logout devido à inatividade
+    func logoutDueToInactivity() async throws {
+        print("🔒 [AuthService] Logout automático por inatividade (\(inactivityTimeoutDays)+ dias)")
+        
+        // Logout normal
+        try await signOut()
+        
+        // Remove timestamp de última abertura
+        keychain[lastAppOpenKey] = nil
+        
+        throw AuthServiceError.sessionExpired
+    }
+    
+    /// Atualiza timestamp da última abertura do app
+    func updateLastAppOpenDate() {
+        let now = Date()
+        keychain[lastAppOpenKey] = String(now.timeIntervalSince1970)
+        print("🕐 [AuthService] Última abertura atualizada: \(now)")
+    }
+    
+    // MARK: - Private Methods
+    
+    /// Salva dados do usuário no Firestore
+    private func saveUserToFirestore(_ fbUser: User, name: String? = nil) async throws {
                         let userData: [String: Any] = [
-                            "name": authResult.user.displayName ?? "",
-                            "email": authResult.user.email ?? "",
-                            "photoURL": authResult.user.photoURL?.absoluteString ?? "",
-                            "updatedAt": Timestamp()
+            "name": name ?? fbUser.displayName ?? "",
+            "email": fbUser.email ?? "",
+            "photoURL": fbUser.photoURL?.absoluteString ?? "",
+            "provider": fbUser.providerID,
+            "updatedAt": Timestamp(),
+            "lastLoginDate": Timestamp()
                         ]
                         
-                        try await self.firestore
+        try await firestore
                             .collection("users")
-                            .document(authResult.user.uid)
+            .document(fbUser.uid)
                             .setData(userData, merge: true)
                         
-                        print("Login com Facebook realizado com sucesso: \(authResult.user.uid)")
-                        
-                        // Exibe dados do usuário no terminal
-                        await self.printUserDataToTerminal()
-                        
-                        ConnectivityManager.shared.sendAuthStatusToWatch()
-                        
-                        continuation.resume()
-                    } catch {
-                        continuation.resume(throwing: AuthError.facebookSignInError)
-                    }
-                }
-            }
+        print("💾 [AuthService] Dados salvos no Firestore: \(fbUser.uid)")
+    }
+    
+    /// Salva sessão do usuário no Keychain
+    private func saveUserSession(_ user: CDAppUser) {
+        let sessionData: [String: Any] = [
+            "userId": user.safeId.uuidString,
+            "email": user.safeEmail,
+            "lastLogin": Date().timeIntervalSince1970
+        ]
+        
+        if let data = try? JSONSerialization.data(withJSONObject: sessionData),
+           let sessionString = String(data: data, encoding: .utf8) {
+            keychain[userSessionKey] = sessionString
+            print("💾 [AuthService] Sessão salva no Keychain")
         }
     }
     
-    private func mapFirebaseError(_ error: Error) -> AuthError {
+    /// Remove sessão do usuário do Keychain
+    private func clearUserSession() {
+        keychain[userSessionKey] = nil
+        print("🗑️ [AuthService] Sessão removida do Keychain")
+    }
+    
+    /// Mapeia erros do Firebase para AuthServiceError
+    private func mapFirebaseError(_ error: Error) -> AuthServiceError {
         let authError = error as NSError
         
         switch authError.code {
@@ -318,94 +465,77 @@ final class AuthService: ObservableObject {
         case AuthErrorCode.networkError.rawValue:
             return .networkError
         default:
-            return .unknownError
+            return .unknownError(error)
+        }
         }
     }
     
-    // MARK: - Terminal Data Display
+// MARK: - Mock Implementation
+
+#if DEBUG
+/// Mock AuthService para previews e testes
+final class MockAuthService: AuthServiceProtocol {
     
-    /// Exibe dados do usuário no terminal após login
-    private func printUserDataToTerminal() async {
-        print("\n" + String(repeating: "=", count: 60))
-        print("📱 DADOS DO USUÁRIO LOGADO")
-        print(String(repeating: "=", count: 60))
-        
-        guard let user = currentUser else {
-            print("❌ Nenhum usuário encontrado")
-            print(String(repeating: "=", count: 60) + "\n")
-            return
-        }
-        
-        // Informações básicas do usuário
-        print("👤 Nome: \(user.safeName)")
-        print("📧 Email: \(user.safeEmail)")
-        print("🔑 Provider ID: \(user.providerId ?? "N/A")")
-        
-        if let createdAt = user.createdAt {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .short
-            print("📅 Conta criada: \(formatter.string(from: createdAt))")
-        }
-        
-        if let lastLogin = user.lastLoginDate {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .short
-            print("🕐 Último login: \(formatter.string(from: lastLogin))")
-        }
-        
-        // Busca treinos localmente primeiro
-        let localWorkoutCount = await getLocalWorkoutCount(for: user)
-        print("🏋️‍♂️ Treinos locais: \(localWorkoutCount)")
-        
-        // Se não encontrar treinos localmente, busca no Firebase
-        if localWorkoutCount == 0 {
-            print("🔍 Buscando treinos no Firebase...")
-            let firebaseWorkoutCount = await getFirebaseWorkoutCount(for: user)
-            print("☁️ Treinos no Firebase: \(firebaseWorkoutCount)")
-            
-            if firebaseWorkoutCount == 0 {
-                print("📊 Total de treinos: 0 treinos")
-            } else {
-                print("📊 Total de treinos: \(firebaseWorkoutCount) treinos (sincronizando...)")
-            }
-        } else {
-            print("📊 Total de treinos: \(localWorkoutCount) treinos")
-        }
-        
-        print(String(repeating: "=", count: 60) + "\n")
+    private(set) var currentUser: CDAppUser?
+    
+    var isAuthenticated: Bool {
+        return currentUser != nil
     }
     
-    /// Busca quantidade de treinos localmente no Core Data
-    private func getLocalWorkoutCount(for user: CDAppUser) async -> Int {
-        let request: NSFetchRequest<CDWorkoutPlan> = CDWorkoutPlan.fetchRequest()
-        request.predicate = NSPredicate(format: "user == %@", user)
+    func signIn(email: String, password: String) async throws -> CDAppUser {
+        // TODO: Implementar mock com PersistenceController quando disponível
+        // Por enquanto, cria usuário temporário
+        let user = CDAppUser()
+        user.id = UUID()
+        user.name = "Usuario Mock"
+        user.email = email
+        user.createdAt = Date()
+        user.lastLoginDate = Date()
+        user.cloudSyncStatus = CloudSyncStatus.synced.rawValue
+        user.subscriptionType = SubscriptionType.none.rawValue
         
-        do {
-            let count = try viewContext.count(for: request)
-            return count
-        } catch {
-            print("❌ Erro ao buscar treinos locais: \(error)")
-            return 0
-        }
+        currentUser = user
+        return user
     }
     
-    /// Busca quantidade de treinos no Firebase
-    private func getFirebaseWorkoutCount(for user: CDAppUser) async -> Int {
-        guard let providerId = user.providerId else { return 0 }
+    func createAccount(name: String, email: String, password: String) async throws -> CDAppUser {
+        // TODO: Implementar mock com PersistenceController quando disponível
+        // Por enquanto, cria usuário temporário
+        let user = CDAppUser()
+        user.id = UUID()
+        user.name = name
+        user.email = email
+        user.createdAt = Date()
+        user.lastLoginDate = Date()
+        user.cloudSyncStatus = CloudSyncStatus.synced.rawValue
+        user.subscriptionType = SubscriptionType.none.rawValue
         
-        do {
-            let snapshot = try await firestore
-                .collection("users")
-                .document(providerId)
-                .collection("workoutPlans")
-                .getDocuments()
-            
-            return snapshot.documents.count
-        } catch {
-            print("❌ Erro ao buscar treinos no Firebase: \(error)")
-            return 0
+        currentUser = user
+        return user
+    }
+    
+    func signOut() async throws {
+        currentUser = nil
+    }
+    
+    func resetPassword(email: String) async throws {
+        // Mock implementation
+    }
+    
+    func restoreSession() async -> CDAppUser? {
+        return currentUser
+    }
+    
+    func checkInactivityTimeout() -> Bool {
+        return false
+    }
+    
+    func logoutDueToInactivity() async throws {
+        currentUser = nil
+    }
+    
+    func updateLastAppOpenDate() {
+        // Mock implementation
         }
     }
-} 
+#endif 

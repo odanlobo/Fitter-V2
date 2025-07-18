@@ -31,8 +31,8 @@
  *
  * REFATORAÇÃO ITEM 29/89:
  * ✅ Criar EndSetUseCase.swift
- * 🔄 Preparado para TimerService (item 54.1)
- * 🔄 Preparado para HealthKitManager (item 54)
+ * 🔄 Preparado para TimerService (item 46 - CONCLUÍDO)
+ * 🔄 Preparado para HealthKitManager (item 45 - CONCLUÍDO)
  * 🔄 Preparado para MotionManager refatorado
  */
 
@@ -318,12 +318,12 @@ final class EndSetUseCase: EndSetUseCaseProtocol {
     }
     
     private var healthKitManager: Any? {
-        // TODO: Injetar HealthKitManager quando item 54 for implementado
-        return nil
-    }
+    // TODO: Injetar HealthKitManager quando item 65 for implementado (iOSApp.swift)
+    return nil
+}
     
     private var timerService: Any? {
-        // TODO: Injetar TimerService quando item 54.1 for implementado
+        // TODO: Injetar TimerService quando item 65 for implementado (iOSApp.swift)
         return nil
     }
     
@@ -512,10 +512,9 @@ final class EndSetUseCase: EndSetUseCaseProtocol {
     }
     
     private func stopSensorCapture(_ set: CDCurrentSet) async {
-        // TODO: Implementar quando MotionManager for injetado via DI
-        // await motionManager?.stopSensorCapture(for: set.safeId)
-        
-        print("🛑 Parando captura de sensores para série: \(set.safeId)")
+        // MotionManager continua capturando continuamente
+        // Apenas registrar finalização da série para tracking
+        print("🛑 Série finalizada: \(set.safeId) - MotionManager continua ativo")
     }
     
     private func processFinalSensorData(_ input: EndSetInput) async throws -> SensorData? {
@@ -534,20 +533,219 @@ final class EndSetUseCase: EndSetUseCaseProtocol {
     
     private func finalizeCurrentSet(_ input: EndSetInput, finalSensorData: SensorData?) async throws {
         do {
-            let actualReps = input.actualReps ?? input.set.targetReps // Default para target se não especificado
+            // 1. Processar dados do ML para obter timeline de movimento
+            let movementTimeline = try await processMovementTimeline(input, sensorData: finalSensorData)
             
+            // 2. O actualReps é o último pico detectado na timeline
+            let actualReps = input.actualReps ?? Int32(movementTimeline?.finalRepsCount ?? Int(input.set.targetReps))
+            
+            // 3. Serializar timeline como repsCounterData
+            var repsCounterData: Data? = nil
+            if let timeline = movementTimeline {
+                repsCounterData = try timeline.toJSONData()
+            }
+            
+            // 4. Coletar TODOS os dados de saúde acumulados durante a série
+            let (heartRateData, caloriesData) = try await collectHealthDataForSet(input.set)
+            
+            // 5. Atualizar CDCurrentSet APENAS com dados básicos (sem dados avançados)
             try await workoutDataService.updateCurrentSet(
                 input.set,
                 actualReps: actualReps,
                 restTime: nil, // Será calculado pelo rest timer
                 endTime: input.endTime,
-                sensorData: finalSensorData
+                sensorData: nil // NÃO salva no CDCurrentSet
             )
             
-            print("✅ CDCurrentSet finalizado: \(input.set.safeId)")
+            // 6. Armazenar TODOS os dados avançados temporariamente para migração posterior
+            try await storeTemporarySetData(
+                input.set,
+                repsCounterData: repsCounterData,
+                heartRateData: heartRateData,
+                caloriesData: caloriesData,
+                finalSensorData: finalSensorData
+            )
+            
+            print("✅ CDCurrentSet finalizado: \(input.set.safeId) - Reps detectadas: \(actualReps)")
         } catch {
             throw EndSetError.persistenceFailed(error)
         }
+    }
+    
+    /// Processa dados dos sensores para gerar timeline de movimento (-1 a +1)
+    private func processMovementTimeline(_ input: EndSetInput, sensorData: SensorData?) async throws -> MovementTimeline? {
+        guard let sensorData = sensorData else {
+            print("⚠️ Sem dados de sensores para processamento")
+            return nil
+        }
+        
+        // TODO: Quando MLModelManager for implementado, usar processamento real
+        // Por enquanto, gerar dados mock para demonstração
+        let mockPoints = generateMockMovementPoints(duration: input.endTime.timeIntervalSince(input.set.safeTimestamp))
+        
+        return MovementTimeline(
+            points: mockPoints,
+            totalDuration: input.endTime.timeIntervalSince(input.set.safeTimestamp),
+            totalReps: mockPoints.compactMap { $0.repIndex }.max() ?? 0,
+            seriesId: input.set.safeId
+        )
+    }
+    
+    /// Gera pontos de movimento mock para demonstração (remover quando ML for implementado)
+    private func generateMockMovementPoints(duration: TimeInterval) -> [MovementPoint] {
+        var points: [MovementPoint] = []
+        let targetReps = 3 // Mock: simular 3 repetições
+        let timePerRep = duration / Double(targetReps)
+        
+        var currentTime: Double = 0.0
+        let interval: Double = 0.1 // Ponto a cada 100ms
+        var repCount = 0
+        
+        while currentTime <= duration {
+            // Calcular posição no ciclo de movimento
+            let repProgress = (currentTime.truncatingRemainder(dividingBy: timePerRep)) / timePerRep
+            
+            // Gerar movimento realista: excêntrico(-1) → neutro(0) → concêntrico(+1)
+            // Ciclo: posição inicial → descida/alongamento → subida/contração → volta ao topo
+            let movement = -cos(repProgress * 2 * .pi) // Inverte para começar em 0, descer para -1, subir para +1
+            
+            // Detectar conclusão da fase concêntrica (repetição completa)
+            var repIndex: Int? = nil
+            if movement > 0.9 && repProgress > 0.75 && repProgress < 0.95 {
+                repCount += 1
+                repIndex = repCount
+            }
+            
+            points.append(MovementPoint(
+                timestamp: currentTime,
+                movement: movement,
+                repIndex: repIndex
+            ))
+            
+            currentTime += interval
+        }
+        
+        return points
+    }
+    
+    /// Cache temporário para TODOS os dados avançados de cada série
+    private static var temporarySetDataCache: [String: TemporarySetData] = [:]
+    
+    /// Estrutura para armazenar todos os dados coletados durante a série
+    struct TemporarySetData {
+        let repsCounterData: Data?          // Timeline de movimento
+        let heartRateData: Data?            // Dados de heart rate coletados
+        let caloriesData: Data?             // Dados de calorias coletadas
+        let finalSensorData: SensorData?    // Dados brutos finais dos sensores
+    }
+    
+    /// Armazena TODOS os dados coletados temporariamente para migração posterior
+    private func storeTemporarySetData(_ set: CDCurrentSet, repsCounterData: Data?, heartRateData: Data?, caloriesData: Data?, finalSensorData: SensorData?) async throws {
+        let setId = set.safeId
+        
+        let temporaryData = TemporarySetData(
+            repsCounterData: repsCounterData,
+            heartRateData: heartRateData,
+            caloriesData: caloriesData,
+            finalSensorData: finalSensorData
+        )
+        
+        EndSetUseCase.temporarySetDataCache[setId] = temporaryData
+        print("🗂️ Dados completos armazenados temporariamente para série \(setId):")
+        print("   - RepsCounterData: \(repsCounterData?.count ?? 0) bytes")
+        print("   - HeartRateData: \(heartRateData?.count ?? 0) bytes")
+        print("   - CaloriesData: \(caloriesData?.count ?? 0) bytes")
+        print("   - SensorData: \(finalSensorData != nil ? "✅" : "❌")")
+    }
+    
+    /// Recupera dados temporários completos para migração
+    static func getTemporarySetData(for setId: String) -> TemporarySetData? {
+        return temporarySetDataCache[setId]
+    }
+    
+    /// Limpa dados temporários após migração
+    static func clearTemporarySetData(for setId: String) {
+        temporarySetDataCache.removeValue(forKey: setId)
+    }
+    
+    /// Coleta dados de saúde acumulados durante a execução da série
+    private func collectHealthDataForSet(_ set: CDCurrentSet) async throws -> (heartRateData: Data?, caloriesData: Data?) {
+        guard let startTime = set.startTime else {
+            return (nil, nil)
+        }
+        
+        let endTime = Date()
+        
+        // TODO: Implementar coleta real via HealthKitManager quando disponível
+        // Por enquanto, simular dados para demonstrar a estrutura
+        
+        do {
+            // Simular dados de heart rate para a série
+            let mockHeartRatePoints = generateMockHeartRateData(from: startTime, to: endTime)
+            let heartRateData = try JSONSerialization.data(withJSONObject: mockHeartRatePoints)
+            
+            // Simular dados de calorias para a série
+            let mockCaloriesPoints = generateMockCaloriesData(from: startTime, to: endTime)
+            let caloriesData = try JSONSerialization.data(withJSONObject: mockCaloriesPoints)
+            
+            print("💓 Dados de saúde coletados para série \(set.safeId):")
+            print("   - Heart Rate: \(mockHeartRatePoints.count) pontos")
+            print("   - Calorias: \(mockCaloriesPoints.count) pontos")
+            
+            return (heartRateData, caloriesData)
+            
+        } catch {
+            print("⚠️ Erro ao serializar dados de saúde: \(error)")
+            return (nil, nil)
+        }
+    }
+    
+    /// Gera dados mock de heart rate (remover quando HealthKitManager for integrado)
+    private func generateMockHeartRateData(from startTime: Date, to endTime: Date) -> [[String: Any]] {
+        var points: [[String: Any]] = []
+        let duration = endTime.timeIntervalSince(startTime)
+        let interval: TimeInterval = 1.0 // Amostra a cada segundo
+        
+        var currentTime = startTime
+        var baseHeartRate: Double = 140 // BPM base durante exercício
+        
+        while currentTime <= endTime {
+            // Simular variação natural do heart rate
+            let variation = Double.random(in: -10...10)
+            let heartRate = max(120, min(180, baseHeartRate + variation))
+            
+            points.append([
+                "timestamp": currentTime.timeIntervalSince1970,
+                "value": heartRate,
+                "unit": "BPM"
+            ])
+            
+            currentTime.addTimeInterval(interval)
+            baseHeartRate += Double.random(in: -2...2) // Drift lento
+        }
+        
+        return points
+    }
+    
+    /// Gera dados mock de calorias (remover quando HealthKitManager for integrado)
+    private func generateMockCaloriesData(from startTime: Date, to endTime: Date) -> [[String: Any]] {
+        var points: [[String: Any]] = []
+        let duration = endTime.timeIntervalSince(startTime)
+        let totalCalories = duration / 60.0 * 8.0 // ~8 cal/min durante exercício
+        
+        points.append([
+            "timestamp": startTime.timeIntervalSince1970,
+            "value": 0.0,
+            "unit": "kcal"
+        ])
+        
+        points.append([
+            "timestamp": endTime.timeIntervalSince1970,
+            "value": totalCalories,
+            "unit": "kcal"
+        ])
+        
+        return points
     }
     
     private func calculateAnalytics(_ input: EndSetInput, sensorData: SensorData?) async throws -> EndSetAnalytics {
@@ -584,15 +782,28 @@ final class EndSetUseCase: EndSetUseCaseProtocol {
     private func calculateIntensityScore(sensorData: SensorData?, duration: TimeInterval) -> Double {
         guard let sensorData = sensorData else { return 0.5 } // Score médio se não há dados
         
-        let totalAcceleration = sensorData.totalAcceleration
-        let totalRotation = sensorData.totalRotation
+        // Calcular magnitudes manualmente se necessário para análise
+        let hasAccelerationData = sensorData.accelerationX != nil || sensorData.accelerationY != nil || sensorData.accelerationZ != nil
+        let hasRotationData = sensorData.rotationX != nil || sensorData.rotationY != nil || sensorData.rotationZ != nil
         
-        // Normalizar baseado na duração e intensidade de movimento
-        let accelerationScore = min(totalAcceleration / 10.0, 1.0)
-        let rotationScore = min(totalRotation / 5.0, 1.0)
+        var score = 0.0
+        var components = 0
+        
+        if hasAccelerationData {
+            score += 0.7 // Presença de dados de aceleração
+            components += 1
+        }
+        
+        if hasRotationData {
+            score += 0.7 // Presença de dados de rotação
+            components += 1
+        }
+        
         let durationScore = min(duration / 60.0, 1.0) // Normalizar por 1 minuto
+        score += durationScore
+        components += 1
         
-        return (accelerationScore + rotationScore + durationScore) / 3.0
+        return components > 0 ? score / Double(components) : 0.5
     }
     
     private func calculateFormAnalysis(sensorData: SensorData?) -> EndSetAnalytics.FormAnalysis {
@@ -615,9 +826,9 @@ final class EndSetUseCase: EndSetUseCaseProtocol {
     }
     
     private func calculateFatigueMetrics(sensorData: SensorData?, duration: TimeInterval) -> EndSetAnalytics.FatigueMetrics {
-        // Estimativas baseadas na duração e intensidade
+        // Estimativas baseadas na duração e presença de dados
         let initialIntensity = 1.0
-        let finalIntensity = sensorData != nil ? sensorData!.intensityLevel : 0.7
+        let finalIntensity = sensorData != nil ? 0.7 : 0.5 // Estimativa baseada na presença de dados
         let fatigueIndex = initialIntensity - finalIntensity
         
         // Tempo de recuperação baseado na fadiga
@@ -651,7 +862,7 @@ final class EndSetUseCase: EndSetUseCaseProtocol {
             type = .intelligent(basedOnFatigue: analytics.fatigueMetrics.fatigueIndex)
         }
         
-        // TODO: Iniciar timer via TimerService (item 54.1)
+        // TODO: Iniciar timer via TimerService (item 46 - CONCLUÍDO)
         // await timerService?.startRestTimer(duration: duration, autoAction: nextAction)
         
         let autoAction = input.enableAutoFlow ? nextActionDescription(nextAction) : nil
@@ -667,7 +878,7 @@ final class EndSetUseCase: EndSetUseCaseProtocol {
     }
     
     private func finalizeHealthKitSegment(_ input: EndSetInput) async -> EndSetResult.HealthKitStatus {
-        // TODO: Implementar quando HealthKitManager for criado (item 54)
+        // TODO: Implementar quando HealthKitManager for injetado (item 65)
         // return await healthKitManager?.endWorkoutSegment() ?? .skipped
         
         print("🏥 HealthKit segment finalizado (simulado)")
@@ -704,23 +915,50 @@ final class EndSetUseCase: EndSetUseCaseProtocol {
     
     private func detectRepsFromSensorData(_ sensorData: SensorData) -> Int32 {
         // TODO: Implementar detecção de repetições via Core ML
-        // Por enquanto, usar estimativa baseada na intensidade de movimento
-        let intensity = sensorData.intensityLevel
-        let estimatedReps = Int32(intensity * 15) // Estimativa básica
+        // Por enquanto, usar estimativa baseada na presença de dados
+        let hasAccelData = sensorData.accelerationX != nil || sensorData.accelerationY != nil || sensorData.accelerationZ != nil
+        let hasRotationData = sensorData.rotationX != nil || sensorData.rotationY != nil || sensorData.rotationZ != nil
+        
+        var estimatedReps: Int32 = 1
+        
+        if hasAccelData && hasRotationData {
+            estimatedReps = 10 // Estimativa para dados completos
+        } else if hasAccelData || hasRotationData {
+            estimatedReps = 6  // Estimativa para dados parciais
+        } else {
+            estimatedReps = 3  // Estimativa mínima
+        }
         
         return max(1, estimatedReps)
     }
     
     private func calculateMovementConsistency(_ sensorData: SensorData) -> Double {
-        // Analisar variação nos dados de aceleração
-        let totalVariation = abs(sensorData.totalAcceleration - sensorData.totalRotation)
-        return max(0.0, min(1.0, 1.0 - (totalVariation / 10.0)))
+        // Analisar consistência baseada na presença de dados válidos
+        let hasAccelData = sensorData.accelerationX != nil && sensorData.accelerationY != nil && sensorData.accelerationZ != nil
+        let hasRotationData = sensorData.rotationX != nil && sensorData.rotationY != nil && sensorData.rotationZ != nil
+        
+        if hasAccelData && hasRotationData {
+            return 0.8 // Dados completos = alta consistência
+        } else if hasAccelData || hasRotationData {
+            return 0.6 // Dados parciais = consistência média
+        } else {
+            return 0.3 // Poucos dados = baixa consistência
+        }
     }
     
     private func calculateRangeOfMotion(_ sensorData: SensorData) -> Double {
-        // Baseado na amplitude de movimento detectada
-        let motionRange = sensorData.totalAcceleration
-        return max(0.0, min(1.0, motionRange / 8.0))
+        // Baseado na presença e variação dos dados de aceleração
+        let hasAccelData = sensorData.accelerationX != nil && sensorData.accelerationY != nil && sensorData.accelerationZ != nil
+        
+        if hasAccelData {
+            let x = abs(sensorData.accelerationX ?? 0.0)
+            let y = abs(sensorData.accelerationY ?? 0.0) 
+            let z = abs(sensorData.accelerationZ ?? 0.0)
+            let range = (x + y + z) / 3.0
+            return max(0.0, min(1.0, range / 5.0))
+        }
+        
+        return 0.5 // Default para dados incompletos
     }
     
     private func calculateTempoControl(_ sensorData: SensorData) -> Double {
@@ -742,6 +980,8 @@ final class EndSetUseCase: EndSetUseCaseProtocol {
             return "Automático: \(action)"
         }
     }
+    
+
 }
 
 // MARK: - EndSetUseCase Extension

@@ -1,0 +1,63 @@
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/CoreData\ 2/CoreDataModels.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/EndSetUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/EndWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Manager/ConnectivityManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Persistence/PersistenceController.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/CoreDataService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/CreateWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/StartWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/SyncWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/TimerService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/FetchFBExercisesUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Models/SensorData.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Models/MuscleGroup.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Network/NetworkMonitor.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/StartExerciseUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/ImportWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/CoreData\ 2/CoreDataAdapter.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/ReorderExerciseUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/UpdateDataToMLUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/UpdateWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/RevenueCatService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2\ Watch\ App/Views/PendingLoginView.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2\ Watch\ App/WatchApp.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2\ Watch\ App/Views/WatchView.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2\ Watch\ App/Managers/WatchSessionManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2\ Watch\ App/Managers/MotionManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2\ Watch\ App/Managers/WorkoutPhaseManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Models/SubscriptionType.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Protocols/ExerciseDisplayable.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/StartSetUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/ReorderWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Sync/CloudSyncStatus.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/MLModelManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/HealthKitManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Models/WeightUnit.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/WorkoutDataService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/FetchWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Manager/SessionManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/DeleteWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/EndExerciseUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/ImportWorkoutService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDAppUser+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDAppUser+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentExercise+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentExercise+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentSession+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentSession+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentSet+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentSet+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDExerciseTemplate+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDExerciseTemplate+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDHistoryExercise+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDHistoryExercise+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDHistorySet+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDHistorySet+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDPlanExercise+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDPlanExercise+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDWorkoutHistory+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDWorkoutHistory+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDWorkoutPlan+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/CDWorkoutPlan+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/CoreDataGenerated/FitterModel/FitterModel+CoreDataModel.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-watchos/Fitter\ V2\ Watch\ App.build/DerivedSources/GeneratedAssetSymbols.swift

@@ -7,337 +7,284 @@
 
 import Foundation
 import CoreMotion
-import WatchConnectivity
-import HealthKit
+import Combine
 
-class MotionManager: NSObject, ObservableObject {
-    static let shared = MotionManager()
+/// MotionManager: Responsável pela captura de dados brutos dos sensores do Apple Watch
+///
+/// Responsabilidades:
+/// - Captura de dados brutos dos sensores com frequência variável (50Hz/20Hz)
+/// - Bufferização de 100 amostras por chunk
+/// - Empacotamento dos dados em SensorData
+/// - Delegação do envio para WatchSessionManager
+/// - Detecção automática de fase (Execução/Descanso) "Apple Style"
+///
+/// Arquitetura:
+/// - Separação clara de responsabilidades (apenas captura, bufferização e detecção de fase)
+/// - Sem processamento ou análise de dados (exceto detecção de fase)
+/// - Sem comunicação direta com iPhone
+/// - Integração via injeção de dependências
+
+@MainActor
+final class MotionManager: NSObject, ObservableObject {
+    // MARK: - Types
+
+    enum WorkoutPhase {
+        case execution  // 50Hz
+        case rest      // 20Hz
+
+        var samplingRate: Double {
+            switch self {
+            case .execution: return 50.0  // 0.02s
+            case .rest: return 20.0       // 0.05s
+            }
+        }
+    }
+
+    // MARK: - Dependencies
+
+    private let sessionManager: WatchSessionManager
+    private let phaseManager: WorkoutPhaseManager
     
     // MARK: - Properties
+
+    /// Core Motion manager
     private let motionManager = CMMotionManager()
-    private let healthStore = HKHealthStore()
-    
-    private var workoutSession: HKWorkoutSession?
-    private var workoutBuilder: HKWorkoutBuilder?
-    
-    @Published var isRecording = false
-    @Published var currentHeartRate: Int = 0
-    @Published var currentCalories: Double = 0
-    @Published var motionData: [CMDeviceMotion] = []
-    
-    private var sessionStartTime: Date?
-    private var currentSetId: UUID?
-    
-    // MARK: - Initialization
-    private override init() {
+
+    /// Fila de operação para processamento de dados
+    private let motionQueue = OperationQueue()
+
+    /// Buffer circular para otimização de memória (envio)
+    private var sensorBuffer: [SensorData] = []
+    private let bufferSize = 100
+
+    /// Buffer curto para detecção automática de fase
+    private var activityBuffer: [SensorData] = []
+    private let activityWindowSize = 50 // ~1s em 50Hz
+
+    // Thresholds para detecção automática de descanso/execução
+    private let thresholdRest: Double = 0.015
+    private let thresholdExec: Double = 0.025
+    private let detectRestDuration: TimeInterval = 1.0
+    private let detectExecDuration: TimeInterval = 0.5
+    private var lastRestDetect: Date?
+    private var lastExecDetect: Date?
+
+    /// Fase atual do treino
+    @Published private(set) var currentPhase: WorkoutPhase = .execution {
+        didSet {
+            updateSamplingRate()
+        }
+    }
+
+    /// Estado de gravação
+    @Published private(set) var isRecording = false
+
+    // MARK: - Lifecycle
+
+    init(sessionManager: WatchSessionManager, phaseManager: WorkoutPhaseManager) {
+        self.sessionManager = sessionManager
+        self.phaseManager = phaseManager
         super.init()
-        setupHealthKit()
+        setupMotionManager()
     }
-    
-    // MARK: - HealthKit Setup
-    private func setupHealthKit() {
-        let workoutConfiguration = HKWorkoutConfiguration()
-        workoutConfiguration.activityType = .functionalStrengthTraining
-        workoutConfiguration.locationType = .indoor
-        
-        do {
-            let session = try HKWorkoutSession(healthStore: healthStore, configuration: workoutConfiguration)
-            self.workoutSession = session
-            self.workoutBuilder = HKWorkoutBuilder(healthStore: healthStore, configuration: workoutConfiguration, device: .local())
-            session.delegate = self
-        } catch {
-            print("❌ Erro ao criar sessão de treino: \(error.localizedDescription)")
-        }
+
+    // MARK: - Setup
+
+    private func setupMotionManager() {
+        motionQueue.maxConcurrentOperationCount = 1
+        motionQueue.qualityOfService = .userInitiated
+        updateSamplingRate()
     }
-    
-    // MARK: - Recording Control
-    
-    /// Inicia gravação completa
-    func startRecording() {
-        guard !isRecording else { return }
-        
-        // 1. Iniciar a sessão do HealthKit
-        startWorkoutSession()
-        
-        // 2. Configurar o CoreMotion
-        setupMotionTracking()
-        
-        // 3. Marcar como gravando
-        isRecording = true
-        sessionStartTime = Date()
-        
-        // 4. Notificar início do treino
-        addSensorData(WatchSensorData(type: .workoutStarted, duration: 0))
-        
-        print("🎬 Gravação de treino iniciada")
+
+    private func updateSamplingRate() {
+        let interval = 1.0 / currentPhase.samplingRate
+        motionManager.deviceMotionUpdateInterval = interval
+        motionManager.accelerometerUpdateInterval = interval
+        motionManager.gyroUpdateInterval = interval
+        motionManager.magnetometerUpdateInterval = interval
     }
-    
-    /// Para gravação completa
-    func stopRecording() {
-        guard isRecording else { return }
-        
-        // 1. Parar o CoreMotion
-        motionManager.stopDeviceMotionUpdates()
-        
-        // 2. Finalizar a sessão do HealthKit
-        stopWorkoutSession()
-        
-        // 3. Processar e salvar dados finais
-        saveAndSendData()
-        
-        // 4. Marcar como parado
-        isRecording = false
-        currentSetId = nil
-        
-        print("⏹️ Gravação de treino finalizada")
-    }
-    
-    /// Inicia captura específica para uma série
-    func startSetRecording(setId: UUID) {
-        guard isRecording else {
-            print("⚠️ Treino não está sendo gravado")
-            return
-        }
-        
-        currentSetId = setId
-        print("📊 Iniciando captura para série: \(setId)")
-    }
-    
-    /// Finaliza captura de uma série específica
-    func completeSet(setId: UUID) {
-        guard currentSetId == setId else {
-            print("⚠️ ID da série não confere")
-            return
-        }
-        
-        let setData = WatchSensorData(
-            type: .setCompleted,
-            heartRate: currentHeartRate > 0 ? currentHeartRate : nil,
-            calories: currentCalories > 0 ? currentCalories : nil,
-            setId: setId
-        )
-        
-        addSensorData(setData)
-        currentSetId = nil
-        print("✅ Série \(setId) completada - dados de sensores enviados")
-    }
-    
-    // MARK: - Motion Tracking
-    private func setupMotionTracking() {
+
+    // MARK: - Public Methods
+
+    /// Inicia a captura de dados de movimento
+    func startMotionUpdates() async {
         guard motionManager.isDeviceMotionAvailable else {
-            print("❌ Device motion não está disponível")
+            print("❌ Device motion não disponível")
             return
         }
         
-        // Limpar dados anteriores
-        motionData.removeAll()
-        
-        // Configurar a frequência de atualização
-        motionManager.deviceMotionUpdateInterval = 0.033
-        
-        // Iniciar a captura de dados
-        motionManager.startDeviceMotionUpdates(to: .main) { [weak self] (motion, error) in
-            guard let self = self, let motion = motion, self.isRecording else { return }
-            
+        // Iniciar captura de dados com todos os sensores
+        motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical, to: motionQueue) { [weak self] motion, error in
+            guard let self = self,
+                  let motion = motion else {
             if let error = error {
                 print("❌ Erro na captura de movimento: \(error.localizedDescription)")
+                }
                 return
             }
             
-            // Armazenar os dados
-            self.motionData.append(motion)
-            
-            // Processar dados em tempo real se há uma série ativa
-            if self.currentSetId != nil {
-                self.processCurrentSetMotion(motion)
-            }
-        }
-    }
-    
-    private func processCurrentSetMotion(_ motion: CMDeviceMotion) {
-        guard let setId = currentSetId else { return }
-        
-        // Processar a cada 0.5 segundo
-        if motionData.count % 15 == 0 {
-            let movementData = WatchSensorData(
-                type: .movement,
-                heartRate: currentHeartRate > 0 ? currentHeartRate : nil,
+            // Criar SensorData com dados brutos
+            let newData = SensorData(
+                // Acelerômetro
                 accelerationX: motion.userAcceleration.x,
                 accelerationY: motion.userAcceleration.y,
                 accelerationZ: motion.userAcceleration.z,
+
+                // Giroscópio
                 rotationX: motion.rotationRate.x,
                 rotationY: motion.rotationRate.y,
                 rotationZ: motion.rotationRate.z,
+
+                // Gravidade
                 gravityX: motion.gravity.x,
                 gravityY: motion.gravity.y,
                 gravityZ: motion.gravity.z,
+
+                // Orientação
                 attitudeRoll: motion.attitude.roll,
                 attitudePitch: motion.attitude.pitch,
                 attitudeYaw: motion.attitude.yaw,
-                setId: setId
+
+                // Campo magnético (se disponível)
+                magneticFieldX: motion.magneticField?.field.x,
+                magneticFieldY: motion.magneticField?.field.y,
+                magneticFieldZ: motion.magneticField?.field.z,
+
+                // Metadados
+                captureFrequency: self.currentPhase.samplingRate,
+                sampleCount: 1,
+                capturedAt: Date()
             )
-            
-            addSensorData(movementData)
+
+            // Adicionar ao buffer e ao buffer de atividade
+            Task { @MainActor in
+                await self.addToBuffer(newData)
+            }
+        }
+
+        isRecording = true
+    }
+
+    /// Para a captura de dados de movimento
+    func stopMotionUpdates() {
+        motionManager.stopDeviceMotionUpdates()
+        isRecording = false
+
+        // Enviar dados remanescentes
+        Task {
+            await flushBuffer()
+        }
+        activityBuffer.removeAll()
+        lastRestDetect = nil
+        lastExecDetect = nil
+    }
+
+    /// Atualiza a fase do treino manualmente
+    func updatePhase(_ newPhase: WorkoutPhase) {
+        currentPhase = newPhase
+    }
+
+    // MARK: - Buffer Management
+
+    private func addToBuffer(_ data: SensorData) async {
+        sensorBuffer.append(data)
+
+        // Buffer de atividade para detecção de fase
+        activityBuffer.append(data)
+        if activityBuffer.count > activityWindowSize {
+            activityBuffer.removeFirst(activityBuffer.count - activityWindowSize)
+        }
+        await detectPhaseAutomatically()
+
+        // Flush do buffer de envio
+        if sensorBuffer.count >= bufferSize {
+            await flushBuffer()
+        }
+    }
+
+    private func flushBuffer() async {
+        guard !sensorBuffer.isEmpty else { return }
+
+        // Criar chunk com dados atuais
+        let chunk = Array(sensorBuffer)
+        sensorBuffer.removeAll(keepingCapacity: true)
+
+        // Delegar envio para WatchSessionManager
+        await sessionManager.sendSensorDataChunk(chunk)
+    }
+
+    // MARK: - Detecção automática de fase (Apple Style)
+
+    private func detectPhaseAutomatically() async {
+        guard !activityBuffer.isEmpty else { return }
+        let avgMagnitude = activityBuffer
+            .map { sqrt($0.accelerationX * $0.accelerationX +
+                        $0.accelerationY * $0.accelerationY +
+                        $0.accelerationZ * $0.accelerationZ) }
+            .reduce(0, +) / Double(activityBuffer.count)
+        let now = Date()
+
+        switch currentPhase {
+        case .execution:
+            if avgMagnitude < thresholdRest {
+                if let last = lastRestDetect, now.timeIntervalSince(last) > detectRestDuration {
+                    await MainActor.run { self.updatePhase(.rest) }
+                    
+                    // 🆕 NOTIFICAR IPHONE: Detectou mudança de padrão (parou de fazer exercício)
+                    await notifyPhoneOfPhaseChange(from: .execution, to: .rest, detectedAt: now)
+                    
+                    lastRestDetect = nil
+                } else if lastRestDetect == nil {
+                    lastRestDetect = now
+                }
+            } else {
+                lastRestDetect = nil
+            }
+        case .rest:
+            if avgMagnitude > thresholdExec {
+                if let last = lastExecDetect, now.timeIntervalSince(last) > detectExecDuration {
+                    await MainActor.run { self.updatePhase(.execution) }
+                    lastExecDetect = nil
+                } else if lastExecDetect == nil {
+                    lastExecDetect = now
+                }
+            } else {
+                lastExecDetect = nil
+            }
         }
     }
     
-    // MARK: - Rest Period Tracking
-    func startRestPeriod() {
-        let restData = WatchSensorData(
-            type: .restStarted,
-            heartRate: currentHeartRate > 0 ? currentHeartRate : nil
-        )
-        addSensorData(restData)
-    }
-    
-    func endRestPeriod(duration: TimeInterval) {
-        let restData = WatchSensorData(
-            type: .restCompleted,
-            heartRate: currentHeartRate > 0 ? currentHeartRate : nil,
-            duration: duration
-        )
-        addSensorData(restData)
-        print("⏱️ Descanso registrado: \(duration)s")
-    }
-    
-    // MARK: - Data Management
-    private func addSensorData(_ data: WatchSensorData) {
-        // Adicionar aos dados pendentes do WatchDataManager
-        DispatchQueue.main.async {
-            WatchDataManager.shared.addSensorData(data)
-        }
-    }
-    
-    private func saveAndSendData() {
-        guard let startTime = sessionStartTime else { return }
-        
-        let duration = Date().timeIntervalSince(startTime)
-        
-        // Converter os dados para formato serializável
-        var dataToSend: [[String: Double]] = []
-        
-        for motion in motionData {
-            let motionDict: [String: Double] = [
-                "timestamp": motion.timestamp,
-                "rotationX": motion.rotationRate.x,
-                "rotationY": motion.rotationRate.y,
-                "rotationZ": motion.rotationRate.z,
-                "accelerationX": motion.userAcceleration.x,
-                "accelerationY": motion.userAcceleration.y,
-                "accelerationZ": motion.userAcceleration.z,
-                "gravityX": motion.gravity.x,
-                "gravityY": motion.gravity.y,
-                "gravityZ": motion.gravity.z,
-                "attitudeRoll": motion.attitude.roll,
-                "attitudePitch": motion.attitude.pitch,
-                "attitudeYaw": motion.attitude.yaw
-            ]
-            dataToSend.append(motionDict)
-        }
-        
-        // Salvar dados de fim de treino
-        let endData = WatchSensorData(
-            type: .workoutCompleted,
-            heartRate: currentHeartRate > 0 ? currentHeartRate : nil,
-            calories: currentCalories > 0 ? currentCalories : nil,
-            duration: duration
-        )
-        
-        addSensorData(endData)
-        
-        // Enviar para o iPhone
-        sendDataToiPhone(data: dataToSend)
-        
-        // Limpar dados temporários
-        motionData.removeAll()
-        sessionStartTime = nil
-    }
-    
-    private func sendDataToiPhone(data: [[String: Double]]) {
-        let message: [String: Any] = [
-            "type": "motionData",
-            "data": data,
-            "timestamp": Date().timeIntervalSince1970
+    // 🆕 NOVA FUNÇÃO: Notifica iPhone sobre mudança de fase
+    private func notifyPhoneOfPhaseChange(from oldPhase: WorkoutPhase, to newPhase: WorkoutPhase, detectedAt: Date) async {
+        let phaseChangeData: [String: Any] = [
+            "type": "phase_change_detected",
+            "from_phase": oldPhase == .execution ? "execution" : "rest",
+            "to_phase": newPhase == .execution ? "execution" : "rest",
+            "detected_at": detectedAt.timeIntervalSince1970,
+            "threshold_used": newPhase == .rest ? thresholdRest : thresholdExec,
+            "detection_duration": newPhase == .rest ? detectRestDuration : detectExecDuration
         ]
         
-        // Usar a versão síncrona do ConnectivityManager como no Fit2
-        let session = WCSession.default
-        guard session.activationState == .activated else {
-            print("WCSession não está ativado")
-            return
-        }
+        // Enviar para iPhone via WatchSessionManager
+        await sessionManager.sendPhaseChangeDetection(phaseChangeData)
         
-        session.sendMessage(message, replyHandler: nil) { error in
-            print("Erro ao enviar dados para o iPhone: \(error.localizedDescription)")
-        }
-    }
-    
-    // MARK: - Workout Session Management
-    private func startWorkoutSession() {
-        guard let workoutSession = workoutSession,
-              let workoutBuilder = workoutBuilder else { return }
-        
-        do {
-            try workoutSession.startActivity(with: Date())
-            
-            workoutBuilder.beginCollection(withStart: Date()) { (success, error) in
-                if let error = error {
-                    print("❌ Erro ao iniciar coleta: \(error.localizedDescription)")
-                }
-            }
-        } catch {
-            print("❌ Erro ao iniciar sessão: \(error.localizedDescription)")
-        }
-    }
-    
-    private func stopWorkoutSession() {
-        guard let workoutSession = workoutSession,
-              let workoutBuilder = workoutBuilder else { return }
-        
-        workoutSession.end()
-        
-        workoutBuilder.endCollection(withEnd: Date()) { (success, error) in
-            if let error = error {
-                print("❌ Erro ao finalizar coleta: \(error.localizedDescription)")
-                return
-            }
-            
-            workoutBuilder.finishWorkout { (workout, error) in
-                if let error = error {
-                    print("❌ Erro ao finalizar treino: \(error.localizedDescription)")
-                } else {
-                    print("✅ Treino salvo no HealthKit")
-                }
-            }
-        }
-    }
-    
-    // MARK: - Command Processing
-    func processCommand(_ command: String) {
-        DispatchQueue.main.async {
-            switch command {
-            case "startRecording":
-                if !self.isRecording {
-                    self.startRecording()
-                }
-            case "stopRecording":
-                if self.isRecording {
-                    self.stopRecording()
-                }
-            default:
-                print("Comando desconhecido: \(command)")
-            }
-        }
+        print("🔄 Mudança de fase detectada e notificada: \(oldPhase) → \(newPhase)")
     }
 }
 
-// MARK: - HKWorkoutSessionDelegate
-extension MotionManager: HKWorkoutSessionDelegate {
-    func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
-        print("🏃‍♂️ Sessão de treino mudou de \(fromState.rawValue) para \(toState.rawValue)")
+// MARK: - Debug Extensions
+
+extension MotionManager {
+    /// Retorna estatísticas de captura
+    var captureStats: String {
+        """
+        📊 Captura Stats:
+        - Fase: \(currentPhase)
+        - Taxa: \(currentPhase.samplingRate)Hz
+        - Intervalo: \(1.0 / currentPhase.samplingRate * 1000)ms
+        - Buffer: \(sensorBuffer.count)/\(bufferSize)
+        - Sensores: Acelerômetro, Giroscópio, Gravidade, Atitude, Magnetômetro
+        - QoS: \(motionQueue.qualityOfService.rawValue)
+        """
     }
-    
-    func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
-        print("❌ Sessão de treino falhou: \(error.localizedDescription)")
-    }
-} 
+}

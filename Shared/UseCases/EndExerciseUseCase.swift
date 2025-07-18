@@ -24,7 +24,8 @@
 //  • WorkoutDataService: Operações CRUD de exercícios
 //  • SyncWorkoutUseCase: Sincronização automática (opcional)
 //  • ConnectivityManager: Notificação Apple Watch
-//  • HealthKitManager: Workout segments (será implementado no item 54)
+//  • HealthKitManager: Sessão HealthKit é iniciada/finalizada apenas em Start/EndWorkoutUseCase.
+// Aqui, apenas leitura de dados em tempo real se necessário (ex: feedback, análise).
 //  
 //  🔄 LIFECYCLE:
 //  1. Validação de entrada (exercício ativo, sessão válida)
@@ -253,7 +254,7 @@ final class EndExerciseUseCase: EndExerciseUseCaseProtocol {
     
     private let workoutDataService: WorkoutDataServiceProtocol
     private let syncWorkoutUseCase: SyncWorkoutUseCaseProtocol?
-    // TODO: Adicionar HealthKitManager quando item 54 for implementado
+    // TODO: Adicionar HealthKitManager quando item 65 for implementado (iOSApp.swift)
     // private let healthKitManager: HealthKitManagerProtocol
     
     // MARK: - Initialization
@@ -487,10 +488,10 @@ final class EndExerciseUseCase: EndExerciseUseCaseProtocol {
             return .skipped
         }
         
-        print("🏥 [END EXERCISE] HealthKit será integrado no item 54")
-        // TODO: Implementar quando HealthKitManager estiver disponível
+        print("🏥 [END EXERCISE] HealthKit será integrado no item 65 (iOSApp.swift)")
+        // TODO: Implementar quando HealthKitManager for injetado no item 65
         
-        return .disabled // Temporário até item 54
+        return .disabled // Temporário até item 65
     }
     
     /// Sincronização com tratamento de erro

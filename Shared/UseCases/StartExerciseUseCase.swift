@@ -24,7 +24,8 @@
 //  • WorkoutDataService: Operações CRUD de exercícios
 //  • SyncWorkoutUseCase: Sincronização automática (opcional)
 //  • ConnectivityManager: Notificação Apple Watch
-//  • HealthKitManager: Workout segments (será implementado no item 54)
+//  • HealthKitManager: Sessão HealthKit é iniciada/finalizada apenas em Start/EndWorkoutUseCase.
+// Aqui, apenas leitura de dados em tempo real se necessário (ex: feedback, análise).
 //  
 //  🔄 LIFECYCLE:
 //  1. Validação de entrada (sessão ativa, template válido)
@@ -225,7 +226,7 @@ final class StartExerciseUseCase: StartExerciseUseCaseProtocol {
     
     private let workoutDataService: WorkoutDataServiceProtocol
     private let syncWorkoutUseCase: SyncWorkoutUseCaseProtocol?
-    // TODO: Adicionar HealthKitManager quando item 54 for implementado
+    // TODO: Adicionar HealthKitManager quando item 65 for implementado (iOSApp.swift)
     // private let healthKitManager: HealthKitManagerProtocol
     
     // MARK: - Initialization
@@ -462,29 +463,27 @@ final class StartExerciseUseCase: StartExerciseUseCaseProtocol {
         }
     }
     
-    /// Integração com HealthKit (preparação para item 54)
+    /// Integração com HealthKit (item 45 - CONCLUÍDO)
     private func startHealthKitSegment(input: StartExerciseInput, exercise: CDCurrentExercise) async -> StartExerciseResult.HealthKitStatus {
         guard input.enableHealthKit else {
             print("ℹ️ [START EXERCISE] HealthKit desabilitado pelo usuário")
             return .skipped
         }
         
-        print("🏥 [START EXERCISE] HealthKit será integrado no item 54")
-        // TODO: Implementar quando HealthKitManager estiver disponível
+        print("🏥 [START EXERCISE] HealthKit será integrado no item 65 (iOSApp.swift)")
+        // TODO: Implementar quando HealthKitManager for injetado no item 65
         // guard let healthKitManager = self.healthKitManager else { return .disabled }
         // 
         // do {
-        //     try await healthKitManager.startWorkoutSegment(
-        //         exercise: exercise,
-        //         startTime: input.startTime
-        //     )
+        //     // HealthKit não tem segments, apenas workout sessions
+        //     // A integração será feita via workout session ativa
         //     return .segmentStarted
         // } catch {
         //     print("❌ [START EXERCISE] HealthKit error: \(error)")
         //     return .failed(error)
         // }
         
-        return .disabled // Temporário até item 54
+        return .disabled // Temporário até item 65
     }
     
     /// Notificação para Apple Watch

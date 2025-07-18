@@ -66,11 +66,11 @@ struct ListExerciseView: View {
             await viewModel.loadExercises()
         }
         .onAppear {
-            FirebaseExerciseService.shared.startRealtimeListener()
+            viewModel.startReactiveLoading()
             viewModel.updateSelectedExercises(selectedExercises)
         }
         .onDisappear {
-            FirebaseExerciseService.shared.stopRealtimeListener()
+            viewModel.stopReactiveLoading()
         }
         .onChange(of: selectedExercises) { _, newValue in
             viewModel.updateSelectedExercises(newValue)
@@ -89,7 +89,7 @@ struct ListExerciseView: View {
     private func ExerciseList() -> some View {
         VStack(spacing: 12) {
             ForEach(viewModel.filteredFirebaseExercises) { exercise in
-                ListExerciseCard(
+                ExerciseCard.firebaseList(
                     exercise: exercise,
                     isSelected: selectedExercises.contains(exercise.safeTemplateId),
                     onTap: {

@@ -1,0 +1,135 @@
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CoreDataModels.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/EndSetUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/EndWorkoutUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/ConnectivityManager.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/PersistenceController.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CoreDataService.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CreateWorkoutUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/StartWorkoutUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/SyncWorkoutUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/TimerService.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/FetchFBExercisesUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/SensorData.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/MuscleGroup.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/NetworkMonitor.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/StartExerciseUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/ImportWorkoutUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CoreDataAdapter.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/AuthUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/ListExerciseView.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/BiometricAuthService.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/AppleSignInServiceProtocol.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/ProfileView.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/WorkoutEditorView.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/WorkoutView.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/BackButton.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/iOSApp.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/FirebaseExercise.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/ListExerciseViewModel.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/HomeView.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/ImportWorkoutCard.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CreateAccountView.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/WorkoutPlanCard.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CreateAccountViewModel.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/LoginViewModel.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CreateButton.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/BaseViewModel.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/LoginView.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/AuthService.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CloudSyncManager.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/FacebookSignInService.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/WorkoutSessionViewModel.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/MainTabView.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/FirestoreExerciseRepository.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/BiometricAuthServiceProtocol.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/PhoneSessionManager.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/UploadButton.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/GoogleSignInService.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/AppleSignInService.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/PaywallView.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/HistoryView.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/FacebookSignInServiceProtocol.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/WorkoutViewModel.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/GoogleSignInServiceProtocol.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/ExerciseCard.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/ReorderExerciseUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/UpdateDataToMLUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/UpdateWorkoutUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/RevenueCatService.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/SubscriptionType.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/ExerciseDisplayable.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/StartSetUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/ReorderWorkoutUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CloudSyncStatus.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/MLModelManager.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/HealthKitManager.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/WeightUnit.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/SubscriptionManager.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/WorkoutDataService.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/FetchWorkoutUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/SessionManager.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/DeleteWorkoutUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/EndExerciseUseCase.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/ImportWorkoutService.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDAppUser+CoreDataClass.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDAppUser+CoreDataProperties.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDCurrentExercise+CoreDataClass.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDCurrentExercise+CoreDataProperties.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDCurrentSession+CoreDataClass.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDCurrentSession+CoreDataProperties.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDCurrentSet+CoreDataClass.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDCurrentSet+CoreDataProperties.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataClass.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataProperties.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDHistoryExercise+CoreDataClass.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDHistoryExercise+CoreDataProperties.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDHistorySet+CoreDataClass.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDHistorySet+CoreDataProperties.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDPlanExercise+CoreDataClass.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDPlanExercise+CoreDataProperties.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataClass.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataProperties.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataClass.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataProperties.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/FitterModel+CoreDataModel.o
+/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-iphoneos/Fitter V2.build/Objects-normal/arm64/GeneratedAssetSymbols.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/GoogleSignIn-iOS/build/Debug-iphoneos/GoogleSignInSwift.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/AppAuth-iOS/build/Debug-iphoneos/AppAuth.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/AppAuth-iOS/build/Debug-iphoneos/AppAuthCore.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/app-check/build/Debug-iphoneos/AppCheckCore.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/promises/build/Debug-iphoneos/FBLPromises.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/GoogleUtilities/build/Debug-iphoneos/GoogleUtilities-Environment.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/GoogleUtilities/build/Debug-iphoneos/third-party-IsAppEncrypted.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/GoogleUtilities/build/Debug-iphoneos/GoogleUtilities-UserDefaults.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/GoogleUtilities/build/Debug-iphoneos/GoogleUtilities-Logger.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/GTMAppAuth/build/Debug-iphoneos/GTMAppAuth.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/gtm-session-fetcher/build/Debug-iphoneos/GTMSessionFetcherCore.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/GoogleSignIn-iOS/build/Debug-iphoneos/GoogleSignIn.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Debug-iphoneos/FacebookCore.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Debug-iphoneos/FacebookAEM.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/KeychainAccess/build/Debug-iphoneos/KeychainAccess.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/build/Debug-iphoneos/FirebaseCore.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/build/Debug-iphoneos/Firebase.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/GoogleUtilities/build/Debug-iphoneos/GoogleUtilities-NSData.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/build/Debug-iphoneos/FirebaseCoreInternal.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/purchases-ios/build/Debug-iphoneos/RevenueCat.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/build/Debug-iphoneos/FirebaseAuth.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/build/Debug-iphoneos/FirebaseAppCheckInterop.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/build/Debug-iphoneos/FirebaseAuthInterop.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/interop-ios-for-google-sdks/build/Debug-iphoneos/RecaptchaInterop.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/build/Debug-iphoneos/FirebaseAuthInternal.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/build/Debug-iphoneos/FirebaseCoreExtension.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/GoogleUtilities/build/Debug-iphoneos/GoogleUtilities-AppDelegateSwizzler.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/GoogleUtilities/build/Debug-iphoneos/GoogleUtilities-Reachability.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/GoogleUtilities/build/Debug-iphoneos/GoogleUtilities-Network.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/facebook-ios-sdk/build/Debug-iphoneos/FacebookLogin.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/build/Debug-iphoneos/FirebaseFirestoreTarget.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/build/Debug-iphoneos/FirebaseFirestoreInternalWrapper.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/build/Debug-iphoneos/FirebaseSharedSwift.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/abseil-cpp-binary/build/Debug-iphoneos/abslWrapper.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/grpc-binary/build/Debug-iphoneos/grpcppWrapper.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/grpc-binary/build/Debug-iphoneos/grpcWrapper.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/grpc-binary/build/Debug-iphoneos/opensslWrapper.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/nanopb/build/Debug-iphoneos/nanopb.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/leveldb/build/Debug-iphoneos/leveldb.o
+/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/build/Debug-iphoneos/FirebaseFirestore.o

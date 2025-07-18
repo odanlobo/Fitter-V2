@@ -729,3 +729,4 @@ extension ImportWorkoutService {
         return supportedFileTypes.contains { type.conforms(to: $0) }
     }
 }
+ 

@@ -35,8 +35,8 @@
  *
  * REFATORAÇÃO ITEM 28/88:
  * ✅ Criar StartSetUseCase.swift
- * 🔄 Preparado para HealthKitManager (item 54)
- * 🔄 Preparado para SubscriptionManager (itens 41-50)
+ * 🔄 Preparado para HealthKitManager (item 45 - CONCLUÍDO)
+ * ✅ ITEM 66: Bloqueio de funcionalidades premium - limite de 3 séries para usuários free
  * 🔄 Preparado para AuthUseCase (item 34)
  */
 
@@ -74,7 +74,7 @@ enum StartSetError: Error, LocalizedError {
         case .invalidSetData(let message):
             return "Dados da série inválidos: \(message)"
         case .seriesLimitExceeded(let limit, let current):
-            return "Limite de séries excedido: \(current)/\(limit). Considere fazer upgrade para Premium."
+            return "Limite de séries excedido: \(current)/\(limit). Faça upgrade para Premium para séries ilimitadas."
         case .subscriptionRequired(let feature):
             return "Recurso premium necessário: \(feature). Faça upgrade para continuar."
         case .sensorActivationFailed(let error):
@@ -211,22 +211,21 @@ final class StartSetUseCase: StartSetUseCaseProtocol {
     }
     
     private var healthKitManager: Any? {
-        // TODO: Injetar HealthKitManager quando item 54 for implementado
-        return nil
-    }
+    // TODO: Injetar HealthKitManager quando item 65 for implementado (iOSApp.swift)
+    return nil
+}
     
-    private var subscriptionManager: Any? {
-        // TODO: Injetar SubscriptionManager quando itens 41-50 forem implementados
-        return nil
-    }
+    private let subscriptionManager: SubscriptionManagerProtocol
     
     // MARK: - Initialization
     
     init(
         workoutDataService: WorkoutDataServiceProtocol,
+        subscriptionManager: SubscriptionManagerProtocol,
         syncUseCase: SyncWorkoutUseCaseProtocol? = nil
     ) {
         self.workoutDataService = workoutDataService
+        self.subscriptionManager = subscriptionManager
         self.syncUseCase = syncUseCase
         
         print("🎯 StartSetUseCase inicializado")
@@ -346,9 +345,39 @@ final class StartSetUseCase: StartSetUseCaseProtocol {
     }
     
     func getMaxSeries(for user: CDAppUser) async -> Int32 {
-        // TODO: Implementar validação com SubscriptionManager (itens 41-50)
-        // Por enquanto, retorna limite padrão
-        return 10  // Usuário free: 3 séries, Premium: ilimitado
+        // ✅ Implementar validação com SubscriptionManager (item 66)
+        
+        // ⚠️ REMOVER ANTES DO LANÇAMENTO: Sistema de admin para desenvolvimento
+        // Verificar se é usuário admin primeiro
+        if await subscriptionManager.isAdminUser(user) {
+            print("👑 [STARTSET] Usuário admin detectado: séries ilimitadas")
+            return Int32.max
+        }
+        
+        // ✅ Verificar status premium via SubscriptionManager
+        let status = await subscriptionManager.getSubscriptionStatus(for: user)
+        
+        switch status {
+        case .active(let type, _):
+            if type != .none {
+                print("💎 [STARTSET] Usuário premium: séries ilimitadas")
+                return Int32.max  // Premium: ilimitado
+            } else {
+                print("🆓 [STARTSET] Usuário free: máximo 3 séries")
+                return 3  // Free: máximo 3 séries
+            }
+        case .gracePeriod(let type, _):
+            if type != .none {
+                print("⏰ [STARTSET] Usuário em grace period: séries ilimitadas")
+                return Int32.max  // Grace period: manter benefícios
+            } else {
+                print("🆓 [STARTSET] Usuário free: máximo 3 séries")
+                return 3
+            }
+        case .expired, .none:
+            print("🆓 [STARTSET] Usuário free: máximo 3 séries")
+            return 3  // Free: máximo 3 séries
+        }
     }
     
     // MARK: - Private Methods
@@ -399,7 +428,7 @@ final class StartSetUseCase: StartSetUseCaseProtocol {
     private func prepareHealthKitSession(_ input: StartSetInput) async -> Bool {
         guard input.enableHealthKit else { return false }
         
-        // TODO: Implementar quando HealthKitManager for criado (item 54)
+        // TODO: Implementar quando HealthKitManager for injetado (item 65)
         // return await healthKitManager?.startWorkoutSegment() ?? false
         
         print("🔄 Preparando sessão HealthKit (aguardando item 54)")
@@ -426,12 +455,9 @@ final class StartSetUseCase: StartSetUseCaseProtocol {
     }
     
     private func startRealTimeCapture(_ set: CDCurrentSet, input: StartSetInput) async {
-        guard input.enableSensorCapture else { return }
-        
-        // TODO: Implementar captura em tempo real com MotionManager
-        // await motionManager?.startRealTimeCapture(for: set.safeId)
-        
-        print("📡 Iniciando captura em tempo real para série: \(set.safeId)")
+        // MotionManager já está ativo e capturando continuamente
+        // Apenas registrar início da série para tracking
+        print("📡 Série iniciada: \(set.safeId) - MotionManager já ativo")
     }
     
     private func syncWithWatch(_ set: CDCurrentSet, input: StartSetInput) async {
@@ -490,6 +516,14 @@ final class StartSetUseCase: StartSetUseCaseProtocol {
         
         return baseTime + setupTime
     }
+    
+    // MARK: - ⚠️ SISTEMA ADMIN - REMOVER ANTES DO LANÇAMENTO
+    
+    /// Sistema de admin movido para SubscriptionManager.isAdminUser() para evitar duplicação
+    /// ✅ Para desenvolvimento e testes sem limitações
+    /// ⚠️ REMOVER ANTES DO LANÇAMENTO: Sistema de admin apenas para desenvolvimento
+    
+
 }
 
 // MARK: - StartSetUseCase Extension

@@ -4,12 +4,14 @@
         <attribute name="birthDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="cloudSyncStatus" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="defaultRestTimer" attributeType="Double" defaultValueString="90.0" usesScalarValueType="YES"/>
+        <attribute name="defaultSetsCount" attributeType="Integer 32" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="email" optional="YES" attributeType="String"/>
         <attribute name="gender" optional="YES" attributeType="String"/>
         <attribute name="height" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="lastCloudSync" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="lastLoginDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="lastLoginDate" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES"/>
         <attribute name="locale" optional="YES" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="profilePictureURL" optional="YES" attributeType="URI"/>
@@ -17,9 +19,10 @@
         <attribute name="providerId" attributeType="String"/>
         <attribute name="subscriptionStartDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="subscriptionType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="subscriptionValidUntil" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="subscriptionValidUntil" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES"/>
         <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="weight" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="userWeight" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="weightUnit" attributeType="String" defaultValueString="kg"/>
         <relationship name="currentSession" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDCurrentSession" inverseName="user" inverseEntity="CDCurrentSession"/>
         <relationship name="workoutHistories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDWorkoutHistory" inverseName="user" inverseEntity="CDWorkoutHistory"/>
         <relationship name="workoutPlans" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDWorkoutPlan" inverseName="user" inverseEntity="CDWorkoutPlan"/>
@@ -28,9 +31,9 @@
         <attribute name="currentSetIndex" attributeType="Integer 32" usesScalarValueType="YES"/>
         <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="isActive" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isActive" attributeType="Boolean" usesScalarValueType="YES" indexed="YES"/>
         <attribute name="startTime" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="currentSet" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDCurrentSet"/>
+        <relationship name="currentSets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDCurrentSet" inverseName="exercise" inverseEntity="CDCurrentSet"/>
         <relationship name="session" maxCount="1" deletionRule="Nullify" destinationEntity="CDCurrentSession" inverseName="currentExercise" inverseEntity="CDCurrentSession"/>
         <relationship name="template" maxCount="1" deletionRule="Nullify" destinationEntity="CDExerciseTemplate" inverseName="currentExercises" inverseEntity="CDExerciseTemplate"/>
     </entity>
@@ -38,7 +41,10 @@
         <attribute name="currentExerciseIndex" attributeType="Integer 32" usesScalarValueType="YES"/>
         <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="isActive" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isActive" attributeType="Boolean" usesScalarValueType="YES" indexed="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="locationAccuracy" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
         <attribute name="startTime" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="currentExercise" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDCurrentExercise"/>
         <relationship name="plan" maxCount="1" deletionRule="Nullify" destinationEntity="CDWorkoutPlan" inverseName="currentSessions" inverseEntity="CDWorkoutPlan"/>
@@ -46,19 +52,16 @@
     </entity>
     <entity name="CDCurrentSet" representedClassName="CDCurrentSet" syncable="YES" codeGenerationType="class">
         <attribute name="actualReps" optional="YES" attributeType="Integer 32" usesScalarValueType="YES"/>
-        <attribute name="caloriesBurned" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
         <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="heartRate" optional="YES" attributeType="Integer 32" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="isActive" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isActive" attributeType="Boolean" usesScalarValueType="YES" indexed="YES"/>
         <attribute name="order" attributeType="Integer 32" usesScalarValueType="YES"/>
         <attribute name="restTime" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
-        <attribute name="sensorData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="startTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="targetReps" attributeType="Integer 32" usesScalarValueType="YES"/>
         <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="weight" attributeType="Double" usesScalarValueType="YES"/>
-        <relationship name="exercise" maxCount="1" deletionRule="Nullify" destinationEntity="CDCurrentExercise" inverseName="currentSet" inverseEntity="CDCurrentExercise"/>
+        <relationship name="exercise" maxCount="1" deletionRule="Nullify" destinationEntity="CDCurrentExercise" inverseName="currentSets" inverseEntity="CDCurrentExercise"/>
     </entity>
     <entity name="CDExerciseTemplate" representedClassName="CDExerciseTemplate" syncable="YES" codeGenerationType="class">
         <attribute name="cloudSyncStatus" attributeType="Integer 16" usesScalarValueType="YES"/>
@@ -69,8 +72,8 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="lastCloudSync" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="legSubgroup" optional="YES" attributeType="String"/>
-        <attribute name="muscleGroup" attributeType="String"/>
-        <attribute name="name" attributeType="String"/>
+        <attribute name="muscleGroup" attributeType="String" indexed="YES"/>
+        <attribute name="name" attributeType="String" indexed="YES"/>
         <attribute name="templateId" attributeType="String"/>
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="videoURL" optional="YES" attributeType="String"/>
@@ -78,30 +81,33 @@
         <relationship name="planExercises" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDPlanExercise" inverseName="template" inverseEntity="CDPlanExercise"/>
     </entity>
     <entity name="CDHistoryExercise" representedClassName="CDHistoryExercise" syncable="YES" codeGenerationType="class">
+        <attribute name="caloriesData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="cloudSyncStatus" attributeType="Integer 16" usesScalarValueType="YES"/>
+        <attribute name="heartRateData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="lastCloudSync" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="name" attributeType="String"/>
+        <attribute name="name" attributeType="String" indexed="YES"/>
         <attribute name="order" attributeType="Integer 32" usesScalarValueType="YES"/>
         <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDWorkoutHistory" inverseName="exercises" inverseEntity="CDWorkoutHistory"/>
-        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDHistorySet"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDHistorySet" inverseName="exercise" inverseEntity="CDHistorySet"/>
     </entity>
     <entity name="CDHistorySet" representedClassName="CDHistorySet" syncable="YES" codeGenerationType="class">
-        <attribute name="caloriesBurned" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="caloriesData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="cloudSyncStatus" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="heartRate" optional="YES" attributeType="Integer 32" usesScalarValueType="YES"/>
+        <attribute name="heartRateData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="lastCloudSync" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="order" attributeType="Integer 32" usesScalarValueType="YES"/>
-        <attribute name="reps" attributeType="Integer 32" usesScalarValueType="YES"/>
-        <attribute name="repsCounter" optional="YES" attributeType="Integer 32" usesScalarValueType="YES"/>
+        <attribute name="targetReps" attributeType="Integer 32" usesScalarValueType="YES"/>
+         <attribute name="actualReps" optional="YES" attributeType="Integer 32" usesScalarValueType="YES"/>
+        <attribute name="repsCounterData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="restTime" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
         <attribute name="sensorData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="startTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO" indexed="YES"/>
         <attribute name="weight" attributeType="Double" usesScalarValueType="YES"/>
-        <relationship name="exercise" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDHistoryExercise"/>
+        <relationship name="exercise" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDHistoryExercise" inverseName="sets" inverseEntity="CDHistoryExercise"/>
     </entity>
     <entity name="CDPlanExercise" representedClassName="CDPlanExercise" syncable="YES" codeGenerationType="class">
         <attribute name="cloudSyncStatus" attributeType="Integer 16" usesScalarValueType="YES"/>
@@ -112,11 +118,17 @@
         <relationship name="template" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDExerciseTemplate" inverseName="planExercises" inverseEntity="CDExerciseTemplate"/>
     </entity>
     <entity name="CDWorkoutHistory" representedClassName="CDWorkoutHistory" syncable="YES" codeGenerationType="class">
+        <attribute name="caloriesData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="sensorData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="cloudSyncStatus" attributeType="Integer 16" usesScalarValueType="YES"/>
-        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO" indexed="YES"/>
+        <attribute name="heartRateData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="lastCloudSync" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDHistoryExercise"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="locationAccuracy" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDHistoryExercise" inverseName="history" inverseEntity="CDHistoryExercise"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDAppUser" inverseName="workoutHistories" inverseEntity="CDAppUser"/>
     </entity>
     <entity name="CDWorkoutPlan" representedClassName="CDWorkoutPlan" syncable="YES" codeGenerationType="class">
@@ -125,7 +137,7 @@
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="lastCloudSync" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="muscleGroups" attributeType="String"/>
+        <attribute name="muscleGroups" attributeType="String" indexed="YES"/>
         <attribute name="order" attributeType="Integer 32" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="currentSessions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDCurrentSession" inverseName="plan" inverseEntity="CDCurrentSession"/>

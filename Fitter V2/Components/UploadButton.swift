@@ -69,9 +69,9 @@ struct UploadButton: View {
                 onPhotosAction: onPhotosAction,
                 onFilesAction: onFilesAction
             )
-            .presentationDetents([.fraction(0.33)])
-            .presentationBackground(Color.gray.opacity(0.95))
-            .presentationCornerRadius(30)
+                .presentationDetents([.fraction(0.33)])
+                .presentationBackground(Color.gray.opacity(0.95))
+                .presentationCornerRadius(30)
         }
     }
 }

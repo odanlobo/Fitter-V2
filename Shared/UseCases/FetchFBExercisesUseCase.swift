@@ -174,4 +174,3 @@ protocol FirestoreExerciseRepositoryProtocol {
 
 // MARK: - FirebaseExercise já implementado no item 32 ✅
 // Propriedades hasVideo, videoURL, description já disponíveis no modelo atualizado
-} 

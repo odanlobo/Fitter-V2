@@ -9,13 +9,35 @@ import Foundation
 import CoreData
 
 @MainActor
-class CreateAccountViewModel: ObservableObject {
-    @Published var showError = false
-    @Published var errorMessage = ""
-    @Published var isLoading = false
+class CreateAccountViewModel: BaseViewModel {
+    
+    // MARK: - Properties
     
     var onAccountCreated: ((CDAppUser?) -> Void)?
     
+    // MARK: - Inicialização
+    
+    /// Inicializa CreateAccountViewModel com dependency injection
+    /// - Parameters:
+    ///   - coreDataService: Serviço Core Data
+    ///   - authUseCase: Use Case de autenticação
+    override init(
+        coreDataService: CoreDataServiceProtocol = CoreDataService(),
+        authUseCase: AuthUseCaseProtocol = AuthUseCase(authService: AuthService())
+    ) {
+        super.init(coreDataService: coreDataService, authUseCase: authUseCase)
+        
+        print("📝 CreateAccountViewModel inicializado com AuthUseCase")
+    }
+    
+    // MARK: - Métodos de Criação de Conta
+    
+    /// Cria uma nova conta de usuário
+    /// - Parameters:
+    ///   - name: Nome do usuário
+    ///   - email: Email do usuário
+    ///   - password: Senha do usuário
+    ///   - confirmPassword: Confirmação da senha
     func createAccount(
         name: String,
         email: String,
@@ -48,20 +70,37 @@ class CreateAccountViewModel: ObservableObject {
             return
         }
         
-        isLoading = true
-        defer { isLoading = false }
+        // Cria registro de usuário
+        let registration = AuthRegistration(
+            name: name,
+            email: email,
+            password: password,
+            provider: .email,
+            agreeToTerms: true,
+            allowMarketing: false
+        )
         
-        do {
-            try await AuthService.shared.createAccount(name: name, email: email, password: password)
-            let user = AuthService.shared.currentUser
-            onAccountCreated?(user)
-        } catch {
-            showError(message: error.localizedDescription)
+        // Executa criação com loading
+        if let result = await executeUseCase({
+            try await authUseCase.signUp(with: registration)
+        }) {
+            currentUser = result.user
+            onAccountCreated?(result.user)
+            print("✅ Conta criada com sucesso: \(result.user.safeName)")
         }
     }
+}
+
+#if DEBUG
+// MARK: - Preview Support
+extension CreateAccountViewModel {
     
-    private func showError(message: String) {
-        errorMessage = message
-        showError = true
+    /// Cria instância para preview
+    /// - Returns: CreateAccountViewModel configurado para preview
+    static func previewInstance() -> CreateAccountViewModel {
+        let vm = CreateAccountViewModel()
+        vm.configureForPreview()
+        return vm
     }
 }
+#endif

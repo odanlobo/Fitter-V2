@@ -56,8 +56,8 @@ enum CloudSyncStatus: Int16, CaseIterable {
 /// 🎯 Protocolo otimizado para sincronização com Firestore
 /// Apenas funcionalidades essenciais para performance máxima
 protocol Syncable {
-    var id: UUID? { get set }
-    var cloudSyncStatus: CloudSyncStatus { get set }
+    var coreDataId: UUID { get }
+    var syncStatus: CloudSyncStatus { get set }
     var lastModified: Date? { get set }
     
     mutating func markForSync()
@@ -67,19 +67,19 @@ protocol Syncable {
 extension Syncable {
     /// Marca entidade como pendente de sincronização
     mutating func markForSync() {
-        cloudSyncStatus = .pending
+        syncStatus = .pending
         lastModified = Date()
     }
     
     /// Marca entidade como sincronizada com sucesso
     mutating func markAsSynced() {
-        cloudSyncStatus = .synced
+        syncStatus = .synced
         // lastModified não é alterado - preserva timestamp original
     }
     
     /// Para compatibilidade - indica se precisa ser sincronizado
     var needsSync: Bool {
-        return cloudSyncStatus.needsSync
+        return syncStatus.needsSync
     }
 }
 

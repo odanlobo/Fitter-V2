@@ -60,12 +60,8 @@ struct ProfileView: View {
                     
                     // Botão de Logout
                     Button(action: {
-                        do {
-                            try AuthService.shared.signOut()
-                            // Limpa os dados locais ao fazer logout
-                            try? viewContext.save()
-                        } catch {
-                            print("Erro ao fazer logout: \(error)")
+                        Task {
+                            await authViewModel.logout()
                         }
                     }) {
                         HStack {
@@ -96,6 +92,6 @@ struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileView()
             .environment(\.managedObjectContext, PreviewCoreDataStack.shared.viewContext)
-            .environmentObject(LoginViewModel.preview)
+            .environmentObject(LoginViewModel.previewInstance())
     }
 }

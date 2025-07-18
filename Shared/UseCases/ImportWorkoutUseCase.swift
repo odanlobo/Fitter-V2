@@ -50,6 +50,7 @@
  * ✅ Preparado para SyncWorkoutUseCase (item 23)
  * ✅ Clean Architecture - sem acesso direto ao Core Data
  * ✅ Tratamento de erros específicos do domínio de importação
+ * ✅ ITEM 66: Bloqueio de funcionalidades premium - limite de 4 treinos para usuários free
  */
 
 import Foundation
@@ -62,6 +63,8 @@ enum ImportWorkoutError: Error, LocalizedError {
     case fileNotSupported(String)
     case parsingFailed(Error)
     case dataValidationFailed(String)
+    case workoutLimitExceeded(limit: Int, current: Int)
+    case subscriptionRequired(feature: String)
     case creationFailed(Error)
     case syncFailed(Error)
     case serviceUnavailable(String)
@@ -76,6 +79,10 @@ enum ImportWorkoutError: Error, LocalizedError {
             return "Falha no parsing do arquivo: \(error.localizedDescription)"
         case .dataValidationFailed(let message):
             return "Dados do arquivo inválidos: \(message)"
+        case .workoutLimitExceeded(let limit, let current):
+            return "Limite de treinos excedido: \(current)/\(limit). Faça upgrade para Premium para treinos ilimitados."
+        case .subscriptionRequired(let feature):
+            return "Recurso premium necessário: \(feature). Faça upgrade para continuar."
         case .creationFailed(let error):
             return "Falha na criação do treino importado: \(error.localizedDescription)"
         case .syncFailed(let error):
@@ -199,6 +206,7 @@ final class ImportWorkoutUseCase: ImportWorkoutUseCaseProtocol {
     
     private let importService: ImportWorkoutServiceProtocol
     private let workoutDataService: WorkoutDataServiceProtocol
+    private let subscriptionManager: SubscriptionManagerProtocol
     private let syncUseCase: SyncWorkoutUseCaseProtocol?
     private let fetchFBExercisesUseCase: FetchFBExercisesUseCaseProtocol?
     
@@ -207,11 +215,13 @@ final class ImportWorkoutUseCase: ImportWorkoutUseCaseProtocol {
     init(
         importService: ImportWorkoutServiceProtocol,
         workoutDataService: WorkoutDataServiceProtocol,
+        subscriptionManager: SubscriptionManagerProtocol,
         syncUseCase: SyncWorkoutUseCaseProtocol? = nil,
         fetchFBExercisesUseCase: FetchFBExercisesUseCaseProtocol? = nil
     ) {
         self.importService = importService
         self.workoutDataService = workoutDataService
+        self.subscriptionManager = subscriptionManager
         self.syncUseCase = syncUseCase
         self.fetchFBExercisesUseCase = fetchFBExercisesUseCase
         
@@ -231,15 +241,19 @@ final class ImportWorkoutUseCase: ImportWorkoutUseCaseProtocol {
             try input.validate()
             print("✅ Validação de entrada concluída")
             
-            // 2. Parsing via ImportWorkoutService
+            // 2. Validar limite de treinos
+            try await validateWorkoutLimit(for: input.user)
+            print("✅ Validação de limite de treinos concluída")
+            
+            // 3. Parsing via ImportWorkoutService
             let parsedData = try await parseWorkoutData(input.source)
             print("✅ Parsing concluído: \(parsedData.exercises.count) exercícios detectados")
             
-            // 3. Validar dados parseados
+            // 4. Validar dados parseados
             try validateParsedData(parsedData)
             print("✅ Dados parseados validados")
             
-            // 4. Converter para exercícios Core Data
+            // 5. Converter para exercícios Core Data
             let (exerciseTemplates, validatedCount, skippedCount) = try await convertToExerciseTemplates(
                 parsedData.exercises,
                 autoDetect: input.autoDetectExercises,
@@ -247,7 +261,7 @@ final class ImportWorkoutUseCase: ImportWorkoutUseCaseProtocol {
             )
             print("✅ \(validatedCount) exercícios convertidos, \(skippedCount) ignorados")
             
-            // 5. Criar plano de treino
+            // 6. Criar plano de treino
             let (workoutPlan, planExercises) = try await createWorkoutPlan(
                 from: parsedData,
                 exercises: exerciseTemplates,
@@ -255,7 +269,7 @@ final class ImportWorkoutUseCase: ImportWorkoutUseCaseProtocol {
             )
             print("✅ Plano de treino criado: \(workoutPlan.displayTitle)")
             
-            // 6. Tentar sincronização
+            // 7. Tentar sincronização
             let syncStatus = await attemptSync(workoutPlan)
             
             let parseTime = Date().timeIntervalSince(parseStart)
@@ -501,6 +515,59 @@ final class ImportWorkoutUseCase: ImportWorkoutUseCaseProtocol {
         return muscleGroups.sorted().joined(separator: ", ")
     }
     
+    /// Valida limite de treinos para usuários free
+    /// ✅ Implementação do item 66 - bloqueio de funcionalidades premium
+    private func validateWorkoutLimit(for user: CDAppUser) async throws {
+        // ⚠️ REMOVER ANTES DO LANÇAMENTO: Sistema de admin para desenvolvimento
+        // Verificar se é usuário admin primeiro
+        if await subscriptionManager.isAdminUser(user) {
+            print("👑 [IMPORT] Usuário admin detectado: treinos ilimitados")
+            return
+        }
+        
+        // ✅ Verificar status premium via SubscriptionManager
+        let status = await subscriptionManager.getSubscriptionStatus(for: user)
+        
+        switch status {
+        case .active(let type, _):
+            if type != .none {
+                print("💎 [IMPORT] Usuário premium: treinos ilimitados")
+                return  // Premium: ilimitado
+            }
+        case .gracePeriod(let type, _):
+            if type != .none {
+                print("⏰ [IMPORT] Usuário em grace period: treinos ilimitados")
+                return  // Grace period: manter benefícios
+            }
+        case .expired, .none:
+            // Continuar para verificar limite
+            break
+        }
+        
+        // ✅ Usuário free: verificar limite de 4 treinos
+        do {
+            let existingPlans = try await workoutDataService.fetchWorkoutPlans(for: user)
+            let currentCount = existingPlans.count
+            let maxWorkouts = 4
+            
+            if currentCount >= maxWorkouts {
+                print("🚫 [IMPORT] Limite de treinos atingido: \(currentCount)/\(maxWorkouts)")
+                throw ImportWorkoutError.workoutLimitExceeded(limit: maxWorkouts, current: currentCount)
+            }
+            
+            print("✅ [IMPORT] Limite de treinos OK: \(currentCount)/\(maxWorkouts)")
+        } catch let error as ImportWorkoutError {
+            throw error
+        } catch {
+            print("⚠️ [IMPORT] Erro ao verificar limite de treinos: \(error)")
+            throw ImportWorkoutError.creationFailed(error)
+        }
+    }
+    
+    /// Sistema de admin movido para SubscriptionManager.isAdminUser() para evitar duplicação
+    /// ✅ Para desenvolvimento e testes sem limitações
+    /// ⚠️ REMOVER ANTES DO LANÇAMENTO: Sistema de admin apenas para desenvolvimento
+    
     private func attemptSync(_ workoutPlan: CDWorkoutPlan) async -> ImportWorkoutSyncStatus {
         guard let syncUseCase = syncUseCase else {
             print("⚠️ SyncWorkoutUseCase indisponível - sincronização desabilitada")
@@ -539,6 +606,7 @@ final class ImportWorkoutUseCase: ImportWorkoutUseCaseProtocol {
 extension ImportWorkoutUseCase {
     
     /// Método de conveniência para importação rápida via câmera
+    /// ✅ Inclui validação automática de limite de treinos (item 66)
     func importFromCamera(
         imageData: Data,
         user: CDAppUser,
@@ -556,6 +624,7 @@ extension ImportWorkoutUseCase {
     }
     
     /// Método de conveniência para importação via arquivo
+    /// ✅ Inclui validação automática de limite de treinos (item 66)
     func importFromFile(
         fileData: Data,
         fileType: UTType,
@@ -574,6 +643,7 @@ extension ImportWorkoutUseCase {
     }
     
     /// Método de conveniência para importação via galeria de fotos
+    /// ✅ Inclui validação automática de limite de treinos (item 66)
     func importFromPhoto(
         imageData: Data,
         user: CDAppUser,
@@ -598,6 +668,7 @@ extension ImportWorkoutUseCase {
  let importUseCase = ImportWorkoutUseCase(
      importService: ImportWorkoutService(),
      workoutDataService: WorkoutDataService(),
+     subscriptionManager: SubscriptionManager(),
      syncUseCase: SyncWorkoutUseCase(),
      fetchFBExercisesUseCase: FetchFBExercisesUseCase()
  )

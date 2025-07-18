@@ -1,5 +1,5 @@
 {
-  "originHash" : "5db9057d3908c144323d24c9aa40ad5744090bce0f5bbfc3312922fc427414e0",
+  "originHash" : "8ade6f57699308cdcad2103c4e5a83f05642dbb5e00c54c53f25a66989081401",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -119,6 +119,15 @@
       }
     },
     {
+      "identity" : "keychainaccess",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
+      }
+    },
+    {
       "identity" : "leveldb",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/leveldb.git",
@@ -143,6 +152,15 @@
       "state" : {
         "revision" : "540318ecedd63d883069ae7f1ed811a2df00b6ac",
         "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "purchases-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RevenueCat/purchases-ios",
+      "state" : {
+        "revision" : "9cb74af9c5e9b4e9c22a511d8df4481fa7e3de16",
+        "version" : "5.32.0"
       }
     },
     {

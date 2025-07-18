@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		177661FB2E20324E00A96B54 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 177661FA2E20324E00A96B54 /* RevenueCat */; };
 		17E1CBF32DCD2D790099FDAA /* Fitter V2 Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 17E1CBF22DCD2D790099FDAA /* Fitter V2 Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		17E1CD3E2DCD65570099FDAA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 17E1CD3D2DCD65570099FDAA /* FirebaseAuth */; };
 		17E1CD402DCD65570099FDAA /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 17E1CD3F2DCD65570099FDAA /* FirebaseCore */; };
@@ -15,6 +16,7 @@
 		17E1CD4E2DCD6BAC0099FDAA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 17E1CD4D2DCD6BAC0099FDAA /* GoogleSignInSwift */; };
 		17E1CD6B2DD2A5A50099FDAA /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 17E1CD6A2DD2A5A50099FDAA /* FacebookCore */; };
 		17E1CD6D2DD2A5A50099FDAA /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 17E1CD6C2DD2A5A50099FDAA /* FacebookLogin */; };
+		17F9B5742E203E7F00592BA9 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 17F9B5732E203E7F00592BA9 /* KeychainAccess */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,17 @@
 		17E1CBF22DCD2D790099FDAA /* Fitter V2 Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fitter V2 Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		178896002E25FFA50034B2A8 /* Exceptions for "Shared" folder in "Fitter V2 Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Services/SubscriptionManager.swift,
+				UseCases/AuthUseCase.swift,
+			);
+			target = 17E1CBF12DCD2D790099FDAA /* Fitter V2 Watch App */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		17E1CDE52DD3BE0E0099FDAA /* Fitter V2 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -59,6 +72,9 @@
 		};
 		17E3546C2DF0DB1000A820F4 /* Shared */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				178896002E25FFA50034B2A8 /* Exceptions for "Shared" folder in "Fitter V2 Watch App" target */,
+			);
 			path = Shared;
 			sourceTree = "<group>";
 		};
@@ -71,8 +87,10 @@
 			files = (
 				17E1CD4E2DCD6BAC0099FDAA /* GoogleSignInSwift in Frameworks */,
 				17E1CD6B2DD2A5A50099FDAA /* FacebookCore in Frameworks */,
+				17F9B5742E203E7F00592BA9 /* KeychainAccess in Frameworks */,
 				17E1CD402DCD65570099FDAA /* FirebaseCore in Frameworks */,
 				17E1CD4C2DCD6BAC0099FDAA /* GoogleSignIn in Frameworks */,
+				177661FB2E20324E00A96B54 /* RevenueCat in Frameworks */,
 				17E1CD3E2DCD65570099FDAA /* FirebaseAuth in Frameworks */,
 				17E1CD6D2DD2A5A50099FDAA /* FacebookLogin in Frameworks */,
 				17E1CD422DCD65570099FDAA /* FirebaseFirestore in Frameworks */,
@@ -138,6 +156,8 @@
 				17E1CD4D2DCD6BAC0099FDAA /* GoogleSignInSwift */,
 				17E1CD6A2DD2A5A50099FDAA /* FacebookCore */,
 				17E1CD6C2DD2A5A50099FDAA /* FacebookLogin */,
+				177661FA2E20324E00A96B54 /* RevenueCat */,
+				17F9B5732E203E7F00592BA9 /* KeychainAccess */,
 			);
 			productName = "Fitter V2";
 			productReference = 17E1CBE52DCD2D770099FDAA /* Fitter V2.app */;
@@ -197,6 +217,8 @@
 				17E1CD3C2DCD65570099FDAA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				17E1CD4A2DCD6BAC0099FDAA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				17E1CD692DD2A5A50099FDAA /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+				177661F92E20324E00A96B54 /* XCRemoteSwiftPackageReference "purchases-ios" */,
+				17F9B5722E203E7F00592BA9 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 17E1CBE62DCD2D770099FDAA /* Products */;
@@ -382,7 +404,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Fitter-V2-Watch-App-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Fitter V2";
+				INFOPLIST_KEY_CFBundleDisplayName = Fitter;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Este aplicativo precisa acessar seus dados de saúde para monitorar treinos";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Este aplicativo precisa gravar dados de movimento e frequência cardíaca no Health";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -416,7 +438,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Fitter-V2-Watch-App-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Fitter V2";
+				INFOPLIST_KEY_CFBundleDisplayName = Fitter;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Este aplicativo precisa acessar seus dados de saúde para monitorar treinos";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Este aplicativo precisa gravar dados de movimento e frequência cardíaca no Health";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -451,7 +473,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Fitter-V2-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Fitter V2";
+				INFOPLIST_KEY_CFBundleDisplayName = Fitter;
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Este aplicativo precisa acessar seus dados clínicos para análise";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Este aplicativo precisa acessar seus dados de saúde para processar informações de treino";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Este aplicativo precisa gravar dados de treino no Health";
@@ -492,7 +514,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Fitter-V2-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Fitter V2";
+				INFOPLIST_KEY_CFBundleDisplayName = Fitter;
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Este aplicativo precisa acessar seus dados clínicos para análise";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Este aplicativo precisa acessar seus dados de saúde para processar informações de treino";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Este aplicativo precisa gravar dados de treino no Health";
@@ -555,6 +577,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		177661F92E20324E00A96B54 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.32.0;
+			};
+		};
 		17E1CD3C2DCD65570099FDAA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -579,9 +609,22 @@
 				minimumVersion = 14.1.0;
 			};
 		};
+		17F9B5722E203E7F00592BA9 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		177661FA2E20324E00A96B54 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 177661F92E20324E00A96B54 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
+		};
 		17E1CD3D2DCD65570099FDAA /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 17E1CD3C2DCD65570099FDAA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -616,6 +659,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 17E1CD692DD2A5A50099FDAA /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookLogin;
+		};
+		17F9B5732E203E7F00592BA9 /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17F9B5722E203E7F00592BA9 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

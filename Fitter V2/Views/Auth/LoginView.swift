@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct LoginView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-    @StateObject private var viewModel = LoginViewModel()
+    // ✅ ARQUITETURA CORRETA: ViewModel injetado via @EnvironmentObject conforme estratégia DI
+    @EnvironmentObject var authViewModel: LoginViewModel
+    
     @State private var email = ""
     @State private var password = ""
     @State private var isPasswordVisible = false
@@ -73,10 +74,10 @@ struct LoginView: View {
                     // Botão de login
                     Button(action: {
                         Task {
-                            await viewModel.signIn(email: email, password: password)
+                            await authViewModel.signIn(email: email, password: password)
                         }
                     }) {
-                        if viewModel.isLoading {
+                        if authViewModel.isLoading {
                             ProgressView().tint(.black)
                         } else {
                             Text("ENTRAR")
@@ -90,36 +91,45 @@ struct LoginView: View {
                     .background(Color.white)
                     .cornerRadius(30)
                     .padding(.horizontal, 100)
-                    .disabled(viewModel.isLoading)
+                    .disabled(authViewModel.isLoading)
                     
                     // Botões de login social
                     HStack(spacing: 35) {
                         Button(action: {
-                            viewModel.signInWithApple()
+                            Task {
+                                await authViewModel.signInWithApple()
+                            }
                         }) {
                             Image("Icon Apple")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 70, height: 70)
                         }
+                        .disabled(authViewModel.isLoading)
                         
                         Button(action: {
-                            viewModel.signInWithGoogle()
+                            Task {
+                                await authViewModel.signInWithGoogle()
+                            }
                         }) {
                             Image("Icon Google")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 70, height: 70)
                         }
+                        .disabled(authViewModel.isLoading)
                         
                         Button(action: {
-                            viewModel.signInWithFacebook()
+                            Task {
+                                await authViewModel.signInWithFacebook()
+                            }
                         }) {
                             Image("Icon FB")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 70, height: 70)
                         }
+                        .disabled(authViewModel.isLoading)
                     }
                     .padding(.vertical, 10)
                     
@@ -135,12 +145,23 @@ struct LoginView: View {
                     .padding(.bottom, 30)
                 }
             }
-            .alert("Erro", isPresented: $viewModel.showError) {
+            .alert("Erro", isPresented: $authViewModel.showError) {
                 Button("OK", role: .cancel) { }
             } message: {
-                Text(viewModel.errorMessage)
+                Text(authViewModel.errorMessage)
             }
             .navigationBarHidden(true)
         }
     }
 }
+
+// MARK: - Preview Support
+
+#if DEBUG
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView()
+            .environmentObject(LoginViewModel.previewInstance())
+    }
+}
+#endif

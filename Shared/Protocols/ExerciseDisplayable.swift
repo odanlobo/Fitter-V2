@@ -26,6 +26,8 @@ protocol ExerciseDisplayable {
 // MARK: - Extensions para conformidade
 
 extension CDExerciseTemplate: ExerciseDisplayable {
+    // NOTA: safeName e safeTemplateId já estão definidas em CoreDataModels.swift
+    
     var displayMuscleGroup: String? { self.muscleGroup }
     var displayLegSubgroup: String? { self.legSubgroup }
     var displayEquipment: String? { self.equipment }

@@ -1,0 +1,638 @@
+{
+  "" : {
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/Fitter V2 Watch App-master.dia",
+    "emit-module-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/Fitter V2 Watch App-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/Fitter V2 Watch App-master-emit-module.dia",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/Fitter V2 Watch App-master.swiftdeps"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Fitter V2 Watch App/Managers/MotionManager.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MotionManager.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MotionManager.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MotionManager.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MotionManager.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MotionManager.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MotionManager.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MotionManager.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MotionManager~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Fitter V2 Watch App/Managers/WatchSessionManager.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchSessionManager.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchSessionManager.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchSessionManager.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchSessionManager.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchSessionManager.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchSessionManager.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchSessionManager.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchSessionManager~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Fitter V2 Watch App/Managers/WorkoutPhaseManager.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutPhaseManager.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutPhaseManager.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutPhaseManager.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutPhaseManager.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutPhaseManager.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutPhaseManager.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutPhaseManager.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutPhaseManager~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Fitter V2 Watch App/Views/PendingLoginView.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PendingLoginView.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PendingLoginView.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PendingLoginView.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PendingLoginView.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PendingLoginView.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PendingLoginView.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PendingLoginView.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PendingLoginView~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Fitter V2 Watch App/Views/WatchView.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchView.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchView.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchView.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchView.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchView.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchView.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchView.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchView~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Fitter V2 Watch App/WatchApp.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchApp.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchApp.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchApp.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchApp.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchApp.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchApp.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchApp.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WatchApp~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/CoreData 2/CoreDataAdapter.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataAdapter.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataAdapter.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataAdapter.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataAdapter.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataAdapter.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataAdapter.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataAdapter.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataAdapter~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/CoreData 2/CoreDataModels.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataModels.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataModels.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataModels.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataModels.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataModels.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataModels.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataModels.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataModels~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Manager/ConnectivityManager.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ConnectivityManager.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ConnectivityManager.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ConnectivityManager.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ConnectivityManager.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ConnectivityManager.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ConnectivityManager.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ConnectivityManager.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ConnectivityManager~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Manager/SessionManager.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SessionManager.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SessionManager.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SessionManager.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SessionManager.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SessionManager.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SessionManager.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SessionManager.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SessionManager~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Models/MuscleGroup.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MuscleGroup.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MuscleGroup.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MuscleGroup.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MuscleGroup.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MuscleGroup.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MuscleGroup.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MuscleGroup.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MuscleGroup~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Models/SensorData.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SensorData.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SensorData.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SensorData.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SensorData.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SensorData.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SensorData.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SensorData.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SensorData~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Models/SubscriptionType.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SubscriptionType.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SubscriptionType.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SubscriptionType.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SubscriptionType.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SubscriptionType.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SubscriptionType.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SubscriptionType.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SubscriptionType~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Models/WeightUnit.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WeightUnit.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WeightUnit.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WeightUnit.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WeightUnit.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WeightUnit.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WeightUnit.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WeightUnit.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WeightUnit~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Network/NetworkMonitor.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/NetworkMonitor.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/NetworkMonitor.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/NetworkMonitor.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/NetworkMonitor.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/NetworkMonitor.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/NetworkMonitor.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/NetworkMonitor.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/NetworkMonitor~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Persistence/PersistenceController.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PersistenceController.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PersistenceController.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PersistenceController.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PersistenceController.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PersistenceController.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PersistenceController.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PersistenceController.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/PersistenceController~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Protocols/ExerciseDisplayable.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ExerciseDisplayable.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ExerciseDisplayable.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ExerciseDisplayable.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ExerciseDisplayable.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ExerciseDisplayable.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ExerciseDisplayable.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ExerciseDisplayable.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ExerciseDisplayable~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Services/CoreDataService.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataService.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataService.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataService.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataService.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataService.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataService.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataService.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CoreDataService~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Services/HealthKitManager.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/HealthKitManager.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/HealthKitManager.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/HealthKitManager.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/HealthKitManager.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/HealthKitManager.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/HealthKitManager.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/HealthKitManager.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/HealthKitManager~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Services/ImportWorkoutService.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutService.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutService.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutService.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutService.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutService.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutService.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutService.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutService~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Services/MLModelManager.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MLModelManager.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MLModelManager.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MLModelManager.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MLModelManager.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MLModelManager.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MLModelManager.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MLModelManager.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/MLModelManager~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Services/RevenueCatService.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/RevenueCatService.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/RevenueCatService.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/RevenueCatService.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/RevenueCatService.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/RevenueCatService.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/RevenueCatService.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/RevenueCatService.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/RevenueCatService~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Services/TimerService.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/TimerService.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/TimerService.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/TimerService.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/TimerService.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/TimerService.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/TimerService.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/TimerService.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/TimerService~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Services/WorkoutDataService.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutDataService.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutDataService.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutDataService.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutDataService.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutDataService.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutDataService.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutDataService.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/WorkoutDataService~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/Sync/CloudSyncStatus.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CloudSyncStatus.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CloudSyncStatus.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CloudSyncStatus.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CloudSyncStatus.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CloudSyncStatus.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CloudSyncStatus.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CloudSyncStatus.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CloudSyncStatus~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/CreateWorkoutUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CreateWorkoutUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CreateWorkoutUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CreateWorkoutUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CreateWorkoutUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CreateWorkoutUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CreateWorkoutUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CreateWorkoutUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CreateWorkoutUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/DeleteWorkoutUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/DeleteWorkoutUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/DeleteWorkoutUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/DeleteWorkoutUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/DeleteWorkoutUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/DeleteWorkoutUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/DeleteWorkoutUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/DeleteWorkoutUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/DeleteWorkoutUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/EndExerciseUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndExerciseUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndExerciseUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndExerciseUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndExerciseUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndExerciseUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndExerciseUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndExerciseUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndExerciseUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/EndSetUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndSetUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndSetUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndSetUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndSetUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndSetUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndSetUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndSetUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndSetUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/EndWorkoutUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndWorkoutUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndWorkoutUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndWorkoutUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndWorkoutUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndWorkoutUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndWorkoutUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndWorkoutUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/EndWorkoutUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/FetchFBExercisesUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchFBExercisesUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchFBExercisesUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchFBExercisesUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchFBExercisesUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchFBExercisesUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchFBExercisesUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchFBExercisesUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchFBExercisesUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/FetchWorkoutUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchWorkoutUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchWorkoutUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchWorkoutUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchWorkoutUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchWorkoutUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchWorkoutUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchWorkoutUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FetchWorkoutUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/ImportWorkoutUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ImportWorkoutUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/ReorderExerciseUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderExerciseUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderExerciseUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderExerciseUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderExerciseUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderExerciseUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderExerciseUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderExerciseUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderExerciseUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/ReorderWorkoutUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderWorkoutUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderWorkoutUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderWorkoutUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderWorkoutUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderWorkoutUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderWorkoutUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderWorkoutUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/ReorderWorkoutUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/StartExerciseUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartExerciseUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartExerciseUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartExerciseUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartExerciseUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartExerciseUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartExerciseUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartExerciseUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartExerciseUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/StartSetUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartSetUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartSetUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartSetUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartSetUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartSetUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartSetUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartSetUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartSetUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/StartWorkoutUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartWorkoutUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartWorkoutUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartWorkoutUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartWorkoutUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartWorkoutUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartWorkoutUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartWorkoutUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/StartWorkoutUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/SyncWorkoutUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SyncWorkoutUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SyncWorkoutUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SyncWorkoutUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SyncWorkoutUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SyncWorkoutUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SyncWorkoutUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SyncWorkoutUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/SyncWorkoutUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/UpdateDataToMLUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateDataToMLUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateDataToMLUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateDataToMLUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateDataToMLUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateDataToMLUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateDataToMLUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateDataToMLUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateDataToMLUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/Shared/UseCases/UpdateWorkoutUseCase.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateWorkoutUseCase.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateWorkoutUseCase.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateWorkoutUseCase.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateWorkoutUseCase.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateWorkoutUseCase.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateWorkoutUseCase.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateWorkoutUseCase.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/UpdateWorkoutUseCase~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDAppUser+CoreDataClass.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataClass.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataClass.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataClass.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataClass.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataClass.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDAppUser+CoreDataProperties.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataProperties.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataProperties.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataProperties.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDAppUser+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentExercise+CoreDataClass.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataClass.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataClass.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataClass.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataClass.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataClass.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentExercise+CoreDataProperties.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataProperties.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataProperties.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataProperties.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentExercise+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentSession+CoreDataClass.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataClass.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataClass.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataClass.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataClass.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataClass.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentSession+CoreDataProperties.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataProperties.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataProperties.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataProperties.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSession+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentSet+CoreDataClass.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataClass.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataClass.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataClass.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataClass.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataClass.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentSet+CoreDataProperties.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataProperties.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataProperties.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataProperties.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDCurrentSet+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDExerciseTemplate+CoreDataClass.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataClass.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataClass.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataClass.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataClass.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataClass.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDExerciseTemplate+CoreDataProperties.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataProperties.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataProperties.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataProperties.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDExerciseTemplate+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDHistoryExercise+CoreDataClass.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataClass.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataClass.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataClass.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataClass.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataClass.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDHistoryExercise+CoreDataProperties.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataProperties.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataProperties.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataProperties.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistoryExercise+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDHistorySet+CoreDataClass.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataClass.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataClass.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataClass.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataClass.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataClass.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDHistorySet+CoreDataProperties.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataProperties.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataProperties.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataProperties.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDHistorySet+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDPlanExercise+CoreDataClass.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataClass.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataClass.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataClass.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataClass.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataClass.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDPlanExercise+CoreDataProperties.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataProperties.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataProperties.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataProperties.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDPlanExercise+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDWorkoutHistory+CoreDataClass.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataClass.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataClass.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataClass.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataClass.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataClass.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDWorkoutHistory+CoreDataProperties.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataProperties.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataProperties.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataProperties.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutHistory+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDWorkoutPlan+CoreDataClass.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataClass.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataClass.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataClass.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataClass.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataClass.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/CDWorkoutPlan+CoreDataProperties.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataProperties.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataProperties.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataProperties.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/CDWorkoutPlan+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/CoreDataGenerated/FitterModel/FitterModel+CoreDataModel.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FitterModel+CoreDataModel.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FitterModel+CoreDataModel.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FitterModel+CoreDataModel.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FitterModel+CoreDataModel.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FitterModel+CoreDataModel.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FitterModel+CoreDataModel.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FitterModel+CoreDataModel.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/FitterModel+CoreDataModel~partial.swiftmodule"
+  },
+  "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/daniellobo/Documents/Fitter App V2/Fitter V2/build/Fitter V2.build/Debug-watchos/Fitter V2 Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}

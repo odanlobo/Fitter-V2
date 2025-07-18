@@ -1,0 +1,95 @@
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/CoreData\ 2/CoreDataModels.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/EndSetUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/EndWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Manager/ConnectivityManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Persistence/PersistenceController.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/CoreDataService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/CreateWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/StartWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/SyncWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/TimerService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/FetchFBExercisesUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Models/SensorData.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Models/MuscleGroup.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Network/NetworkMonitor.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/StartExerciseUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/ImportWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/CoreData\ 2/CoreDataAdapter.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/AuthUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Views/Workout/ListExerciseView.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Services/Auth/BiometricAuthService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Services/Auth/AppleSignInServiceProtocol.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Views/Profile/ProfileView.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Views/Workout/WorkoutEditorView.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Views/Workout/WorkoutView.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Components/BackButton.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/iOSApp.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Models/FirebaseExercise.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/ViewsModel/ListExerciseViewModel.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Views/Home/HomeView.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Components/ImportWorkoutCard.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Views/Auth/CreateAccountView.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Components/WorkoutPlanCard.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/ViewsModel/CreateAccountViewModel.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/ViewsModel/LoginViewModel.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Components/CreateButton.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/ViewsModel/BaseViewModel.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Views/Auth/LoginView.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Services/AuthService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Sync/CloudSyncManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Services/Auth/FacebookSignInService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/ViewsModel/WorkoutSessionViewModel.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Views/MainTab/MainTabView.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Repository/FirestoreExerciseRepository.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Services/Auth/BiometricAuthServiceProtocol.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Sync/PhoneSessionManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Components/UploadButton.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Services/Auth/GoogleSignInService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Services/Auth/AppleSignInService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Views/PaywallView.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Views/History/HistoryView.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Services/Auth/FacebookSignInServiceProtocol.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/ViewsModel/WorkoutViewModel.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Services/Auth/GoogleSignInServiceProtocol.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Fitter\ V2/Components/ExerciseCard.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/ReorderExerciseUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/UpdateDataToMLUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/UpdateWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/RevenueCatService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Models/SubscriptionType.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Protocols/ExerciseDisplayable.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/StartSetUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/ReorderWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Sync/CloudSyncStatus.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/MLModelManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/HealthKitManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Models/WeightUnit.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/SubscriptionManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/WorkoutDataService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/FetchWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Manager/SessionManager.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/DeleteWorkoutUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/UseCases/EndExerciseUseCase.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/Shared/Services/ImportWorkoutService.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDAppUser+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDAppUser+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentExercise+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentExercise+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentSession+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentSession+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentSet+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDCurrentSet+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDExerciseTemplate+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDExerciseTemplate+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDHistoryExercise+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDHistoryExercise+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDHistorySet+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDHistorySet+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDPlanExercise+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDPlanExercise+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDWorkoutHistory+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDWorkoutHistory+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDWorkoutPlan+CoreDataClass.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/CDWorkoutPlan+CoreDataProperties.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/CoreDataGenerated/FitterModel/FitterModel+CoreDataModel.swift
+/Users/daniellobo/Documents/Fitter\ App\ V2/Fitter\ V2/build/Fitter\ V2.build/Debug-iphoneos/Fitter\ V2.build/DerivedSources/GeneratedAssetSymbols.swift

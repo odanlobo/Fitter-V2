@@ -9,8 +9,9 @@ import SwiftUI
 import WatchConnectivity
 
 struct WatchView: View {
-    @EnvironmentObject var dataManager: WatchDataManager
-    @StateObject private var connectivity = ConnectivityManager.shared
+    @EnvironmentObject var sessionManager: WatchSessionManager
+    @EnvironmentObject var motionManager: MotionManager
+    @EnvironmentObject var connectivity: ConnectivityManager
     
     var body: some View {
         NavigationView {
@@ -29,25 +30,24 @@ struct WatchView: View {
                             Spacer()
                             
                             // Status de conexão
-                            Image(systemName: dataManager.isConnectedToPhone ? "iphone" : "iphone.slash")
-                                .foregroundColor(dataManager.isConnectedToPhone ? .green : .gray)
+                            Image(systemName: sessionManager.isConnectedToPhone ? "iphone" : "iphone.slash")
+                                .foregroundColor(sessionManager.isConnectedToPhone ? .green : .gray)
                         }
                         .padding(.horizontal)
                         
                         // Planos de Treino
-                        if !dataManager.workoutPlans.isEmpty {
+                        if let context = sessionManager.sessionContext, !context.isActive {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("Treinos")
                                     .font(.headline)
                                     .foregroundColor(.white)
                                     .padding(.horizontal)
                                 
-                                ForEach(dataManager.workoutPlans) { plan in
-                                    NavigationLink(destination: WatchWorkoutDetailView(plan: plan)) {
-                                        WatchWorkoutCard(plan: plan)
-                                    }
-                                    .buttonStyle(PlainButtonStyle())
-                                }
+                                // TODO: Implementar lista de treinos usando WorkoutDataService
+                                Text("Lista de treinos em implementação")
+                                    .foregroundColor(.gray)
+                                    .font(.caption)
+                                    .padding(.horizontal)
                             }
                         } else {
                             VStack(spacing: 12) {
@@ -59,7 +59,7 @@ struct WatchView: View {
                                     .foregroundColor(.gray)
                                     .font(.caption)
                                 
-                                if !dataManager.isConnectedToPhone {
+                                if !sessionManager.isConnectedToPhone {
                                     Text("Conecte com o iPhone")
                                         .foregroundColor(.orange)
                                         .font(.caption2)
@@ -68,37 +68,53 @@ struct WatchView: View {
                             .padding()
                         }
                         
-                        // Dados de Sensor Pendentes (para debug)
-                        if !dataManager.pendingSensorData.isEmpty {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("Dados Pendentes: \(dataManager.pendingSensorData.count)")
+                        // Status do Sensor
+                        VStack(alignment: .leading, spacing: 4) {
+                            if motionManager.isRecording {
+                                Text("Capturando dados (\(Int(motionManager.currentPhase == .execution ? 50 : 20))Hz)")
+                                    .font(.caption2)
+                                    .foregroundColor(.green)
+                            }
+                            
+                            // Frequência Cardíaca
+                            if let heartRate = sessionManager.currentHeartRate {
+                                Text("FC: \(heartRate) bpm")
                                     .font(.caption2)
                                     .foregroundColor(.orange)
-                                    .padding(.horizontal)
-                                
-                                Button("Sincronizar") {
-                                    Task {
-                                        await dataManager.syncSensorDataToPhone()
-                                    }
-                                }
-                                .font(.caption2)
-                                .padding(.horizontal)
+                            }
+                            
+                            // Calorias
+                            if let calories = sessionManager.currentCalories {
+                                Text("Calorias: \(Int(calories)) kcal")
+                                    .font(.caption2)
+                                    .foregroundColor(.orange)
                             }
                         }
+                        .padding(.horizontal)
                         
-                        // Botão de teste para adicionar dados de sensor
-                        Button("Teste: Adicionar Dados") {
-                            let sensorData = WatchSensorData(
-                                type: .setCompleted,
-                                heartRate: Int.random(in: 120...180),
-                                calories: Double.random(in: 5...15),
-                                reps: Int.random(in: 8...15),
-                                weight: Double.random(in: 20...100)
-                            )
-                            dataManager.addSensorData(sensorData)
+                        // Botões de Controle (para debug)
+                        HStack {
+                            Button(motionManager.isRecording ? "Parar" : "Iniciar") {
+                                Task {
+                                    if motionManager.isRecording {
+                                        motionManager.stopMotionUpdates()
+                                    } else {
+                                        await motionManager.startMotionUpdates()
+                                    }
+                                }
+                            }
+                            .foregroundColor(motionManager.isRecording ? .red : .green)
+                            .font(.caption2)
+                            
+                            Spacer()
+                            
+                            // Debug: Status da Sessão
+                            Button("Status") {
+                                print(sessionManager.sessionStats)
+                            }
+                            .font(.caption2)
+                            .foregroundColor(.blue)
                         }
-                        .font(.caption2)
-                        .foregroundColor(.blue)
                         .padding()
                     }
                 }
@@ -107,66 +123,16 @@ struct WatchView: View {
     }
 }
 
-// MARK: - Watch Workout Card
-struct WatchWorkoutCard: View {
-    let plan: WatchWorkoutPlan
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(plan.title)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.white)
-                .lineLimit(1)
-            
-            Text(plan.muscleGroups)
-                .font(.caption2)
-                .foregroundColor(.gray)
-                .lineLimit(1)
-            
-            Text("\(plan.exercises.count) exercícios")
-                .font(.caption2)
-                .foregroundColor(.green)
-        }
-        .padding(8)
-        .background(Color(.darkGray))
-        .cornerRadius(8)
-        .padding(.horizontal)
-    }
-}
-
-// MARK: - Watch Workout Detail View
-struct WatchWorkoutDetailView: View {
-    let plan: WatchWorkoutPlan
-    
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 12) {
-                Text(plan.title)
-                    .font(.headline)
-                    .foregroundColor(.white)
-                
-                Text(plan.muscleGroups)
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                
-                Divider()
-                
-                ForEach(plan.exercises) { exercise in
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(exercise.name)
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.white)
-                        
-                        Text(exercise.equipment)
-                            .font(.caption2)
-                            .foregroundColor(.gray)
-                    }
-                    .padding(.vertical, 4)
-                }
-            }
-            .padding()
-        }
-        .background(Color.black)
-        .navigationBarTitleDisplayMode(.inline)
+// MARK: - Preview
+struct WatchView_Previews: PreviewProvider {
+    static var previews: some View {
+        WatchView()
+            .environmentObject(WatchSessionManager())
+            .environmentObject(MotionManager(
+                sessionManager: WatchSessionManager(),
+                phaseManager: WorkoutPhaseManager()
+            ))
+            .environmentObject(ConnectivityManager.shared)
+            .environmentObject(WorkoutPhaseManager())
     }
 }

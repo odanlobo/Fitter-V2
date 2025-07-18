@@ -1,0 +1,4 @@
+module FirebaseCoreExtension {
+umbrella "/Users/daniellobo/Library/Developer/Xcode/DerivedData/Fitter_V2-gccrxbpwaweotceaxwgusxfbequa/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Extension"
+export *
+}

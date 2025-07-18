@@ -5,34 +5,26 @@
 //  Created by Daniel Lobo on 12/05/25.
 //
 
-//
-//  LoginViewModel.swift
-//  Fitter V2
-//
-//  Created by Daniel Lobo on 12/05/25.
-//
-
 import Foundation
 import FirebaseAuth
 import CoreData
 import Combine
 
 @MainActor
-class LoginViewModel: ObservableObject {
-    @Published var isLoading = false
-    @Published var showError = false
-    @Published var errorMessage = ""
-    @Published var currentUser: CDAppUser?
+class LoginViewModel: BaseViewModel {
     
-    var isAuthenticated: Bool {
-        return authService.isAuthenticated
-    }
+    // MARK: - Inicialização
     
-    private let authService = AuthService.shared
-    private var authStateHandle: AuthStateDidChangeListenerHandle?
-    private var isPreviewMode = false
-    
-    init() {
+    /// Inicializa LoginViewModel com dependency injection
+    /// - Parameters:
+    ///   - coreDataService: Serviço Core Data
+    ///   - authUseCase: Use Case de autenticação
+    override init(
+        coreDataService: CoreDataServiceProtocol = CoreDataService(),
+        authUseCase: AuthUseCaseProtocol = AuthUseCase(authService: AuthService())
+    ) {
+        super.init(coreDataService: coreDataService, authUseCase: authUseCase)
+        
         #if DEBUG
         // Se já tiver usuário (ex: vindo do Preview), não sobrescreve!
         if currentUser != nil { 
@@ -42,39 +34,21 @@ class LoginViewModel: ObservableObject {
         }
         #endif
 
-        // Inicializa o currentUser com o usuário do AuthService apenas se não estiver em preview
-        if !isPreviewMode {
-            currentUser = authService.currentUser
-            
-            #if DEBUG
-            if currentUser != nil {
-                print("🎯 LoginViewModel.init - Usuário do AuthService: \(currentUser?.safeName ?? "nil")")
-            } else {
-                print("⚠️ LoginViewModel.init - Nenhum usuário do AuthService (normal em preview)")
-            }
-            #endif
-
-            // Adiciona listener para mudanças de autenticação apenas se não estiver em preview
-            setupAuthListener()
-        }
+        print("🔐 LoginViewModel inicializado com AuthUseCase")
     }
     
-    deinit {
-        if let handle = authStateHandle {
-            Auth.auth().removeStateDidChangeListener(handle)
-        }
+    /// Inicializador de conveniência para iOSApp.swift
+    /// - Parameter useCase: Use Case de autenticação já configurado
+    convenience init(useCase: AuthUseCaseProtocol) {
+        self.init(authUseCase: useCase)
     }
     
-    private func setupAuthListener() {
-        authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] _, _ in
-            Task { @MainActor in
-                guard let self = self, !self.isPreviewMode else { return }
-                self.currentUser = self.authService.currentUser
-                self.objectWillChange.send()
-            }
-        }
-    }
+    // MARK: - Métodos de Login
     
+    /// Realiza login com email e senha
+    /// - Parameters:
+    ///   - email: Email do usuário
+    ///   - password: Senha do usuário
     func signIn(email: String, password: String) async {
         guard !email.isEmpty else {
             showError(message: "Por favor, insira seu email")
@@ -86,94 +60,35 @@ class LoginViewModel: ObservableObject {
             return
         }
         
-        isLoading = true
-        defer { isLoading = false }
+        let credentials = AuthCredentials.email(email, password: password)
+        await login(with: credentials)
+    }
+    
+    /// Login com Apple ID
+    func signInWithApple() async {
+        print("🍎 [LoginViewModel] Iniciando login com Apple...")
         
-        do {
-            try await authService.signIn(email: email, password: password)
-            currentUser = authService.currentUser // Atualiza o usuário atual
-            objectWillChange.send()
-        } catch let error as AuthError {
-            showError(message: error.localizedDescription)
-        } catch {
-            showError(message: "Erro inesperado ao fazer login")
-        }
+        // ✅ ARQUITETURA CORRETA: AuthUseCase.signIn(with:) chama AppleSignInService internamente
+        let credentials = AuthCredentials(provider: .apple, email: nil, password: nil, token: nil, biometricData: nil)
+        await login(with: credentials)
     }
     
-    private func showError(message: String) {
-        errorMessage = message
-        showError = true
+    /// Login com Google
+    func signInWithGoogle() async {
+        print("🔍 [LoginViewModel] Iniciando login com Google...")
+        
+        // ✅ ARQUITETURA CORRETA: AuthUseCase.signIn(with:) chama GoogleSignInService internamente
+        let credentials = AuthCredentials(provider: .google, email: nil, password: nil, token: nil, biometricData: nil)
+        await login(with: credentials)
     }
     
-    func signInWithApple() {
-        // Implementar login com Apple
+    /// Login com Facebook
+    func signInWithFacebook() async {
+        print("📘 [LoginViewModel] Iniciando login com Facebook...")
+        
+        // ✅ ARQUITETURA CORRETA: AuthUseCase.signIn(with:) chama FacebookSignInService internamente
+        let credentials = AuthCredentials(provider: .facebook, email: nil, password: nil, token: nil, biometricData: nil)
+        await login(with: credentials)
     }
     
-    func signInWithGoogle() {
-        Task {
-            isLoading = true
-            defer { isLoading = false }
-            
-            do {
-                try await authService.signInWithGoogle()
-                currentUser = authService.currentUser // Atualiza o usuário atual
-                objectWillChange.send()
-            } catch let error as AuthError {
-                showError(message: error.localizedDescription)
-            } catch {
-                showError(message: "Erro ao fazer login com Google")
-            }
-        }
-    }
-    
-    func signInWithFacebook() {
-        Task {
-            isLoading = true
-            defer { isLoading = false }
-            
-            do {
-                try await authService.signInWithFacebook()
-                currentUser = authService.currentUser // Atualiza o usuário atual
-                objectWillChange.send()
-            } catch let error as AuthError {
-                showError(message: error.localizedDescription)
-            } catch {
-                showError(message: "Erro ao fazer login com Facebook")
-            }
-        }
-    }
-    
-    func updateCurrentUser() {
-        if !isPreviewMode {
-            currentUser = authService.currentUser
-            objectWillChange.send()
-        }
-    }
 }
-
-// MARK: - Preview Support
-
-#if DEBUG
-extension LoginViewModel {
-    static var preview: LoginViewModel {
-        let vm = LoginViewModel()
-        vm.isPreviewMode = true // Marca como preview mode
-        // Usa contexto do banco mockado para pegar um usuário fake
-        let context = PreviewCoreDataStack.shared.viewContext
-        let fetch: NSFetchRequest<CDAppUser> = CDAppUser.fetchRequest()
-        if let user = try? context.fetch(fetch).first {
-            vm.currentUser = user
-            print("🎯 LoginViewModel.preview - Usuário configurado: \(user.safeName)")
-        } else {
-            print("⚠️ LoginViewModel.preview - Nenhum usuário encontrado no contexto de preview")
-        }
-        return vm
-    }
-    static var emptyPreview: LoginViewModel {
-        let vm = LoginViewModel()
-        vm.isPreviewMode = true
-        vm.currentUser = nil // Sem usuário
-        return vm
-    }
-}
-#endif
