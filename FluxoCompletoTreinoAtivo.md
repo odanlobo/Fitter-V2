@@ -7,7 +7,7 @@
 ## Sumário
 
 - [Princípios-Chave](#princípios-chave)
-- [Estrutura dos Arquivos e Responsabilidades](#estrutura-dos-arquivos-e-responsabilidades)
+- [Todos os Arquivos do Contexto de Treino Ativo](#todos-os-arquivos-do-contexto-de-treino-ativo)
 - [Dados Técnicos](#dados-técnicos)
 - [Fluxo Detalhado do Treino Ativo](#fluxo-detalhado-do-treino-ativo)
     - [Início do Treino](#1-início-do-treino)
@@ -27,6 +27,7 @@
 
 ## Princípios-Chave
 
+- **Pré-requisito:** Ter pelo menos 1 treino criado e o usuário obrigatoriamente autenticado (login concluído).
 - Sincronização em tempo real entre Apple Watch e iPhone via WCSession.
 - UI reativa refletindo sensores, ML, permissões premium em tempo real.
 - Chunking eficiente: 100 amostras por chunk (50Hz execução, 20Hz descanso).
@@ -38,30 +39,167 @@
 
 ---
 
-## Estrutura dos Arquivos e Responsabilidades
+## Todos os Arquivos do Contexto de Treino Ativo
 
-| Arquivo                        | ResponsabilidadePrincipal
-|--------------------------------|---------------------------------------------------------------------------------------------|
-| `iOSApp.swift`                 | Setup global, permissões globais.                                                           |
-| `WorkoutSessionViewModel.swift`| Estado reativo da UI de treino, integração com UseCases, timers, publishers, lógica premium.|
-| `PhoneSessionManager.swift`    | Sincronização comandos/contexto Watch↔iPhone, chunks sensores.                              |
-| `WatchSessionManager.swift`    | Sincronização, envio/recepção de sensores, contexto, eventos.                               |
-| `SessionManager.swift`         | Contexto global da sessão, orquestra UseCases/ViewModel.                                    |
-| `WorkoutPhaseManager.swift`    | Source of truth das fases (execução/descanso), notifica mudanças.                           |
-| `MotionManager.swift`          | Captação de sensores, chunking, detecção automática de fase.                                |
-| `TimerService.swift`           | Timers globais, série/descanso.                                                             |
-| `WorkoutDataService.swift`     | Persistência de entidades do treino (Core Data).                                            |
-| `CoreDataAdapter.swift`        | Conversão entre modelos e entidades Core Data.                                              |
-| `HealthKitManager.swift`       | Captação/atualização de heart rate/calorias.                                                |
-| `StartWorkoutUseCase.swift`    | Inicia treino: cria sessão, sensores, timers, HealthKit.                                    |
-| `EndWorkoutUseCase.swift`      | Finaliza treino: salva histórico, encerra tudo.                                             |
-| `StartExerciseUseCase.swift`   | Inicia exercício, entidades, timers.                                                        |
-| `EndExerciseUseCase.swift`     | Finaliza exercício, estatísticas, timers.                                                   |
-| `StartSetUseCase.swift`        | Inicia série, timers, sensores.                                                             |
-| `EndSetUseCase.swift`          | Finaliza série, salva dados, timers descanso.                                               |
-| `UpdateDataToMLUseCase.swift`  | Processamento ML (reps, timeline, picos).                                                   |
-| `SubscriptionManager.swift`    | Controle premium via RevenueCat/publishers.                                                 |
-| `LocationManager.swift`        | Captação localização (opcional, histórico).                                                 |
+Esta seção lista **TODOS** os arquivos envolvidos no fluxo completo de um treino ativo, organizados por categoria funcional:
+
+### 📱 **Aplicações Principais (Entry Points)**
+- `Fitter V2/iOSApp.swift` - Entry point iOS, setup global, permissões
+- `Fitter V2 Watch App/WatchApp.swift` - Entry point Watch, configuração inicial
+
+### 🎨 **Views e UI Components**
+
+#### Views Principais
+- `Fitter V2/Views/Home/HomeView.swift` - Tela inicial, acesso aos treinos
+- `Fitter V2/Views/Workout/WorkoutView.swift` - Lista e gerenciamento de treinos
+- `Fitter V2/Views/Workout/WorkoutSessionView.swift` - **[🚧 A IMPLEMENTAR]** Interface principal do treino ativo
+- `Fitter V2 Watch App/Views/WatchView.swift` - Interface Watch do treino
+- `Fitter V2 Watch App/Views/WatchWorkoutSessionView.swift` - **[🚧 A IMPLEMENTAR]** Interface específica treino Watch
+- `Fitter V2 Watch App/Views/PendingLoginView.swift` - Tela de aguardo sincronização
+
+#### Componentes de UI (Cards e Botões) - Gerais
+- `Fitter V2/Components/ExerciseCard.swift` - Card de exercício na lista
+- `Fitter V2/Components/WorkoutPlanCard.swift` - Card do plano de treino
+- `Fitter V2/Components/ImportWorkoutCard.swift` - Card para importar treino
+- `Fitter V2/Components/CreateButton.swift` - Botão de criar treino
+- `Fitter V2/Components/UploadButton.swift` - Botão de upload
+- `Fitter V2/Components/BackButton.swift` - Botão de voltar
+
+#### Componentes de UI - Treino Ativo **[🚧 A IMPLEMENTAR]**
+- `Fitter V2/Components/Workout/WorkoutStatusCard.swift` - Card de status geral do treino
+- `Fitter V2/Components/Workout/ExerciseSessionCard.swift` - Card do exercício ativo
+- `Fitter V2/Components/Workout/SetCard.swift` - Card individual de série
+- `Fitter V2/Components/Workout/RestTimerCard.swift` - Card do timer de descanso
+- `Fitter V2/Components/Workout/AutoDetectionModal.swift` - Modal de detecção automática
+- `Fitter V2/Components/Workout/TimerSelectionSheet.swift` - Sheet de seleção de timer
+- `Fitter V2/Components/Workout/DecisionModal.swift` - Modal de decisão pós-timer
+- `Fitter V2/Components/Workout/MissingFieldsModal.swift` - Modal de campos obrigatórios
+
+### 🧠 **ViewModels (Estado Reativo)**
+- `Fitter V2/ViewsModel/WorkoutSessionViewModel.swift` - ViewModel principal do treino ativo
+- `Fitter V2/ViewsModel/WorkoutViewModel.swift` - ViewModel geral de treinos
+- `Fitter V2/ViewsModel/ListExerciseViewModel.swift` - ViewModel da lista de exercícios
+- `Fitter V2/ViewsModel/BaseViewModel.swift` - ViewModel base com funcionalidades comuns
+
+### 🔄 **Use Cases (Lógica de Negócio)**
+- `Shared/UseCases/StartWorkoutUseCase.swift` - Iniciar treino
+- `Shared/UseCases/EndWorkoutUseCase.swift` - Finalizar treino
+- `Shared/UseCases/StartExerciseUseCase.swift` - Iniciar exercício
+- `Shared/UseCases/EndExerciseUseCase.swift` - Finalizar exercício
+- `Shared/UseCases/StartSetUseCase.swift` - Iniciar série
+- `Shared/UseCases/EndSetUseCase.swift` - Finalizar série
+- `Shared/UseCases/UpdateDataToMLUseCase.swift` - Processamento ML dos dados
+- `Shared/UseCases/FetchWorkoutUseCase.swift` - Buscar dados do treino
+- `Shared/UseCases/UpdateWorkoutUseCase.swift` - Atualizar treino
+- `Shared/UseCases/ReorderExerciseUseCase.swift` - Reordenar exercícios
+- `Shared/UseCases/ImportWorkoutUseCase.swift` - Importar treino
+- `Shared/UseCases/SyncWorkoutUseCase.swift` - Sincronizar treino
+
+### 🎛️ **Managers (Coordenação e Estado)**
+- `Shared/Manager/SessionManager.swift` - Gerenciador global da sessão
+- `Shared/Manager/WorkoutPhaseManager.swift` - Gerenciador de fases (execução/descanso)
+- `Shared/Manager/ConnectivityManager.swift` - Gerenciador de conectividade
+- `Fitter V2/Sync/PhoneSessionManager.swift` - Sincronização iPhone ↔ Watch
+- `Fitter V2 Watch App/Managers/WatchSessionManager.swift` - Sincronização Watch ↔ iPhone
+- `Fitter V2 Watch App/Managers/MotionManager.swift` - Captação sensores Watch
+
+### 🔧 **Services (Serviços Especializados)**
+- `Shared/Services/TimerService.swift` - Cronômetros e timers
+- `Shared/Services/WorkoutDataService.swift` - Persistência de dados do treino
+- `Shared/Services/CoreDataService.swift` - Serviços Core Data gerais
+- `Shared/Services/HealthKitManager.swift` - Integração HealthKit (heart rate, calorias)
+- `Shared/Services/LocationManager.swift` - Captação de localização
+- `Shared/Services/MLModelManager.swift` - Processamento machine learning
+- `Shared/Services/SubscriptionManager.swift` - Gerenciamento premium/assinaturas
+- `Shared/Services/RevenueCatService.swift` - Integração RevenueCat
+- `Shared/Services/ImportWorkoutService.swift` - Importação de treinos
+
+### 📊 **Models e Data (Estruturas de Dados)**
+- `Shared/Models/SensorData.swift` - Estrutura dos dados de sensores
+- `Shared/Models/MuscleGroup.swift` - Grupos musculares
+- `Shared/Models/SubscriptionType.swift` - Tipos de assinatura
+- `Shared/Models/WeightUnit.swift` - Unidades de peso
+- `Fitter V2/Models/FirebaseExercise.swift` - Modelo exercício Firebase
+
+### 🗄️ **Persistência e Core Data**
+- `Shared/Persistence/PersistenceController.swift` - Controlador principal Core Data
+- `Shared/CoreData 2/CoreDataAdapter.swift` - Adaptador para conversões Core Data
+- `Shared/CoreData 2/CoreDataModels.swift` - Modelos Core Data
+- `Shared/CoreData 2/FitterModel.xcdatamodeld/` - Schema Core Data
+
+### 🔗 **Protocolos e Interfaces**
+- `Shared/Protocols/ExerciseDisplayable.swift` - Protocol para exibição de exercícios
+- `Fitter V2/Services/Auth/AppleSignInServiceProtocol.swift` - Protocol Apple Sign-In
+- `Fitter V2/Services/Auth/GoogleSignInServiceProtocol.swift` - Protocol Google Sign-In
+- `Fitter V2/Services/Auth/FacebookSignInServiceProtocol.swift` - Protocol Facebook Sign-In
+- `Fitter V2/Services/Auth/BiometricAuthServiceProtocol.swift` - Protocol autenticação biométrica
+
+### 🌐 **Network e Conectividade**
+- `Shared/Network/NetworkMonitor.swift` - Monitor de conectividade de rede
+
+### 🔄 **Sincronização e Cloud**
+- `Shared/Sync/CloudSyncStatus.swift` - Status da sincronização cloud
+- `Fitter V2/Sync/CloudSyncManager.swift` - Gerenciador sincronização cloud
+
+### 🔐 **Autenticação (Pré-requisito)**
+> **Nota:** Estes arquivos são pré-requisitos para o treino ativo. O usuário já deve estar autenticado antes de iniciar qualquer treino.
+
+- `Shared/UseCases/AuthUseCase.swift` - Use case de autenticação
+- `Fitter V2/Services/AuthService.swift` - Serviço principal de autenticação
+- `Fitter V2/Services/Auth/AppleSignInService.swift` - Login com Apple
+- `Fitter V2/Services/Auth/GoogleSignInService.swift` - Login com Google
+- `Fitter V2/Services/Auth/FacebookSignInService.swift` - Login com Facebook
+- `Fitter V2/Services/Auth/BiometricAuthService.swift` - Autenticação biométrica
+
+### 🗃️ **Repository (Acesso a Dados)**
+- `Fitter V2/Repository/FirestoreExerciseRepository.swift` - Repository exercícios Firestore
+
+### 🎨 **Assets e Recursos**
+- `Fitter V2/Assets.xcassets/` - Assets iOS (ícones, cores, imagens)
+- `Fitter V2 Watch App/Assets.xcassets/` - Assets Watch
+
+### ⚙️ **Configuração**
+- `Fitter V2/Fitter V2.entitlements` - Entitlements iOS
+- `Fitter V2 Watch App/Fitter V2 Watch App.entitlements` - Entitlements Watch
+- `Fitter V2/GoogleService-Info.plist` - Configuração Firebase
+- `Fitter-V2-Info.plist` - Info.plist iOS
+- `Fitter-V2-Watch-App-Info.plist` - Info.plist Watch
+
+### 🔧 **Utilitários**
+- `Shared/Utilities/` - Diretório com utilitários compartilhados
+
+---
+
+## 📋 **Resumo de Arquivos por Funcionalidade**
+
+### **Fluxo Principal do Treino Ativo:**
+1. **Início:** `StartWorkoutUseCase.swift` → `WorkoutSessionViewModel.swift` → `WorkoutSessionView.swift`
+2. **Sensores:** `MotionManager.swift` → `WatchSessionManager.swift` → `PhoneSessionManager.swift`
+3. **Dados:** `SensorData.swift` → `UpdateDataToMLUseCase.swift` → `MLModelManager.swift`
+4. **Persistência:** `WorkoutDataService.swift` → `CoreDataAdapter.swift` → `PersistenceController.swift`
+5. **UI Reativa:** `WorkoutSessionViewModel.swift` → Componentes UI → Publishers
+
+### **Arquivos Críticos (Núcleo do Sistema):**
+- `WorkoutSessionViewModel.swift` - Orquestração principal
+- `SessionManager.swift` - Coordenação global
+- `WorkoutPhaseManager.swift` - Estado execução/descanso
+- `MotionManager.swift` - Captação sensores Watch
+- `PhoneSessionManager.swift` / `WatchSessionManager.swift` - Sincronização
+- `TimerService.swift` - Cronômetros e timers
+- `HealthKitManager.swift` - Métricas vitais
+
+### **Dependências Externas Principais:**
+- **Core Data:** Persistência local (`FitterModel.xcdatamodeld`)
+- **WatchConnectivity:** Sincronização iPhone ↔ Watch
+- **HealthKit:** Heart rate, calorias, métricas vitais
+- **CoreMotion:** Sensores de movimento (Watch)
+- **RevenueCat:** Controle de assinatura premium
+- **Firebase Firestore:** Exercícios e sincronização cloud
+
+### **Estado de Implementação:**
+- ✅ **Pré-requisitos:** Autenticação, Use Cases, ViewModels, Managers, Services, Models
+- 🚧 **Em Desenvolvimento:** Views específicas de treino ativo, componentes UI
+- 📋 **Planejado:** Componentes avançados de UI, modais, sheets
 
 ---
 
@@ -80,6 +218,8 @@
 ---
 
 ## Fluxo Detalhado do Treino Ativo
+
+> **🔐 PRÉ-REQUISITO OBRIGATÓRIO:** Todo o fluxo abaixo pressupõe que o usuário já está **autenticado e logado** no sistema. A autenticação é um pré-requisito, não parte do fluxo de treino ativo.
 
 ### 1. **Início do Treino**
 
@@ -287,7 +427,8 @@ struct MetricSample {
 [Watch: MotionManager.swift] (captura, chunking) 
     → [WatchSessionManager.swift] (envio) 
     → [PhoneSessionManager.swift] (recebe, processa) 
-    → [UpdateDataToMLUseCase.swift] (ML, rep counting)
+    → [UpdateDataToMLUseCase.swift] (orquestra processamento) 
+    → [MLModelManager.swift] (ML, rep counting)
     → [WorkoutSessionViewModel.swift] (estado reativo, publishers)
     → [WorkoutSessionView.swift] (UI, gráficos, feedback)
     ↔ [CoreDataAdapter.swift] / [WorkoutDataService.swift] (persistência)
